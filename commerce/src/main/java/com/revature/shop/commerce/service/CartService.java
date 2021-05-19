@@ -32,6 +32,7 @@ public class CartService {
             //A method that allows us to decreament the items in the stock Repository
         }
         else cart.getStockItemMap().put(stockItemDto.getItemName(), 1);
+        cartRepository.save(cart);
         List<StockItemDto> stockItemDtoList = new ArrayList<>();
         for (Map.Entry<String, Integer> entry: cart.getStockItemMap().entrySet()) {
             StockItemDto stockItemDto1 = new StockItemDto();
