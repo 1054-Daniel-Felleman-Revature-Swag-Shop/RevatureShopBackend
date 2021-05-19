@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     @PostMapping("/points/{id}")
-    public ResponseEntity<?> subtractPoints(@PathVariable int id, @RequestBody int amount) {
+    public ResponseEntity<?> updatePoints(@PathVariable int id, @RequestBody int amount) {
         return new ResponseEntity<>(service.modPoints(id, amount) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
