@@ -32,6 +32,10 @@ public class StockItem {
         else this.quantity = 0;
     }
 
+    public StockItem() {
+
+    }
+
 
     public int getQuantity() {
         return quantity;
