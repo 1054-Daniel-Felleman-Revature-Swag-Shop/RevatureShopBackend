@@ -1,6 +1,8 @@
 package com.revature.shop.accounts;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,6 +12,7 @@ import javax.persistence.Table;
 @Table(name = "point_history")
 public final class PointChange {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @ManyToOne

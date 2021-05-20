@@ -4,7 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,14 +31,9 @@ public class AccountController {
         return new ResponseEntity<>(service.modPoints(id, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @GetMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody Account dummyLogin(@RequestBody String email) {
-        return service.getAccount(email);
-    }
-
-    @GetMapping
-    public ResponseEntity<Account> loggedIn() {
-        return null;
+    @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Account> dummyLogin(@RequestBody MultiValueMap<String, String> form) {
+        return new ResponseEntity<>(repo.findByEmail(form.getFirst("email")), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/all")

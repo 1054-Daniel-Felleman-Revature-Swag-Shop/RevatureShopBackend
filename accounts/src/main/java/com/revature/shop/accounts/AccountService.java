@@ -37,10 +37,4 @@ public class AccountService {
 
         return true;
     }
-
-    @Transactional
-    public Account getAccount(String email){
-        return repo.findAccountByEmail(email);
-    }
-
 }
