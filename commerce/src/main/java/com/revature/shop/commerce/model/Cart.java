@@ -1,13 +1,7 @@
 package com.revature.shop.commerce.model;
 
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Map;
-import java.util.Set;
 
 @Entity(name = "cart")
 public class Cart {
@@ -16,9 +10,11 @@ public class Cart {
     @GeneratedValue
     private String cartId;
 
-    @Column(name = "myshopper")
+    @Column(name = "my_shopper")
     private String myShopper;
 
+    @Column(name = "stock_item")
+    @ElementCollection
     private Map<String, Integer> stockItemMap;
 
     public Cart() {

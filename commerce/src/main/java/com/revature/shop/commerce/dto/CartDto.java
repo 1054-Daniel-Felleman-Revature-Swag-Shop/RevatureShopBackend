@@ -4,17 +4,16 @@ import java.util.List;
 
 public class CartDto {
 
-    private String cartId;
+    private String myShopper;
     private List<StockItemDto> stockItemDtoList;
 
-    public String getCartId() {
-        return cartId;
+    public String getMyShopper() {
+        return myShopper;
     }
 
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
+    public void setMyShopper(String myShopper) {
+        this.myShopper = myShopper;
     }
-
 
     public List<StockItemDto> getStockItemDtoList() {
         return stockItemDtoList;

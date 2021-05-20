@@ -5,8 +5,17 @@ public class StockItemDto {
     private String myshopper;
     private String itemName;
     private int price;
-    private int quantity;
     private int cartQuantity;
+
+    public StockItemDto() {
+    }
+
+    public StockItemDto(String myshopper, String itemName, int price, int cartQuantity) {
+        this.myshopper = myshopper;
+        this.itemName = itemName;
+        this.price = price;
+        this.cartQuantity = cartQuantity;
+    }
 
     public String getMyshopper() {
         return myshopper;
@@ -30,14 +39,6 @@ public class StockItemDto {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public int getCartQuantity() {
