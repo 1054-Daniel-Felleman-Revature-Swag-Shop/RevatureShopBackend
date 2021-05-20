@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/api/account")
 public class AccountController {
     private final AccountService service;
@@ -26,8 +26,8 @@ public class AccountController {
     }
 
     @PostMapping("/points/{id}")
-    public ResponseEntity<?> updatePoints(@PathVariable int id, @RequestBody int amount) {
-        return new ResponseEntity<>(service.modPoints(id, amount) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<?> updatePoints(@PathVariable int id, @RequestBody PointChange change) {
+        return new ResponseEntity<>(service.modPoints(id, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

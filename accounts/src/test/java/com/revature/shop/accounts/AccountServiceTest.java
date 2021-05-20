@@ -1,44 +1,48 @@
 package com.revature.shop.accounts;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AccountServiceTest {
     @Mock
     private AccountRepository repo;
+    @Mock
+    private PointRepository pointsRepo;
 
     @Test
     public void testPoints() {
         repo = mock(AccountRepository.class);
+        pointsRepo = mock(PointRepository.class);
 
         Account account = new Account(1, "test", 100);
 
         when(repo.findById(1)).thenReturn(Optional.of(account));
         when(repo.save(account)).thenReturn(account);
 
-        AccountService service = new AccountService(repo);
+        AccountService service = new AccountService(repo, pointsRepo);
 
         // Test if account exists
-        Assertions.assertTrue(service.modPoints(1, 0));
-        Assertions.assertFalse(service.modPoints(2, 0));
+        assertTrue(service.modPoints(1, new PointChange("test", 0)));
+        assertFalse(service.modPoints(2, new PointChange("test", 0)));
 
         // Test modification to points
-        Assertions.assertTrue(service.modPoints(1, -40));
-        Assertions.assertEquals(60, account.getPoints());
+        assertTrue(service.modPoints(1, new PointChange("test", -40)));
+        assertEquals(60, account.getPoints());
 
-        Assertions.assertTrue(service.modPoints(1, -60));
-        Assertions.assertEquals(0, account.getPoints());
+        assertTrue(service.modPoints(1, new PointChange("test", -60)));
+        assertEquals(0, account.getPoints());
 
-        Assertions.assertFalse(service.modPoints(1, -5));
-        Assertions.assertEquals(0, account.getPoints());
+        assertFalse(service.modPoints(1, new PointChange("test", -5)));
+        assertEquals(0, account.getPoints());
 
-        Assertions.assertTrue(service.modPoints(1, 1));
-        Assertions.assertEquals(1, account.getPoints());
+        assertTrue(service.modPoints(1, new PointChange("test", 1)));
+        assertEquals(1, account.getPoints());
     }
 }
