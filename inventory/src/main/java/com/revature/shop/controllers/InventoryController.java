@@ -19,27 +19,27 @@ import java.util.List;
 //@CrossOrigin(origins = {"http://localhost:4200", "https://sessions.s3.us-east-2.amazonaws.com"},  allowCredentials = "true")
 public class InventoryController
 {
-//    private final InventoryService inventoryService;
-    private final InventoryRepository inventoryRepository;
+    private final InventoryService inventoryService;
+//    private final InventoryRepository inventoryRepository;
 
     @Autowired
-    public InventoryController(InventoryRepository inventoryRepository)
+    public InventoryController(InventoryService inventoryService)
     {
-//        this.inventoryService = inventoryService;
-        this.inventoryRepository = inventoryRepository;
+        this.inventoryService = inventoryService;
+//        this.inventoryRepository = inventoryRepository;
     }
 
     @GetMapping("/view")
     public List<StockItem> getStockItems()
     {
-        return inventoryRepository.findAll();
+        return inventoryService.getAllStock();
     }
 
     @PutMapping("/stockitem/new/{id}")
     public ResponseEntity<?> addNewItem(@PathVariable int id, HttpSession session)
     {
         StockItem newItem = (StockItem) session.getAttribute("itemName");
-        inventoryRepository.save(newItem);
+        inventoryService.addToStock(newItem);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -50,7 +50,7 @@ public class InventoryController
     public ResponseEntity<?> restockItem(@PathVariable int id, HttpSession session)
     {
         StockItem newItem = (StockItem) session.getAttribute("itemName");
-        inventoryRepository.updateQuantity(newItem.getQuantity(), id);
+        //inventoryRepository.updateQuantity(newItem.getQuantity(), id);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

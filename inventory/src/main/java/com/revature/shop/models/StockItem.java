@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class StockItem {
@@ -21,30 +22,25 @@ public class StockItem {
     private int quantity;
 
     public StockItem(String itemName, int price, int quantity) {
-        if (itemName != null){
-            this.itemName = itemName;}
-        else this.itemName = "Revature Swag";
-        if (price > 0){
-            this.price = price;}
-        else this.price = 0;
-        if (quantity > 0){
-            this.quantity = quantity;}
-        else this.quantity = 0;
+        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
+        this.price = Math.max(price, 0);
+        this.quantity = Math.max(quantity, 0);
     }
 
     public StockItem() {
 
     }
 
+    public int getItemId(){
+        return this.itemId;
+    }
 
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
-        if (quantity > 0){
-        this.quantity = quantity;}
-        else this.quantity = 0;
+        this.quantity = Math.max(quantity, 0);
     }
 
     public int getPrice() {
@@ -52,9 +48,7 @@ public class StockItem {
     }
 
     public void setPrice(int price) {
-        if (price > 0){
-        this.price = price;}
-        else this.price = 0;
+        this.price = Math.max(price, 0);
     }
 
     public String getItemName() {
@@ -62,8 +56,6 @@ public class StockItem {
     }
 
     public void setItemName(String itemName) {
-        if (itemName != null){
-        this.itemName = itemName;}
-        else this.itemName = "Revature Swag";
+        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
     }
 }

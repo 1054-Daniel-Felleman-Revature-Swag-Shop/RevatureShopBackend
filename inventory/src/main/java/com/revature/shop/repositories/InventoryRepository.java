@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -18,4 +19,8 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
     @Modifying
     @Query("update StockItem item set item.quantity = :quantity where item.itemId = :id")
     public void updateQuantity(@Param("quantity") Integer quantity, @Param("id") int id);
+
+//    public List<StockItem> findAllByOrderByItemIdAsc();
+    public List<StockItem> findByQuantityGreaterThan(Integer quantity);
+    public List<StockItem> findByQuantityEquals(Integer quantity);
 }
