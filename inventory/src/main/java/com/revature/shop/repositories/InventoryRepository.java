@@ -14,10 +14,10 @@ import java.util.List;
 @Transactional
 public interface InventoryRepository extends JpaRepository<StockItem, Integer>
 {
-    public void addInventory(int id);
+//    public void addInventory(int id);
 
     @Modifying
-    @Query("update StockItem item set item.quantity = :quantity where item.itemId = :id")
+    @Query("update StockItem item set item.quantity = :quantity where item.id = :id")
     public void updateQuantity(@Param("quantity") Integer quantity, @Param("id") int id);
 
 //    public List<StockItem> findAllByOrderByItemIdAsc();

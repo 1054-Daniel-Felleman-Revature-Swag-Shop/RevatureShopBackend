@@ -1,12 +1,14 @@
-package com.revature.shop.inventory;
+package com.revature.shop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class RevShopApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SpringApplication.run(RevShopApplication.class, args);
     }
 

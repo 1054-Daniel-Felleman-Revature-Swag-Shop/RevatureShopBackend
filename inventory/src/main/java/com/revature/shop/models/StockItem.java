@@ -1,29 +1,28 @@
 package com.revature.shop.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name="inventory")
 public class StockItem {
 
     @Id
-    @GeneratedValue
-    private int itemId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    private int id;
 
     @Column(name = "item_name")
-    private String itemName;
+    private String item_name;
 
     @Column(name = "item_price")
-    private int price;
+    private int item_price;
 
     private int quantity;
 
-    public StockItem(String itemName, int price, int quantity) {
-        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
-        this.price = Math.max(price, 0);
+    public StockItem(String item_name, int item_price, int quantity) {
+        this.item_name = Objects.requireNonNullElse(item_name, "Revature Swag");
+        this.item_price = Math.max(item_price, 0);
         this.quantity = Math.max(quantity, 0);
     }
 
@@ -31,8 +30,8 @@ public class StockItem {
 
     }
 
-    public int getItemId(){
-        return this.itemId;
+    public int getId(){
+        return this.id;
     }
 
     public int getQuantity() {
@@ -43,19 +42,19 @@ public class StockItem {
         this.quantity = Math.max(quantity, 0);
     }
 
-    public int getPrice() {
-        return price;
+    public int getItem_price() {
+        return item_price;
     }
 
-    public void setPrice(int price) {
-        this.price = Math.max(price, 0);
+    public void setItem_price(int price) {
+        this.item_price = Math.max(price, 0);
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
+    public void setItem_name(String itemName) {
+        this.item_name = Objects.requireNonNullElse(itemName, "Revature Swag");
     }
 }

@@ -3,9 +3,11 @@ package com.revature.shop.services;
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class InventoryService
 {
     private final InventoryRepository iRep;
@@ -28,14 +30,15 @@ public class InventoryService
     }
 
     public Boolean addToStock(StockItem sItem){
-        if(iRep.existsById(sItem.getItemId())){
+        if(iRep.existsById(sItem.getId())){
             return false;
         }
         else iRep.save((sItem));
         return true;
     }
     public Boolean updateStockItem(StockItem sItem){
-        if (iRep.existsById(sItem.getItemId())){
+        if (iRep.existsById(sItem.getId()))
+        {
             iRep.save(sItem);
             return true;
         }

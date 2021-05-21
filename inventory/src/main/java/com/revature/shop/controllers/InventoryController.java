@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,28 +31,36 @@ public class InventoryController
     }
 
     @GetMapping("/view")
-    public List<StockItem> getStockItems()
+    public ResponseEntity<?> getStockItems(HttpSession session)
     {
-        return inventoryService.getAllStock();
+        List<StockItem> itemsList = inventoryService.getAllStock();
+        if(itemsList == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/stockitem/new/{id}")
-    public ResponseEntity<?> addNewItem(@PathVariable int id, HttpSession session)
+    @PutMapping("/stockitem/new")
+    public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
     {
-        StockItem newItem = (StockItem) session.getAttribute("itemName");
-        inventoryService.addToStock(newItem);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+//        StockItem newItem = (StockItem) session.getAttribute("itemName");
+        System.out.println(item.getId());
+        boolean isAddedItem = inventoryService.addToStock(item);
+
+        return new ResponseEntity<>(isAddedItem, HttpStatus.CREATED);
     }
 
-//    @RequestMapping(value = "/updatestockitem", method = RequestMethod.PATCH)
-//    @PostMapping("/restockitem")
-    @PatchMapping("/stockitem/update/{id}")
-    public ResponseEntity<?> restockItem(@PathVariable int id, HttpSession session)
+//    @PostMapping("/stockitem/update/{id}")
+    @PostMapping("/stockitem/update")
+    public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
-        StockItem newItem = (StockItem) session.getAttribute("itemName");
+//        StockItem newItem = (StockItem) session.getAttribute("itemName");
         //inventoryRepository.updateQuantity(newItem.getQuantity(), id);
+        boolean isChangeItem = inventoryService.updateStockItem(item);
 
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(isChangeItem, HttpStatus.ACCEPTED);
     }
 }
