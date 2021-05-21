@@ -4,10 +4,11 @@ Here are the hallmarks of this commit:
 	"/welcomeToCommerce": Dante, team lead, proposed we think about this endpoint and return the cart of the authenticated shopper rather than just printing a welcome message
 	"/savecart": this is a redundant route that is used as a litmus test for e2e testing
 	"/checkoutcart": this route is included in the contract
+	"/myCart/{shopper}: this is a GET request to get a shopper's cart using their name
 
 2) To test the controller of the commerce layers, I wrote e2e tests using RestTemplate class as a Java-based replacement to e2e testing using postman.
 -- Endpoints passing the e2e testing:
-   "/welcomeToCommerce", "/savecart" by two different testing methods, "/checkoutcart"
+   "/welcomeToCommerce", "/savecart" by two different testing methods, "/checkoutcart", "/myCart/{shopper}
 -- Endpoints failing the e2e testing:
    "/addtocart", "/removefromcart"
    Both endpoints returned 500 internal server error by just hitting the endpoint.

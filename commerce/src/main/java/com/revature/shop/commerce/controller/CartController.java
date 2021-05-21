@@ -65,5 +65,8 @@ public class CartController {
         }
     }
 
-
+    @GetMapping(value = "/myCart/{shopper}")
+    public ResponseEntity<?> getShopperCart(@PathVariable String shopper){
+        return new ResponseEntity<>(cartService.getShopperCart(shopper), HttpStatus.ACCEPTED);
+    }
 }

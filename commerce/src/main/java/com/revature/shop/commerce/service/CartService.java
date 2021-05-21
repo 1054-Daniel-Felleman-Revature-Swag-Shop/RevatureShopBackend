@@ -99,4 +99,13 @@ public class CartService {
         // return total points
         return currentPurchaseTotal;
     }
+
+    public Cart getShopperCart(String shopper){
+        Cart cart = cartRepository.findOneByMyShopper(shopper);
+        if(cart == null){
+            cart = new Cart(shopper);
+            cartRepository.save(cart);
+        }
+        return cart;
+    }
 }
