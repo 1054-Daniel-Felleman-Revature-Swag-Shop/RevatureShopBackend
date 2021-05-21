@@ -1,0 +1,4 @@
+Here are the hallmarks of this commit:
+1) Commerce endpoint /saveCart was implemented in CartController and CartService using the save() method of CartRepository.
+2) A different unit testing strategy is introduced under test/java/com.revature.shop.commerce/CartControllerUnitTests 
+3) The name of the unit testing strategy introduced earlier was changed from CartService to CartServiceTests under the same package.

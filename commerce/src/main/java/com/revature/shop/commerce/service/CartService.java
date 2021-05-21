@@ -3,6 +3,7 @@ package com.revature.shop.commerce.service;
 import com.revature.shop.commerce.dto.CartDto;
 import com.revature.shop.commerce.dto.StockItemDto;
 import com.revature.shop.commerce.exception.ItemOutOfStockException;
+import com.revature.shop.commerce.exception.UnableToSaveCartException;
 import com.revature.shop.commerce.model.Cart;
 import com.revature.shop.commerce.model.StockItem;
 import com.revature.shop.commerce.repository.CartRepository;
@@ -50,4 +51,7 @@ public class CartService {
         else throw new ItemOutOfStockException();
     }
 
+    public Cart saveCart(Cart cart) throws UnableToSaveCartException {
+        return cartRepository.save(cart);
+    }
 }
