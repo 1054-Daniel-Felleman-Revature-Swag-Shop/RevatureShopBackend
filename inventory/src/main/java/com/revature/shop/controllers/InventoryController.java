@@ -18,13 +18,11 @@ import java.util.List;
 public class InventoryController
 {
     private final InventoryService inventoryService;
-//    private final InventoryRepository inventoryRepository;
 
     @Autowired
     public InventoryController(InventoryService inventoryService)
     {
         this.inventoryService = inventoryService;
-//        this.inventoryRepository = inventoryRepository;
     }
 
     @GetMapping("/view")
@@ -42,20 +40,15 @@ public class InventoryController
     @PutMapping("/stockitem/new")
     public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
     {
-
-//        StockItem newItem = (StockItem) session.getAttribute("itemName");
-        System.out.println(item.getId());
+        System.out.println(item);
         boolean isAddedItem = inventoryService.addToStock(item);
 
         return new ResponseEntity<>(isAddedItem, HttpStatus.CREATED);
     }
 
-//    @PostMapping("/stockitem/update/{id}")
     @PutMapping("/stockitem/update")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
-//        StockItem newItem = (StockItem) session.getAttribute("itemName");
-        //inventoryRepository.updateQuantity(newItem.getQuantity(), id);
         boolean isChangedQuantity = inventoryService.updateStockItem(item.getItemName(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);

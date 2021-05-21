@@ -8,20 +8,21 @@ import java.util.Objects;
 public class StockItem
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "item_name", unique = true, nullable = false)
     private String itemName;
 
     @Column(name = "item_price")
-    private int item_price;
+    private int itemPrice;
 
     private int quantity;
 
-    public StockItem(String item_name, int item_price, int quantity) {
+    public StockItem(String item_name, int itemPrice, int quantity) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
-        this.item_price = Math.max(item_price, 0);
+        this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
     }
 
@@ -41,12 +42,12 @@ public class StockItem
         this.quantity = Math.max(quantity, 0);
     }
 
-    public int getItem_price() {
-        return item_price;
+    public int getItemPrice() {
+        return itemPrice;
     }
 
-    public void setItem_price(int price) {
-        this.item_price = Math.max(price, 0);
+    public void setItemPrice(int price) {
+        this.itemPrice = Math.max(price, 0);
     }
 
     public String getItemName() {
@@ -66,7 +67,7 @@ public class StockItem
         return "StockItem{" +
                 "id=" + id +
                 ", item_name='" + itemName + '\'' +
-                ", item_price=" + item_price +
+                ", item_price=" + itemPrice +
                 ", quantity=" + quantity +
                 '}';
     }
