@@ -32,7 +32,6 @@ class InventoryServiceTest {
         sList.add(s2);
         sList.add(s3);
 
-        //Mockito.when(iRep.findAllByOrderByItemIdAsc()).thenReturn(sList);
         Mockito.when(iRep.findAll()).thenReturn(sList);
         Mockito.when(iRep.findByQuantityEquals(0)).thenReturn(sList);
         Mockito.when(iRep.findByQuantityGreaterThan(0)).thenReturn(sList);

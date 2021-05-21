@@ -1,7 +1,8 @@
 package com.revature.shop.controllers;
 
 import com.revature.shop.models.StockItem;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,8 +19,8 @@ public class e2eInventoryTesting
     {
         URI uri = URI.create("http://localhost:8088/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri, List.class);
-        stockItemsList.getStatusCode();
-        stockItemsList.getBody();
+        System.out.println(stockItemsList.getBody().size());
+        assertTrue(stockItemsList.getBody().size() == 3);
     }
 
     @Test
@@ -28,18 +29,23 @@ public class e2eInventoryTesting
         StockItem item = new StockItem("Revature Watches", 70, 90);
         URI uri = URI.create("http://localhost:8088/api/inventory/stockitem/new");
         restTemplate.put(uri, item);
-//        stockItemsList.getStatusCode();
-//        stockItemsList.getBody();
+
+        URI uri2 = URI.create("http://localhost:8088/api/inventory/view");
+        ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri2, List.class);
+        assertEquals(4, stockItemsList.getBody().size());
     }
 
     @Test
     public void updateQuantitiesE2E()
     {
         StockItem item = new StockItem("Rev It Up Hat", 50, 3500);
-        URI uri = URI.create("http://localhost:8088/api/inventory/stockitem/update");
+        URI uri = URI.create("http://localhost:8088/api/inventory/stockitem/update/quantity");
         restTemplate.put(uri, item);
-//        stockItemsList.getStatusCode();
-//        stockItemsList.getBody();
+
+        URI uri2 = URI.create("http://localhost:8088/api/inventory/view");
+        ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri2, List.class);
+        System.out.println(stockItemsList.getBody().get(0));
+
     }
 
 }

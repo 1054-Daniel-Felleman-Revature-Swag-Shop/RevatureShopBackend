@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
-//@CrossOrigin(origins = {"http://localhost:4200", "https://sessions.s3.us-east-2.amazonaws.com"},  allowCredentials = "true")
 public class InventoryController
 {
     private final InventoryService inventoryService;
@@ -26,7 +25,7 @@ public class InventoryController
     }
 
     @GetMapping("/view")
-    public ResponseEntity<?> getStockItems(HttpSession session)
+    public ResponseEntity<?> getStockItems()
     {
         List<StockItem> itemsList = inventoryService.getAllStock();
         if(itemsList == null)
@@ -46,10 +45,10 @@ public class InventoryController
         return new ResponseEntity<>(isAddedItem, HttpStatus.CREATED);
     }
 
-    @PutMapping("/stockitem/update")
+    @PutMapping("/stockitem/update/quantity")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
-        boolean isChangedQuantity = inventoryService.updateStockItem(item.getItemName(), item.getQuantity());
+        boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getItemName(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
     }
