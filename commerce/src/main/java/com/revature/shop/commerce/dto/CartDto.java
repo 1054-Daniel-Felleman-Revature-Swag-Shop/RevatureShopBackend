@@ -7,6 +7,14 @@ public class CartDto {
     private String myShopper;
     private List<StockItemDto> stockItemDtoList;
 
+    public CartDto() {
+    }
+
+    public CartDto(String myShopper, List<StockItemDto> stockItemDtoList) {
+        this.myShopper = myShopper;
+        this.stockItemDtoList = stockItemDtoList;
+    }
+
     public String getMyShopper() {
         return myShopper;
     }

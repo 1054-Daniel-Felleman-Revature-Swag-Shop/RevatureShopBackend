@@ -1,14 +1,16 @@
 package com.revature.shop.commerce.model;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Entity(name = "cart")
 public class Cart {
 
     @Id
     @GeneratedValue
-    private String cartId;
+    private int cartId;
 
     @Column(name = "my_shopper")
     private String myShopper;
@@ -20,19 +22,21 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(String cartId, String myShopper, Map<String, Integer> stockItemMap) {
+    public Cart(String myShopper) {
+        this.myShopper = myShopper;
+        this.stockItemMap = new HashMap<String, Integer>();
+    }
+
+    public Cart(int cartId, String myShopper, Map<String, Integer> stockItemMap) {
         this.cartId = cartId;
         this.myShopper = myShopper;
         this.stockItemMap = stockItemMap;
     }
 
-    public String getCartId() {
+    public int getCartId() {
         return cartId;
     }
 
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
 
     public String getMyShopper() {
         return myShopper;
