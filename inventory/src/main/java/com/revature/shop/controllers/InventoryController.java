@@ -2,16 +2,13 @@ package com.revature.shop.controllers;
 
 
 import com.revature.shop.models.StockItem;
-import com.revature.shop.repositories.InventoryRepository;
 import com.revature.shop.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,13 +51,13 @@ public class InventoryController
     }
 
 //    @PostMapping("/stockitem/update/{id}")
-    @PostMapping("/stockitem/update")
+    @PutMapping("/stockitem/update")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
 //        StockItem newItem = (StockItem) session.getAttribute("itemName");
         //inventoryRepository.updateQuantity(newItem.getQuantity(), id);
-        boolean isChangeItem = inventoryService.updateStockItem(item);
+        boolean isChangedQuantity = inventoryService.updateStockItem(item.getItemName(), item.getQuantity());
 
-        return new ResponseEntity<>(isChangeItem, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
     }
 }

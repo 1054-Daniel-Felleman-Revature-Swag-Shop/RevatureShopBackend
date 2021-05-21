@@ -12,14 +12,14 @@ class StockItemTest {
     @Test
     public void testGetItemName(){
         sItem = new StockItem("Hat", 50, 1000);
-        assertEquals(sItem.getItem_name(), "Hat");
+        assertEquals(sItem.getItemName(), "Hat");
     }
 
 
     @Test
     public void testGetItemNameNullString(){
         sItem = new StockItem(null, 10, 10);
-        assertEquals(sItem.getItem_name(), "Revature Swag");
+        assertEquals(sItem.getItemName(), "Revature Swag");
 
     }
 

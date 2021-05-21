@@ -5,15 +5,14 @@ import java.util.Objects;
 
 @Entity
 @Table(name="inventory")
-public class StockItem {
-
+public class StockItem
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private int id;
 
-    @Column(name = "item_name")
-    private String item_name;
+    @Column(name = "item_name", unique = true, nullable = false)
+    private String itemName;
 
     @Column(name = "item_price")
     private int item_price;
@@ -21,7 +20,7 @@ public class StockItem {
     private int quantity;
 
     public StockItem(String item_name, int item_price, int quantity) {
-        this.item_name = Objects.requireNonNullElse(item_name, "Revature Swag");
+        this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.item_price = Math.max(item_price, 0);
         this.quantity = Math.max(quantity, 0);
     }
@@ -50,11 +49,25 @@ public class StockItem {
         this.item_price = Math.max(price, 0);
     }
 
-    public String getItem_name() {
-        return item_name;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItem_name(String itemName) {
-        this.item_name = Objects.requireNonNullElse(itemName, "Revature Swag");
+    public void setItemName(String item_name) {
+        this.itemName = item_name;
+    }
+
+    //    public void setItem_name(String item_name) {
+//        this.item_name = Objects.requireNonNullElse(itemName, "Revature Swag");
+//    }
+
+    @Override
+    public String toString() {
+        return "StockItem{" +
+                "id=" + id +
+                ", item_name='" + itemName + '\'' +
+                ", item_price=" + item_price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

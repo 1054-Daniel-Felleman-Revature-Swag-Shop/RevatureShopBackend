@@ -36,13 +36,22 @@ public class InventoryService
         else iRep.save((sItem));
         return true;
     }
-    public Boolean updateStockItem(StockItem sItem){
-        if (iRep.existsById(sItem.getId()))
+//    public Boolean updateStockItem(StockItem sItem){
+//        if (iRep.existsById(sItem.getId()))
+//        {
+//            iRep.save(sItem);
+//            return true;
+//        }
+//        else return false;
+//    }
+
+    public Boolean updateStockItem(String name, int quantity)
+    {
+        if (iRep.findByItemName(name) != null)
         {
-            iRep.save(sItem);
+            iRep.updateQuantity(name, quantity);
             return true;
         }
         else return false;
     }
-
 }
