@@ -25,6 +25,15 @@ public class CartController {
         }
     }
 
+    @DeleteMapping(value = "/removefromcart")
+    public ResponseEntity<?> removeItemFromCart (@RequestBody StockItemDto stockItemDto) {
+        try {
+            return new ResponseEntity<>(cartService.removeItemFromCart(stockItemDto), HttpStatus.OK);
+        } catch (ItemNotInCartException e) {
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     @PostMapping(value = "/saveCart")
     public ResponseEntity<Cart> saveCart(@RequestBody Cart cart) {
         try {

@@ -2,6 +2,7 @@ package com.revature.shop.commerce.service;
 
 import com.revature.shop.commerce.dto.CartDto;
 import com.revature.shop.commerce.dto.StockItemDto;
+import com.revature.shop.commerce.exception.ItemNotInCartException;
 import com.revature.shop.commerce.exception.ItemOutOfStockException;
 import com.revature.shop.commerce.exception.UnableToSaveCartException;
 import com.revature.shop.commerce.model.Cart;
@@ -43,12 +44,29 @@ public class CartService {
                 stockItemDto1.setPrice(stockItemRepository.findByItemName(entry.getKey()).getPrice());
                 stockItemDtoList.add(stockItemDto1);
             }
-            CartDto cartDto = new CartDto();
-            cartDto.setMyShopper(cart.getMyShopper());
-            cartDto.setStockItemDtoList(stockItemDtoList);
-            return cartDto;
+            return new CartDto(cart.getMyShopper(), stockItemDtoList);
         }
         else throw new ItemOutOfStockException();
+    }
+
+    public CartDto removeItemFromCart (StockItemDto stockItemDto) throws ItemNotInCartException {
+        Cart cart = cartRepository.findOneByMyShopper(stockItemDto.getMyshopper());
+        List<StockItemDto> stockItemDtoList = new ArrayList<>();
+        if (cart.getStockItemMap().containsKey(stockItemDto.getItemName())) {
+            cart.getStockItemMap().put(stockItemDto.getItemName(), cart.getStockItemMap().get(stockItemDto.getItemName()) - 1);
+            if (cart.getStockItemMap().get(stockItemDto.getItemName()) == 0)
+                cart.getStockItemMap().remove(stockItemDto.getItemName());
+            cartRepository.save(cart);
+            for (Map.Entry<String, Integer> entry: cart.getStockItemMap().entrySet()) {
+                StockItemDto stockItemDto1 = new StockItemDto();
+                stockItemDto1.setItemName(entry.getKey());
+                stockItemDto1.setCartQuantity(entry.getValue());
+                stockItemDto1.setPrice(stockItemRepository.findByItemName(entry.getKey()).getPrice());
+                stockItemDtoList.add(stockItemDto1);
+            }
+            return new CartDto(cart.getMyShopper(), stockItemDtoList);
+        }
+        else throw new ItemNotInCartException();
     }
 
     public Cart saveCart(Cart cart) throws UnableToSaveCartException {
