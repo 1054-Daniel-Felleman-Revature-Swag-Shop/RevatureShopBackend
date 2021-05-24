@@ -1,0 +1,1 @@
+INSERT INTO accounts(email, points) VALUES ('parkerkt77@gmail.com', 1), ('kent.berry@revature.net', 256);
