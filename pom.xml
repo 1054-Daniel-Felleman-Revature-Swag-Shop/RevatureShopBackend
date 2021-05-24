@@ -24,7 +24,7 @@
     </modules>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>8</java.version>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
     </properties>
 
