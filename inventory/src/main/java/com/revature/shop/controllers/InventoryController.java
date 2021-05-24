@@ -52,4 +52,15 @@ public class InventoryController
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/get/item/name")
+    public StockItem getItemByName (@RequestParam String itemName) {
+        return inventoryService.getItemByName(itemName);
+    }
+
+    @DeleteMapping("/delete/item/name")
+    public void deleteItemByName (@RequestParam String itemName) {
+        inventoryService.deleteItemByName(itemName);
+    }
+
 }

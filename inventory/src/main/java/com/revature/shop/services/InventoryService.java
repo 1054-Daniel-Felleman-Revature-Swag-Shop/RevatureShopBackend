@@ -46,4 +46,12 @@ public class InventoryService
         }
         else return false;
     }
+
+    public StockItem getItemByName(String itemName) {
+        return iRep.findByItemName(itemName);
+    }
+
+    public void deleteItemByName(String itemName) {
+        iRep.deleteByItemName(itemName);
+    }
 }
