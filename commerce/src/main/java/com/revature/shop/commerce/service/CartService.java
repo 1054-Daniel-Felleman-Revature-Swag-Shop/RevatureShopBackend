@@ -2,9 +2,7 @@ package com.revature.shop.commerce.service;
 
 import com.revature.shop.commerce.dto.CartDto;
 import com.revature.shop.commerce.dto.StockItemDto;
-import com.revature.shop.commerce.exception.ItemNotInCartException;
-import com.revature.shop.commerce.exception.ItemOutOfStockException;
-import com.revature.shop.commerce.exception.UnableToSaveCartException;
+import com.revature.shop.commerce.exception.*;
 import com.revature.shop.commerce.model.Cart;
 import com.revature.shop.commerce.model.StockItem;
 import com.revature.shop.commerce.repository.CartRepository;
@@ -71,5 +69,34 @@ public class CartService {
 
     public Cart saveCart(Cart cart) throws UnableToSaveCartException {
         return cartRepository.save(cart);
+    }
+
+    public int checkoutCart(Cart cart) throws UnableToCheckoutException
+    {
+        // compute your purchase total points
+        int currentPurchaseTotal = 0;
+        for(String key : cart.getStockItemMap().keySet()){
+            StockItem curStockItem = stockItemRepository.findByItemName(key);
+            if(curStockItem != null) {
+                currentPurchaseTotal += curStockItem.getPrice() * cart.getStockItemMap().get(key);
+            }
+        }
+
+        // set the map to an empty map, save cart
+        Map<String, Integer> emptyStockItemMap = new HashMap<String, Integer>();
+        cart.setStockItemMap(emptyStockItemMap);
+        cartRepository.save(cart);
+
+        // return total points
+        return currentPurchaseTotal;
+    }
+
+    public Cart getShopperCart(String shopper){
+        Cart cart = cartRepository.findOneByMyShopper(shopper);
+        if(cart == null){
+            cart = new Cart(shopper);
+            cartRepository.save(cart);
+        }
+        return cart;
     }
 }

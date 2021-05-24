@@ -8,14 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+
 
 @RestController
+@ComponentScan(basePackages = "com.revature.shop.commerce")
 @RequestMapping(value = "/commerce")
 public class CartController {
 
     @Autowired
     CartService cartService;
-    
+
+    @GetMapping(value = "/welcomeToCommerce")
+    public void welcomeToCommerce(){
+        //return the logged in user's cart
+        System.out.println("Welcome to commerce.");
+    }
+
     @PutMapping(value = "/addtocart")
     public ResponseEntity<?> updateCart (@RequestBody StockItemDto stockItemDto) {
         try {
@@ -37,11 +47,21 @@ public class CartController {
     @PostMapping(value = "/saveCart")
     public ResponseEntity<Cart> saveCart(@RequestBody Cart cart) {
         try {
-            return new ResponseEntity<Cart>(cartService.saveCart(cart), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.saveCart(cart), HttpStatus.ACCEPTED);
         } catch (UnableToSaveCartException e){
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            e.printStackTrace();
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
+    @PostMapping(value = "/checkoutcart")
+    public ResponseEntity<?> checkoutCart(@RequestBody Cart cart){
+        try{
+            return new ResponseEntity<>(cartService.checkoutCart(cart), HttpStatus.ACCEPTED);
+        } catch (UnableToCheckoutException e){
+            e.printStackTrace();
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 
 }
