@@ -21,6 +21,10 @@ public class InventoryService
         return iRep.findAll();
     }
 
+    public List<StockItem> getStockByCategory(String cat){
+        return iRep.findByCategory(cat);
+    }
+
     public List<StockItem> getInStock(){
         return iRep.findByQuantityGreaterThan(0);
     }
