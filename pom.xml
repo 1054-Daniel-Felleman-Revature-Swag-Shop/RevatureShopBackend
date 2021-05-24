@@ -21,6 +21,7 @@
         <module>accounts</module>
         <module>commerce</module>
         <module>inventory</module>
+        <module>eureka-server</module>
     </modules>
 
     <properties>
