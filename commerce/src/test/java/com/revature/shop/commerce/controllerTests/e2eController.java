@@ -24,7 +24,7 @@ public class e2eController {
     @Test
     public void welcomeToCommerceE2E()
     {
-        URI uri = URI.create("http://localhost:8080/commerce/welcomeToCommerce");
+        URI uri = URI.create("http://localhost:8200/commerce/welcomeToCommerce");
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class e2eController {
         HttpEntity<StockItemDto> entity = new HttpEntity<StockItemDto>(stockItemDto,headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        CartDto returnedCartDto = restTemplate.exchange("http://localhost:8080/commerce/addtocart", HttpMethod.PUT, entity, CartDto.class).getBody();
+        CartDto returnedCartDto = restTemplate.exchange("http://localhost:8200/commerce/addtocart", HttpMethod.PUT, entity, CartDto.class).getBody();
 
         //Some equality tests in the returned object
 //        assertEquals(returnedCartDto.getMyShopper(), "hshallal");
@@ -58,7 +58,7 @@ public class e2eController {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Cart> entity = new HttpEntity<Cart>(toRemoveFromCart,headers);
-        Cart returnedToRemoveFromCart = restTemplate.exchange("http://localhost:8080/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
+        Cart returnedToRemoveFromCart = restTemplate.exchange("http://localhost:8200/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
 
         //Now start with testing the removal
         //create resources to pass to controller method
@@ -70,7 +70,7 @@ public class e2eController {
         HttpEntity<StockItemDto> toRemoveEntity = new HttpEntity<StockItemDto>(stockItemDto,headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        CartDto returnedCartDto = restTemplate.exchange("http://localhost:8080/commerce/removefromcart", HttpMethod.DELETE, toRemoveEntity, CartDto.class).getBody();
+        CartDto returnedCartDto = restTemplate.exchange("http://localhost:8200/commerce/removefromcart", HttpMethod.DELETE, toRemoveEntity, CartDto.class).getBody();
 
         //Some equality tests in the returned object
 //        assertEquals(returnedCartDto.getMyShopper(), "hshallal");
@@ -91,7 +91,7 @@ public class e2eController {
         HttpEntity<Cart> entity = new HttpEntity<Cart>(toPersistCart,headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        Cart returnedCart = restTemplate.exchange("http://localhost:8080/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
+        Cart returnedCart = restTemplate.exchange("http://localhost:8200/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
 
         //Some equality tests in the returned object
         assertEquals(returnedCart.getCartId(), 1);
@@ -107,7 +107,7 @@ public class e2eController {
         stockItemMap.put("t-shirt", 2);
         Cart toPersistCart = new Cart(1, "hshallal", stockItemMap);
 
-        URI uri = URI.create("http://localhost:8080/commerce/savecart");
+        URI uri = URI.create("http://localhost:8200/commerce/savecart");
         restTemplate.put(uri, toPersistCart);
     }
 
@@ -125,7 +125,7 @@ public class e2eController {
         HttpEntity<Cart> entity = new HttpEntity<Cart>(toCheckoutCart,headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        Integer purchaseAmount = restTemplate.exchange("http://localhost:8080/commerce/checkoutcart", HttpMethod.POST, entity, Integer.class).getBody();
+        Integer purchaseAmount = restTemplate.exchange("http://localhost:8200/commerce/checkoutcart", HttpMethod.POST, entity, Integer.class).getBody();
 
         //Some equality tests in the returned object
         // In this case, there is no t-shirt items persisted in the stockItemRepository and hence
@@ -143,7 +143,7 @@ public class e2eController {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Cart> entity = new HttpEntity<Cart>(toPersistCart,headers);
-        restTemplate.exchange("http://localhost:8080/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
+        restTemplate.exchange("http://localhost:8200/commerce/savecart", HttpMethod.PUT, entity, Cart.class).getBody();
 
         //Now we test whether we can get the persisted cart using shopper name
         //Create your http request
@@ -152,7 +152,7 @@ public class e2eController {
         entity = new HttpEntity<>(headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        Cart myCart = restTemplate.exchange("http://localhost:8080/commerce/myCart/hshallal", HttpMethod.GET, entity, Cart.class).getBody();
+        Cart myCart = restTemplate.exchange("http://localhost:8200/commerce/myCart/hshallal", HttpMethod.GET, entity, Cart.class).getBody();
 
         //Perform sanity checks on the returned cart
         assertEquals(myCart.getCartId(), 1);

@@ -36,7 +36,7 @@ public class CartServiceTests {
 
     @Test
     public void updateCart() throws ItemOutOfStockException {
-        Cart cart = new Cart("1", "abdulmoeedak", new HashMap<String, Integer>(){{
+        Cart cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
             put("t-shirt",1);
         }});
         StockItem stockItem = new StockItem(1, "cup", 10, 10);
@@ -48,7 +48,7 @@ public class CartServiceTests {
 
         CartDto cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        cart = new Cart("1", "abdulmoeedak", new HashMap<String, Integer>(){{
+        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
             put("t-shirt",1);
             put("cup",1);
         }});
@@ -64,7 +64,7 @@ public class CartServiceTests {
 
     @Test
     public void removeItemFromCart () throws ItemNotInCartException {
-        Cart cart = new Cart("1", "abdulmoeedak", new HashMap<String, Integer>(){{
+        Cart cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
             put("t-shirt",1);
             put("cup",1);
         }});
@@ -76,7 +76,7 @@ public class CartServiceTests {
         when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
         CartDto cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(1, cartDto.getStockItemDtoList().size());
-        cart = new Cart("1", "abdulmoeedak", new HashMap<String, Integer>(){{
+        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
             put("t-shirt",2);
             put("cup",1);
         }});
@@ -84,7 +84,7 @@ public class CartServiceTests {
         cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
         assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals("t-shirt") && stDto.getCartQuantity() == 1));
-        cart = new Cart("1", "abdulmoeedak", new HashMap<String, Integer>(){{
+        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
             put("cup",1);
         }});
         when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);

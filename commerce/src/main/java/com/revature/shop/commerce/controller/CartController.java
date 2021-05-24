@@ -45,7 +45,7 @@ public class CartController {
     }
 
     @PostMapping(value = "/saveCart")
-    public ResponseEntity<Cart> saveCart(@RequestBody Cart cart) {
+    public ResponseEntity<?> saveCart(@RequestBody Cart cart) {
         try {
             return new ResponseEntity<>(cartService.saveCart(cart), HttpStatus.ACCEPTED);
         } catch (UnableToSaveCartException e){
