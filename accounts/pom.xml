@@ -9,6 +9,14 @@
         <version>1</version>
     </parent>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+    </dependencies>
+
     <artifactId>accounts</artifactId>
     <name>RevShopAccounts</name>
 </project>

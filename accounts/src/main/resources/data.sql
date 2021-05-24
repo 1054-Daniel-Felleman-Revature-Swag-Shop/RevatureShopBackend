@@ -1,3 +1,9 @@
+CREATE TABLE accounts(
+    id  int PRIMARY KEY ,
+    email varchar(40) not null ,
+    points int
+);
+
 INSERT INTO accounts(id, email, points)
 VALUES (1, 'parkerkt77@gmail.com', 1),
        (2, 'kent.berry@revature.net', 256),
