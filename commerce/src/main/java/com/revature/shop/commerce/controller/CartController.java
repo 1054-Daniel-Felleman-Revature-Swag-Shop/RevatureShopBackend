@@ -44,7 +44,7 @@ public class CartController {
         }
     }
 
-    @PostMapping(value = "/saveCart")
+    @PostMapping(value = "/savecart")
     public ResponseEntity<?> saveCart(@RequestBody Cart cart) {
         try {
             return new ResponseEntity<>(cartService.saveCart(cart), HttpStatus.ACCEPTED);
@@ -62,6 +62,11 @@ public class CartController {
             e.printStackTrace();
             return new ResponseEntity<HttpStatus>(HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @GetMapping(value = "/myCart/{shopper}")
+    public ResponseEntity<?> getShopperCart(@PathVariable String shopper){
+        return new ResponseEntity<>(cartService.getShopperCart(shopper), HttpStatus.ACCEPTED);
     }
 
 }
