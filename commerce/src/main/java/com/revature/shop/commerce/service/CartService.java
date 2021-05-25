@@ -6,7 +6,6 @@ import com.revature.shop.commerce.exception.*;
 import com.revature.shop.commerce.model.Cart;
 import com.revature.shop.commerce.model.StockItem;
 import com.revature.shop.commerce.repository.CartRepository;
-import com.revature.shop.commerce.repository.StockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +28,6 @@ public class CartService {
     //Cart should be cleared after certain period of inactivity to release the items;
     public CartDto updateCart(StockItemDto stockItemDto) throws ItemOutOfStockException {
         StockItem stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
-//        StockItem stockItem = stockItemRepository.findByItemName(stockItemDto.getItemName());
         if (stockItem != null && stockItem.getQuantity() > 0) {
             Cart cart = cartRepository.findOneByMyShopper(stockItemDto.getMyshopper());
             if (cart.getStockItemMap().containsKey(stockItemDto.getItemName()))
