@@ -6,7 +6,6 @@ import com.revature.shop.commerce.exception.*;
 import com.revature.shop.commerce.model.Cart;
 import com.revature.shop.commerce.model.StockItem;
 import com.revature.shop.commerce.repository.CartRepository;
-import com.revature.shop.commerce.repository.StockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,16 +21,13 @@ public class CartService {
     @Autowired
     CartRepository cartRepository;
 
-    @Autowired
-    StockItemRepository stockItemRepository;
+    RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    RestTemplate restTemplate;
+    String getStockItemQuery = "http://localhost:9001/inventoryms/api/inventory/get/item/name?itemName=";
 
     //Cart should be cleared after certain period of inactivity to release the items;
     public CartDto updateCart(StockItemDto stockItemDto) throws ItemOutOfStockException {
-        StockItem stockItem = restTemplate.getForObject("http://localhost:9001/inventoryms/get/item/name?itemName="+stockItemDto.getItemName(), StockItem.class);
-//        StockItem stockItem = stockItemRepository.findByItemName(stockItemDto.getItemName());
+        StockItem stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
         if (stockItem != null && stockItem.getQuantity() > 0) {
             Cart cart = cartRepository.findOneByMyShopper(stockItemDto.getMyshopper());
             if (cart.getStockItemMap().containsKey(stockItemDto.getItemName()))
@@ -45,7 +41,7 @@ public class CartService {
                 StockItemDto stockItemDto1 = new StockItemDto();
                 stockItemDto1.setItemName(entry.getKey());
                 stockItemDto1.setCartQuantity(entry.getValue());
-                stockItemDto1.setPrice(stockItemRepository.findByItemName(entry.getKey()).getPrice());
+                stockItemDto1.setPrice(restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class).getItemPrice());
                 stockItemDtoList.add(stockItemDto1);
             }
             return new CartDto(cart.getMyShopper(), stockItemDtoList);
@@ -65,7 +61,7 @@ public class CartService {
                 StockItemDto stockItemDto1 = new StockItemDto();
                 stockItemDto1.setItemName(entry.getKey());
                 stockItemDto1.setCartQuantity(entry.getValue());
-                stockItemDto1.setPrice(stockItemRepository.findByItemName(entry.getKey()).getPrice());
+                stockItemDto1.setPrice(restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class).getItemPrice());
                 stockItemDtoList.add(stockItemDto1);
             }
             return new CartDto(cart.getMyShopper(), stockItemDtoList);
@@ -82,9 +78,9 @@ public class CartService {
         // compute your purchase total points
         int currentPurchaseTotal = 0;
         for(String key : cart.getStockItemMap().keySet()){
-            StockItem curStockItem = stockItemRepository.findByItemName(key);
+            StockItem curStockItem = restTemplate.getForObject(getStockItemQuery + key, StockItem.class);
             if(curStockItem != null) {
-                currentPurchaseTotal += curStockItem.getPrice() * cart.getStockItemMap().get(key);
+                currentPurchaseTotal += curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
             }
         }
 

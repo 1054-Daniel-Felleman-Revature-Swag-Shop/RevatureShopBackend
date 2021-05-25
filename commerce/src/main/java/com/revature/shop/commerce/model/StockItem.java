@@ -1,39 +1,36 @@
 package com.revature.shop.commerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 public class StockItem {
 
     @Id
-    @GeneratedValue
-    private int itemId;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "item_name")
+    @Column(name = "item_name", unique = true, nullable = false)
     private String itemName;
 
     @Column(name = "item_price")
-    private int price;
+    private int itemPrice;
 
-    @Column
     private int quantity;
 
     public StockItem() {
     }
 
-    public StockItem(int itemId, String itemName, int price, int quantity) {
-        this.itemId = itemId;
+    public StockItem(int id, String itemName, int itemPrice, int quantity) {
+        this.id = id;
         this.itemName = itemName;
-        this.price = price;
+        this.itemPrice = itemPrice;
         this.quantity = quantity;
     }
 
-    public int getItemId() {
-        return itemId;
+    public int getId() {
+        return id;
     }
 
     public String getItemName() {
@@ -44,12 +41,12 @@ public class StockItem {
         this.itemName = itemName;
     }
 
-    public int getPrice() {
-        return price;
+    public int getItemPrice() {
+        return itemPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setItemPrice(int itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public int getQuantity() {
