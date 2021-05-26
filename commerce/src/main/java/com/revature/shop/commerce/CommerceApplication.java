@@ -24,9 +24,9 @@ import java.util.List;
 @EnableTurbine
 @EnableEurekaClient
 @SpringBootApplication
-public class RevShopApplication {
+public class CommerceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RevShopApplication.class, args);
+        SpringApplication.run(CommerceApplication.class, args);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.revature.shop.accounts;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +19,9 @@ public class Account {
 
     private String email;
 
-    private String token;
+    private String name;
+
+    private Role role;
 
     private int points;
 
@@ -36,11 +40,28 @@ public class Account {
         return email;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
     public int getPoints() {
         return points;
     }
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    enum Role {
+        USER, ADMIN;
+
+        @JsonValue
+        public int toValue() {
+            return ordinal();
+        }
     }
 }
