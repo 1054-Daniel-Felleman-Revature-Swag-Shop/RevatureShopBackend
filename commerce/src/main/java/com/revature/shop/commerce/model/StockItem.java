@@ -1,6 +1,7 @@
 package com.revature.shop.commerce.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -19,34 +20,24 @@ public class StockItem {
 
     private int quantity;
 
+    private String category;
+
+    private String description;
+
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description) {
+        this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
+        this.itemPrice = Math.max(itemPrice, 0);
+        this.quantity = Math.max(quantity, 0);
+        this.category = Objects.requireNonNullElse(category, "Misc");
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
+    }
+
     public StockItem() {
+
     }
 
-    public StockItem(int id, String itemName, int itemPrice, int quantity) {
-        this.id = id;
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.quantity = quantity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getItemPrice() {
-        return itemPrice;
-    }
-
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
+    public int getId(){
+        return this.id;
     }
 
     public int getQuantity() {
@@ -54,6 +45,52 @@ public class StockItem {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity = Math.max(quantity, 0);
+    }
+
+    public int getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(int price) {
+        this.itemPrice = Math.max(price, 0);
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String item_name) {
+        this.itemName = item_name;
+    }
+
+    //    public void setItem_name(String item_name) {
+//        this.item_name = Objects.requireNonNullElse(itemName, "Revature Swag");
+//    }
+
+    @Override
+    public String toString() {
+        return "StockItem{" +
+                "id=" + id +
+                ", item_name='" + itemName + '\'' +
+                ", item_price=" + itemPrice +
+                ", quantity=" + quantity +
+                '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = Objects.requireNonNullElse(category, "Misc");
     }
 }
