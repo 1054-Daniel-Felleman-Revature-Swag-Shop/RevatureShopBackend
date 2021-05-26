@@ -17,20 +17,32 @@ public class e2eInventoryTesting
     @Test
     public void viewItemsE2E()
     {
-        URI uri = URI.create("http://localhost:8088/api/inventory/view");
+        URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri, List.class);
         System.out.println(stockItemsList.getBody().size());
         assertTrue(stockItemsList.getBody().size() == 3);
     }
 
     @Test
+    public void viewByCategoryE2E()
+    {
+        String itemsCategory = "Clothing";
+        URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/view/category");
+        ResponseEntity<List> stockItemsList = restTemplate.postForEntity(uri, itemsCategory, List.class);
+
+        System.out.println(stockItemsList.getBody().toString());
+        System.out.println(stockItemsList.getBody().size());
+        assertTrue(stockItemsList.getBody().size() == 2);
+    }
+
+    @Test
     public void addItemE2E()
     {
-        StockItem item = new StockItem("Revature Watches", 70, 90);
-        URI uri = URI.create("http://localhost:8088/api/inventory/stockitem/new");
+        StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Accessories", "Made of platinum, nuff said.");
+        URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/new");
         restTemplate.put(uri, item);
 
-        URI uri2 = URI.create("http://localhost:8088/api/inventory/view");
+        URI uri2 = URI.create("http://localhost:9001/inventoryms/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri2, List.class);
         assertEquals(4, stockItemsList.getBody().size());
     }
@@ -38,14 +50,15 @@ public class e2eInventoryTesting
     @Test
     public void updateQuantitiesE2E()
     {
-        StockItem item = new StockItem("Rev It Up Hat", 50, 3500);
-        URI uri = URI.create("http://localhost:8088/api/inventory/stockitem/update/quantity");
+        StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "accessories", "A sweet hat to ACCELERATE your development!");
+        URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity");
         restTemplate.put(uri, item);
 
-        URI uri2 = URI.create("http://localhost:8088/api/inventory/view");
+        URI uri2 = URI.create("http://localhost:9001/inventoryms/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri2, List.class);
         System.out.println(stockItemsList.getBody().get(0));
 
+        //assert update quantities is doing what we expect
+        //stockItemsList.getBody()
     }
-
 }

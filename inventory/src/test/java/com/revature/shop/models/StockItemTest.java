@@ -11,28 +11,28 @@ class StockItemTest {
 
     @Test
     public void testGetItemName(){
-        sItem = new StockItem("Hat", 50, 1000);
+        sItem = new StockItem("Hat", 50, 1000,"accessories", "Sample hat");
         assertEquals(sItem.getItemName(), "Hat");
     }
 
 
     @Test
     public void testGetItemNameNullString(){
-        sItem = new StockItem(null, 10, 10);
+        sItem = new StockItem(null, 10, 10, null, null);
         assertEquals(sItem.getItemName(), "Revature Swag");
 
     }
 
     @Test
     public void testConstructorNegativeValues(){
-        sItem = new StockItem("Nonsense", -1000, -1000);
+        sItem = new StockItem("Nonsense", -1000, -1000, null, null);
         assertEquals(sItem.getItemPrice(), 0);
         assertEquals(sItem.getQuantity(), 0);
     }
 
     @Test
     public void testSetPrice(){
-        sItem = new StockItem("Hat", 10, 10);
+        sItem = new StockItem("Hat", 10, 10, null, null);
         sItem.setItemPrice(100);
         assertEquals(sItem.getItemPrice(), 100);
 
@@ -42,7 +42,7 @@ class StockItemTest {
 
     @Test
     public void testSetQuantity(){
-        sItem = new StockItem("Hat", 10, 10);
+        sItem = new StockItem("Hat", 10, 10, null, null);
         sItem.setQuantity(100);
         assertEquals(sItem.getQuantity(), 100);
 

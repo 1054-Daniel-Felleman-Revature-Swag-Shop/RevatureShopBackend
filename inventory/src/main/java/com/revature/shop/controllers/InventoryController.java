@@ -36,10 +36,22 @@ public class InventoryController
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/view/category")
-    public ResponseEntity<?> getStockItemsCat(@RequestBody StockItem item){
-        List<StockItem> itemsList = inventoryService.getStockByCategory(item.getCategory());
-        if(itemsList == null){
+//    @GetMapping("/view/category")
+//    public ResponseEntity<?> getStockItemsCat(@RequestBody StockItem item){
+//        List<StockItem> itemsList = inventoryService.getStockByCategory(item.getCategory());
+//        if(itemsList == null){
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
+//
+//    }
+
+    @PostMapping("/view/category")
+    public ResponseEntity<?> getStockItemsCat(@RequestBody String category)
+    {
+        List<StockItem> itemsList = inventoryService.getStockByCategory(category);
+        if(category == null)
+        {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
