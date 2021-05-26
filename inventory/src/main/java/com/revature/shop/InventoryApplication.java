@@ -23,11 +23,11 @@ import java.util.List;
 @EnableTurbine
 @EnableEurekaClient
 @SpringBootApplication
-public class RevShopApplication {
+public class InventoryApplication {
 
     public static void main(String[] args)
     {
-        SpringApplication.run(RevShopApplication.class, args);
+        SpringApplication.run(InventoryApplication.class, args);
     }
 
 }
