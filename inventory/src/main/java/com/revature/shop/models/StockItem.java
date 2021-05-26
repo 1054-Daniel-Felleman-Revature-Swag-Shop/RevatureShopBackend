@@ -20,10 +20,16 @@ public class StockItem
 
     private int quantity;
 
-    public StockItem(String item_name, int itemPrice, int quantity) {
+    private String category;
+
+    private String description;
+
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
+        this.category = Objects.requireNonNullElse(category, "Misc");
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
     }
 
     public StockItem() {
@@ -70,5 +76,21 @@ public class StockItem
                 ", item_price=" + itemPrice +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = Objects.requireNonNullElse(category, "Misc");
     }
 }

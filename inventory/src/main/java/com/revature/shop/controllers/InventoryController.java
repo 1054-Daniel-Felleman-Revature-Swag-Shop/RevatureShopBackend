@@ -36,6 +36,16 @@ public class InventoryController
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/view/category")
+    public ResponseEntity<?> getStockItemsCat(@RequestBody StockItem item){
+        List<StockItem> itemsList = inventoryService.getStockByCategory(item.getCategory());
+        if(itemsList == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
+
+    }
+
     @PutMapping("/stockitem/new")
     public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
     {
@@ -45,6 +55,7 @@ public class InventoryController
         return new ResponseEntity<>(isAddedItem, HttpStatus.CREATED);
     }
 
+    //This says restock, but can be used to reduce quantity as well.
     @PutMapping("/stockitem/update/quantity")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {

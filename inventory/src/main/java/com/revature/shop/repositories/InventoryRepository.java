@@ -21,6 +21,8 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
     @Query("update StockItem item set item.quantity = :quantity where item.itemName = :name")
     public void updateQuantity(@Param("name") String name, @Param("quantity") int quantity);
 
+    public List<StockItem> findByCategory(String category);
+
 //    public List<StockItem> findAllByOrderByItemIdAsc();
     public List<StockItem> findByQuantityGreaterThan(Integer quantity);
     public List<StockItem> findByQuantityEquals(Integer quantity);
