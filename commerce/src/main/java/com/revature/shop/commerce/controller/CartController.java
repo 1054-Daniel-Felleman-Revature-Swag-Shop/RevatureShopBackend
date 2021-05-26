@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 @RestController
 @ComponentScan(basePackages = "com.revature.shop.commerce")
 @RequestMapping(value = "/commerce")
-@CrossOrigin(origins = "http://localhost:4200")
 public class CartController {
 
     @Autowired
