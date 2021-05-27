@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -103,6 +104,7 @@ public class e2eController {
         //create resources to pass to controller method
         Map<String, Integer> stockItemMap = new HashMap<String, Integer>();
         stockItemMap.put("t-shirt", 2);
+        stockItemMap.put("cup", 10);
         Cart toCheckoutCart = new Cart(1, "hshallal", stockItemMap);
 
         //Create your http request
@@ -125,7 +127,7 @@ public class e2eController {
         // First create and persist a cart with the item to be removed
         Map<String, Integer> stockItemMap = new HashMap<String, Integer>();
         stockItemMap.put("t-shirt", 2);
-        Cart toPersistCart = new Cart(1, "hshallal", stockItemMap);
+        Cart toPersistCart = new Cart(1, "hshallal@icloud.com", stockItemMap);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Cart> entity = new HttpEntity<Cart>(toPersistCart,headers);
@@ -138,13 +140,35 @@ public class e2eController {
         entity = new HttpEntity<>(headers);
 
         //Test the endpoint and catch your returned object in a postman fashion
-        Cart myCart = restTemplate.exchange("http://localhost:9001/commercems/commerce/myCart/hshallal", HttpMethod.GET, entity, Cart.class).getBody();
+        Cart myCart = restTemplate.exchange("http://localhost:9001/commercems/commerce/myCart/hshallal@icloud.com", HttpMethod.GET, entity, Cart.class).getBody();
 
         //Perform sanity checks on the returned cart
         assertEquals(myCart.getCartId(), 1);
-        assertEquals(myCart.getMyShopper(), "hshallal");
+        assertEquals(myCart.getMyShopper(), "hshallal@icloud.com");
         assertEquals(myCart.getStockItemMap().size(), 1);
         assertTrue(myCart.getStockItemMap().containsValue(2));
+    }
+
+    @Test
+    public void myshoppinghistoryE2E(){
+        // First checkout a cart so that this checkout get followed by persisting a purchase history
+        //create resources to pass to controller method
+        Map<String, Integer> stockItemMap = new HashMap<String, Integer>();
+        stockItemMap.put("t-shirt", 2);
+        stockItemMap.put("cup", 10);
+        Cart toCheckoutCart = new Cart(1, "hshallal", stockItemMap);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<Cart> entity = new HttpEntity<Cart>(toCheckoutCart,headers);
+        Integer purchaseAmount = restTemplate.exchange("http://localhost:9001/commercems/commerce/checkoutcart", HttpMethod.POST, entity, Integer.class).getBody();
+
+
+        //Test the endpoint and catch your returned object in a postman fashion
+        List<PurchaseHistory> myPurchaseHistory = restTemplate.exchange("http://localhost:9001/commercems/commerce/myOrderHistory/hshallal@icloud.com", HttpMethod.GET, entity, List.class).getBody();
+
+        //Perform sanity checks on the returned cart
+//        assertEquals(myPurchaseHistory.size(), 2);
+
     }
 }
 

@@ -4,12 +4,14 @@ import com.revature.shop.commerce.dto.CartDto;
 import com.revature.shop.commerce.dto.StockItemDto;
 import com.revature.shop.commerce.exception.*;
 import com.revature.shop.commerce.model.Cart;
+import com.revature.shop.commerce.model.PurchaseHistory;
 import com.revature.shop.commerce.model.StockItem;
-import com.revature.shop.commerce.repository.CartRepository;
+import com.revature.shop.commerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,9 @@ public class CartService {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    PurchaseHistoryRepository purchaseHistoryRepository;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -86,7 +91,13 @@ public class CartService {
         for(String key : cart.getStockItemMap().keySet()){
             StockItem curStockItem = restTemplate.getForObject(getStockItemQuery + key, StockItem.class);
             if(curStockItem != null) {
-                currentPurchaseTotal += curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
+                int thisItemTotal = curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
+                //increment cart total
+                currentPurchaseTotal += thisItemTotal;
+
+                //persis a purchase history instance
+                PurchaseHistory purchaseHistory = new PurchaseHistory(cart.getMyShopper(), LocalDate.now().toString(), key, cart.getStockItemMap().get(key), curStockItem.getItemPrice(), thisItemTotal);
+                purchaseHistoryRepository.save(purchaseHistory);
             }
         }
 
@@ -106,5 +117,9 @@ public class CartService {
             cartRepository.save(cart);
         }
         return cart;
+    }
+
+    public List<PurchaseHistory> getShoppoingHistory(String shopperEmail){
+        return purchaseHistoryRepository.findAllByMyShopper(shopperEmail);
     }
 }

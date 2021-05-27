@@ -1,25 +1,22 @@
-Here are the hallmarks of this commit:
-1) The following two endpoints were implemented by Muhammed all the way from controller to service to dao: "/addtocart", "/removefromcart"
-   The following endpoints  were implementd by Hassan all the way from controller to service to dao as well:
-	"/welcomeToCommerce": Dante, team lead, proposed we think about this endpoint and return the cart of the authenticated shopper rather than just printing a welcome message
-	"/savecart": this is a redundant route that is used as a litmus test for e2e testing
-	"/checkoutcart": this route is included in the contract
-	"/myCart/{shopper}: this is a GET request to get a shopper's cart using their name
+Overview of the commerce microservice layer before this commit:
 
-2) To test the controller of the commerce layers, I wrote e2e tests using RestTemplate class as a Java-based replacement to e2e testing using postman.
--- Endpoints passing the e2e testing:
-   "/welcomeToCommerce", "/savecart" by two different testing methods, "/checkoutcart", "/myCart/{shopper}
--- Endpoints failing the e2e testing:
-   "/addtocart", "/removefromcart"
-   Both endpoints returned 500 internal server error by just hitting the endpoint.
-   Muhammed or whomever the team elects needs to troubleshoot these two endpoint throughout all the layers and make sure these
-   endpoint passes the provided e2e method without any internal server errors.
+full implementation, all endpoints passsing corresponding controller e2e-tests: 
+   endpoint                       method
+"/welcomeToCommerce"               GET
+"/addtocart"                       PUT
+"/removefromcart"                  DELETE
+"/savecart"                        POST
+"/checkoutcart"                    POST
+"/myCart/{shopper}"                GET 
 
 
-3) Recommended resources: you can read more about e2e testing and RestTemplate here
-https://www.tutorialspoint.com/spring_boot/spring_boot_rest_template.htm
+In this commit, the following is accomplished:
+1) PurchaseHistory class is added to the model folder. This is a persistent class.
+2) PurchaseHistoryRepository interface is added to the repository folder, it implements a method that returns the purchase history of
+a given user using his/her email
+3) In CartService class in the service folder, I have a modification and an addition:
+    - The modification: checkoutCart method is modified to persist PurchaseHistory after checking out the cart
+    - The addition: getShoppoingHistory method is implemented returning a list of PurchaseHistory related to the shopper
+4) In CartController, implemented the endpoint: "/myOrderHistory/{shopper}" to be available for the account microservice.
 
-4) To the service layer, Muhammed wrote two tests for the following two methods under CartServiceUnitTests in the service test folder
-   updateCart(), removeItemFromCart()
-   Both unit tests passed which is in disagreement with the 500 internal server errors faced with e2e testing the two corresponding endpoints
-   as indicated above. This discrepancy needs to be resolved.
+
