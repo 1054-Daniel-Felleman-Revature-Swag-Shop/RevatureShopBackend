@@ -35,8 +35,8 @@ public class CartServiceTests {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem(99998,"test-cup", 10, 10);
-    static StockItem stockItem2 = new StockItem(99999,"test-t-shirt", 15, 20);
+    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null);
+    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null);
 
     @BeforeClass
     public static void addTestItem () {
@@ -56,7 +56,7 @@ public class CartServiceTests {
             put("test-t-shirt",1);
         }});
         when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
-        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-cup", 10, 1);
+        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-cup", 10, 1, null, null);
 
         CartDto cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
@@ -80,7 +80,7 @@ public class CartServiceTests {
             put("test-t-shirt",1);
             put("test-cup",1);
         }});
-        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-t-shirt", 10, 1);
+        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-t-shirt", 10, 1, null, null);
         when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
         CartDto cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(1, cartDto.getStockItemDtoList().size());

@@ -24,8 +24,8 @@ public class e2eController {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem(99998,"test-cup", 10, 10);
-    static StockItem stockItem2 = new StockItem(99999,"test-t-shirt", 15, 20);
+    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null);
+    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null);
 
     @BeforeClass
     public static void addTestItem () {

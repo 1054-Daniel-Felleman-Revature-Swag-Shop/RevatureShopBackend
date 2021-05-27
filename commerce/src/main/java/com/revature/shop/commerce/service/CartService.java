@@ -38,10 +38,13 @@ public class CartService {
             cartRepository.save(cart);
             List<StockItemDto> stockItemDtoList = new ArrayList<>();
             for (Map.Entry<String, Integer> entry: cart.getStockItemMap().entrySet()) {
+                stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
                 StockItemDto stockItemDto1 = new StockItemDto();
                 stockItemDto1.setItemName(entry.getKey());
                 stockItemDto1.setCartQuantity(entry.getValue());
-                stockItemDto1.setPrice(restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class).getItemPrice());
+                stockItemDto1.setItemPrice(stockItem.getItemPrice());
+                stockItemDto1.setCategory(stockItem.getCategory());
+                stockItemDto1.setDescription(stockItem.getDescription());
                 stockItemDtoList.add(stockItemDto1);
             }
             return new CartDto(cart.getMyShopper(), stockItemDtoList);
@@ -58,10 +61,13 @@ public class CartService {
                 cart.getStockItemMap().remove(stockItemDto.getItemName());
             cartRepository.save(cart);
             for (Map.Entry<String, Integer> entry: cart.getStockItemMap().entrySet()) {
+                StockItem stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
                 StockItemDto stockItemDto1 = new StockItemDto();
                 stockItemDto1.setItemName(entry.getKey());
                 stockItemDto1.setCartQuantity(entry.getValue());
-                stockItemDto1.setPrice(restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class).getItemPrice());
+                stockItemDto1.setItemPrice(stockItem.getItemPrice());
+                stockItemDto1.setCategory(stockItem.getCategory());
+                stockItemDto1.setDescription(stockItem.getDescription());
                 stockItemDtoList.add(stockItemDto1);
             }
             return new CartDto(cart.getMyShopper(), stockItemDtoList);

@@ -1,20 +1,26 @@
 package com.revature.shop.commerce.dto;
 
+import java.util.Objects;
+
 public class StockItemDto {
 
     private String myshopper;
     private String itemName;
-    private int price;
+    private int itemPrice;
     private int cartQuantity;
+    private String category;
+    private String description;
 
     public StockItemDto() {
     }
 
-    public StockItemDto(String myshopper, String itemName, int price, int cartQuantity) {
+    public StockItemDto(String myshopper, String itemName, int itemPrice, int cartQuantity, String category, String description) {
         this.myshopper = myshopper;
-        this.itemName = itemName;
-        this.price = price;
-        this.cartQuantity = cartQuantity;
+        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
+        this.itemPrice = Math.max(itemPrice, 0);
+        this.cartQuantity = Math.max(cartQuantity, 0);
+        this.category = Objects.requireNonNullElse(category, "Misc");
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
     }
 
     public String getMyshopper() {
@@ -33,12 +39,12 @@ public class StockItemDto {
         this.itemName = itemName;
     }
 
-    public int getPrice() {
-        return price;
+    public int getItemPrice() {
+        return itemPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setItemPrice(int itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public int getCartQuantity() {
@@ -47,5 +53,21 @@ public class StockItemDto {
 
     public void setCartQuantity(int cartQuantity) {
         this.cartQuantity = cartQuantity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
