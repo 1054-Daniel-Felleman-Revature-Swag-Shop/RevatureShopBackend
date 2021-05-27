@@ -9,14 +9,26 @@
         <version>1</version>
     </parent>
 
+    <artifactId>accounts</artifactId>
+    <name>RevShopAccounts</name>
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>com.revature</groupId>
+            <artifactId>base</artifactId>
+            <version>1</version>
         </dependency>
     </dependencies>
 
-    <artifactId>accounts</artifactId>
-    <name>RevShopAccounts</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.revature.shop.ShopApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
