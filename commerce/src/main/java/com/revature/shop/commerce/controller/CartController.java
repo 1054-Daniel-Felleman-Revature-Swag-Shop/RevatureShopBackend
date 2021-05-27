@@ -35,7 +35,7 @@ public class CartController {
         }
     }
 
-    @DeleteMapping(value = "/removefromcart")
+    @PostMapping(value = "/removefromcart")
     public ResponseEntity<?> removeItemFromCart (@RequestBody StockItemDto stockItemDto) {
         try {
             return new ResponseEntity<>(cartService.removeItemFromCart(stockItemDto), HttpStatus.OK);

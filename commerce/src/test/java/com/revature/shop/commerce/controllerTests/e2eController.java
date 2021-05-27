@@ -25,20 +25,9 @@ public class e2eController {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null);
-    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null);
+    static StockItemDto cartItem = new StockItemDto("hshallal", "Rev It Up Hat", 10, 1, "Accessories", "A sweet hat to ACCELERATE your development!" );
+    static StockItemDto cartItem2 = new StockItemDto("hshallal", "Code Like A Boss T-Shirt", 100, 1, "Clothing", "Perfect for casual friday!" );
 
-    @BeforeClass
-    public static void addTestItem () {
-        restTemplate.put("http://localhost:9001/inventoryms/api/inventory/stockitem/new", stockItem);
-        restTemplate.put("http://localhost:9001/inventoryms/api/inventory/stockitem/new", stockItem2);
-    }
-
-    @AfterClass
-    public static void deleteTestItem () {
-        restTemplate.delete("http://localhost:9001/inventoryms/api/inventory/delete/item/name?itemName="+stockItem.getItemName());
-        restTemplate.delete("http://localhost:9001/inventoryms/api/inventory/delete/item/name?itemName="+stockItem2.getItemName());
-    }
 
     //passes
     @Test
@@ -53,7 +42,8 @@ public class e2eController {
     @Test
     public void addtocartE2E(){
         try {
-            restTemplate.put("http://localhost:9001/inventoryms/api/inventory/stockitem/new", stockItem);
+            restTemplate.put("http://localhost:9001/commercems/commerce/addtocart", cartItem);
+            restTemplate.put("http://localhost:9001/commercems/commerce/addtocart", cartItem2);
         }
         catch(HttpClientErrorException e){
             e.printStackTrace();
@@ -66,7 +56,7 @@ public class e2eController {
     @Test
     public void removefromcartE2E(){
         try {
-            restTemplate.delete("http://localhost:9001/inventoryms/api/inventory/delete/item/name?itemName="+stockItem.getItemName());
+            URI v = restTemplate.postForLocation("http://localhost:9001/commercems/commerce/removefromcart", cartItem2);
         }
         catch(HttpClientErrorException e){
             e.printStackTrace();
@@ -165,7 +155,7 @@ public class e2eController {
 
         //Test the endpoint and catch your returned object in a postman fashion
         List<PurchaseHistory> myPurchaseHistory = restTemplate.exchange("http://localhost:9001/commercems/commerce/myOrderHistory/hshallal@icloud.com", HttpMethod.GET, entity, List.class).getBody();
-
+        System.out.println(myPurchaseHistory);
         //Perform sanity checks on the returned cart
 //        assertEquals(myPurchaseHistory.size(), 2);
 
