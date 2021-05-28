@@ -7,12 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "point_history")
 public final class PointChange {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
@@ -21,30 +22,43 @@ public final class PointChange {
 
     private String cause;
     private int change;
+    private LocalDate date;
 
     public PointChange() {}
 
     public PointChange(String cause, int change) {
         this.cause = cause;
         this.change = change;
+
+        date = LocalDate.now();
+    }
+
+    public String getCause() {
+        return cause;
     }
 
     public void setCause(String cause) {
         this.cause = cause;
     }
 
+    public int getChange() {
+        return change;
+    }
+
     public void setChange(int change) {
         this.change = change;
     }
 
-    public String cause() { return cause; }
-
-    public int change() { return change; }
+    public LocalDate getDate() {
+        return date;
+    }
 
     @Override
     public String toString() {
-        return "PointChange[" +
-                "cause=" + cause + ", " +
-                "change=" + change + ']';
+        return "PointChange{" +
+                "cause='" + cause + '\'' +
+                ", change=" + change +
+                ", date=" + date +
+                '}';
     }
 }

@@ -50,19 +50,19 @@ public class AccountService {
 
         Account account = optional.get();
 
-        if (account.getPoints() + change.change() < 0) {
+        if (account.getPoints() + change.getChange() < 0) {
             return false;
         }
 
-        account.setPoints(account.getPoints() + change.change());
+        account.setPoints(account.getPoints() + change.getChange());
         repo.save(account);
         pointsRepo.save(change);
 
-        if (change.change() > 0 && mailService != null) { //Only email if points added
+        if (change.getChange() > 0 && mailService != null) { //Only email if points added
             taskExecutor.execute(() -> {
                 String email = emailTemplate.replaceAll("\\{\\{NAME}}", account.getName())
-                        .replaceAll("\\{\\{POINTS}}", String.valueOf(change.change()))
-                        .replaceAll("\\{\\{REASON}}", change.cause());
+                        .replaceAll("\\{\\{POINTS}}", String.valueOf(change.getChange()))
+                        .replaceAll("\\{\\{REASON}}", change.getCause());
 
                 mailService.sendRegistration(account.getEmail(), "RevatureShop Points", email);
             });
