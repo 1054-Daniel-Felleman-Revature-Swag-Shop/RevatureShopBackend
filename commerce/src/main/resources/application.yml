@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: commerceMS
+  profiles:
+    active: email
+  cloud:
+    config:
+      name: shop
+  config:
+    import: configserver:http://localhost:8888
