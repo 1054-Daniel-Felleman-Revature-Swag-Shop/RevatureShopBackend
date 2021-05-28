@@ -1,12 +1,12 @@
-package com.revature.shop.commerce.model;
+package com.revature.shop.models;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
-public class StockItem {
-
+@Table(name="inventory")
+public class StockItem
+{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,8 @@ public class StockItem {
 
     private String description;
 
-    public StockItem (String itemName, int itemPrice, int quantity, String category, String description) {
-        this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description) {
+        this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
         this.category = Objects.requireNonNullElse(category, "Misc");
@@ -94,3 +94,4 @@ public class StockItem {
         this.category = Objects.requireNonNullElse(category, "Misc");
     }
 }
+

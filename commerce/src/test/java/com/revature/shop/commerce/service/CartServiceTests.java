@@ -6,8 +6,8 @@ import com.revature.shop.commerce.exception.ItemNotInCartException;
 import com.revature.shop.commerce.exception.ItemOutOfStockException;
 
 import com.revature.shop.commerce.model.Cart;
-import com.revature.shop.commerce.model.StockItem;
 import com.revature.shop.commerce.repository.CartRepository;
+import com.revature.shop.models.StockItem;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
