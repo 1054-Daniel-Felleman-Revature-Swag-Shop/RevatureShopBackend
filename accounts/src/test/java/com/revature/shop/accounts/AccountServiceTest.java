@@ -26,7 +26,7 @@ public class AccountServiceTest {
         when(repo.findById(1)).thenReturn(Optional.of(account));
         when(repo.save(account)).thenReturn(account);
 
-        AccountService service = new AccountService(repo, pointsRepo);
+        AccountService service = new AccountService(repo, pointsRepo, null, null);
 
         // Test if account exists
         assertTrue(service.modPoints(1, new PointChange("test", 0)));

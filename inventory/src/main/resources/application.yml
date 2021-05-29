@@ -1,0 +1,13 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: inventoryMS
+  profiles:
+    active: email
+  cloud:
+    config:
+      name: shop
+  config:
+    import: configserver:http://localhost:8888

@@ -9,18 +9,13 @@
         <version>1</version>
     </parent>
 
-    <artifactId>base</artifactId>
-    <name>RevShopBase</name>
+    <artifactId>config</artifactId>
+    <name>RevShopConfig</name>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+            <artifactId>spring-cloud-config-server</artifactId>
         </dependency>
     </dependencies>
 </project>
