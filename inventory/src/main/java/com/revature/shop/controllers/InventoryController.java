@@ -5,8 +5,10 @@ import com.revature.shop.models.StockItem;
 import com.revature.shop.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -58,13 +60,14 @@ public class InventoryController
 
     }
 
-    @PutMapping("/stockitem/new")
+    @PutMapping(value = "/stockitem/new", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
     {
         System.out.println(item);
-        boolean isAddedItem = inventoryService.addToStock(item);
+        //System.out.println("itemImage: "+itemImage);
+        Integer idOfNewItem = inventoryService.addToStock(item, null);
 
-        return new ResponseEntity<>(isAddedItem, HttpStatus.CREATED);
+        return new ResponseEntity<>(idOfNewItem, HttpStatus.CREATED);
     }
 
     //This says restock, but can be used to reduce quantity as well.
@@ -74,6 +77,17 @@ public class InventoryController
         boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getItemName(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping(value = "/stockitem/update/addimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<?> uploadItemImage(@RequestParam("id") Integer itemId, @RequestParam("image") MultipartFile imageFile) {
+
+        System.out.println("HELLO uploadItemImage(): id = "+itemId);
+
+        boolean uploadWorked = inventoryService.uploadImageForItemWithId(itemId, imageFile);
+
+        return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+
     }
 
     @GetMapping("/get/item/name")
