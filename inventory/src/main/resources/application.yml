@@ -5,9 +5,12 @@ spring:
   application:
     name: inventoryMS
   profiles:
-    active: email
+    active: email, aws
   cloud:
     config:
       name: shop
   config:
     import: configserver:http://localhost:8888
+  servlet:
+    multipart:
+      max-file-size: 8000000
