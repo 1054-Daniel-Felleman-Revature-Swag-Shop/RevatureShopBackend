@@ -56,6 +56,10 @@ public class Account {
         this.points = points;
     }
 
+    public List<PointChange> getPointHistory() {
+        return pointHistory;
+    }
+
     enum Role {
         USER, ADMIN;
 

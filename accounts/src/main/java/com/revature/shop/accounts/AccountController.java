@@ -21,9 +21,9 @@ public class AccountController {
         this.repo = repo;
     }
 
-    @PostMapping("/points/{id}")
-    public ResponseEntity<?> updatePoints(@PathVariable int id, @RequestBody PointChange change) {
-        return new ResponseEntity<>(service.modPoints(id, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+    @PostMapping("/points/{email}")
+    public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointChange change) {
+        return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

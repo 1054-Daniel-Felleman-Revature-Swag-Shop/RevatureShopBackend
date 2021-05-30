@@ -1,1 +1,2 @@
-INSERT INTO accounts(email, name, role, points) VALUES ('parkerkt77@gmail.com', 'Parker', 1, 1), ('kent.berry@revature.net', 'Kent', 0, 256);
+INSERT INTO accounts(email, name, role, points) VALUES ('parkerkt77@gmail.com', 'Parker', 1, 77), ('kent.berry@revature.net', 'Kent', 0, 256);
+INSERT INTO point_history(fk_account, cause, change, date) VALUES ( 2, 'Test', 77, '2021-05-28' )
