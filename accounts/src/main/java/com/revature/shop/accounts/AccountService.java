@@ -10,7 +10,6 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -41,14 +40,12 @@ public class AccountService {
 
     @Transactional
     //@HystrixCommand(fallbackMethod = "downService")
-    public boolean modPoints(int userId, PointChange change) {
-        Optional<Account> optional = repo.findById(userId);
+    public boolean modPoints(String user, PointChange change) {
+        Account account = repo.findByEmail(user);
 
-        if (optional.isEmpty()) {
+        if (account == null) {
             return false;
         }
-
-        Account account = optional.get();
 
         if (account.getPoints() + change.getChange() < 0) {
             return false;
