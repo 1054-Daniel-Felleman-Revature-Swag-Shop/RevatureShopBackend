@@ -80,11 +80,11 @@ public class InventoryController
     }
 
     @PutMapping(value = "/stockitem/update/addimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<?> uploadItemImage(@RequestParam("id") Integer itemId, @RequestParam("image") MultipartFile imageFile) {
+    public ResponseEntity<?> uploadItemImage(@RequestParam("id") String itemIdAsString, @RequestParam("image") MultipartFile imageFile) {
 
-        System.out.println("HELLO uploadItemImage(): id = "+itemId);
+        System.out.println("HELLO uploadItemImage(): id = "+itemIdAsString);
 
-        boolean uploadWorked = inventoryService.uploadImageForItemWithId(itemId, imageFile);
+        boolean uploadWorked = inventoryService.uploadImageForItemWithId(Integer.parseInt(itemIdAsString), imageFile);
 
         return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
 
