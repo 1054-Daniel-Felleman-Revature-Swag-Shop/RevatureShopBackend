@@ -107,7 +107,7 @@ public class CartService {
                 purchaseHistoryRepository.save(purchaseHistory);
             }
         }
-        restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/"+cart.getMyShopper(), new PointChangeDto("Checkout", currentPurchaseTotal), Boolean.class);
+        restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/"+cart.getMyShopper(), new PointChangeDto("Checkout", -currentPurchaseTotal), Boolean.class);
 
         // set the map to an empty map, save cart
         Map<String, Integer> emptyStockItemMap = new HashMap<String, Integer>();
