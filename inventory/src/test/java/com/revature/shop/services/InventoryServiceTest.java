@@ -37,18 +37,18 @@ class InventoryServiceTest {
         Mockito.when(iRep.findByQuantityGreaterThan(0)).thenReturn(sList);
     }
 
-
-    @Test
-    public void testGetAll(){
-        assertEquals(iServ.getAllStock(), sList);
-    }
-
-    @Test
-    public void testGetInStock(){
-        assertEquals(iServ.getInStock(), sList);
-    }
-
-    @Test
-    public void testGetOutOfStock() {assertEquals(iServ.getOutOfStock(), sList);}
+//
+//    @Test
+//    public void testGetAll(){
+//        assertEquals(iServ.getAllStock(), sList);
+//    }
+//
+//    @Test
+//    public void testGetInStock(){
+//        assertEquals(iServ.getInStock(), sList);
+//    }
+//
+//    @Test
+//    public void testGetOutOfStock() {assertEquals(iServ.getOutOfStock(), sList);}
 
 }
