@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+#  eureka:
+#    image: eureka-server
+#    ports:
+#      - "9000:9000"
+#
+#  gateway:
+#    image: gateway
+#    ports:
+#      - "9001:9001"
+#    depends_on:
+#      - eureka
+#
+  config:
+    image: config
+    ports:
+      - "8888:8888"
+#    depends_on:
+#      - eureka
+
+  account:
+    image: accounts
+    ports:
+      - "8000:8000"
+    depends_on:
+#      - eureka
+      - config
+
+  commerce:
+    image: commerce
+    ports:
+      - "8200:8200"
+    depends_on:
+#      - eureka
+      - config
+
+  inventory:
+    image: inventory
+    ports:
+      - "8100:8100"
+    depends_on:
+#      - eureka
+      - config
+
