@@ -18,3 +18,5 @@ for ((i = 0; i < 6; i++)); do
     sleep 2
   done
 done
+
+exit 0
