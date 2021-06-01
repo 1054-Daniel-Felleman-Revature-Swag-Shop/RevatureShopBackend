@@ -26,9 +26,9 @@ public class CommerceStartup implements ApplicationListener<ApplicationReadyEven
             put("Code Like A Boss T-Shirt", 5);
         }});
         dumpDummy("kent.berry@revature.net", new HashMap<>(){{
-            put("SQL T-Shirt", 2);
-            put("Stale Joke T-Shirt", 5);
-            put("2021 T-Shirt", 10);
+            put("Programmer Socks", 2);
+            put("Rev It Up Hat", 5);
+            put("Code Like A Boss T-Shirt", 10);
         }});
     }
 

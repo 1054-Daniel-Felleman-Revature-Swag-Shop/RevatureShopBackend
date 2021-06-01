@@ -1,6 +1,7 @@
 package com.revature.shop.commerce.service;
 
 import com.revature.shop.commerce.dto.CartDto;
+import com.revature.shop.commerce.dto.PointChangeDto;
 import com.revature.shop.commerce.dto.StockItemDto;
 import com.revature.shop.commerce.exception.*;
 import com.revature.shop.commerce.model.Cart;
@@ -9,6 +10,7 @@ import com.revature.shop.commerce.repository.*;
 import com.revature.shop.models.StockItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -31,6 +33,7 @@ public class CartService {
     String getStockItemQuery = "http://localhost:9001/inventoryms/api/inventory/get/item/name?itemName=";
 
     //Cart should be cleared after certain period of inactivity to release the items;
+    @Transactional
     public CartDto updateCart(StockItemDto stockItemDto) throws ItemOutOfStockException {
         StockItem stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
         if (stockItem != null && stockItem.getQuantity() > 0) {
@@ -59,6 +62,7 @@ public class CartService {
         else throw new ItemOutOfStockException();
     }
 
+    @Transactional
     public CartDto removeItemFromCart (StockItemDto stockItemDto) throws ItemNotInCartException {
         Cart cart = cartRepository.findOneByMyShopper(stockItemDto.getMyshopper());
         List<StockItemDto> stockItemDtoList = new ArrayList<>();
@@ -86,6 +90,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
     public int checkoutCart(Cart cart) throws UnableToCheckoutException
     {
         // compute your purchase total points
@@ -102,6 +107,7 @@ public class CartService {
                 purchaseHistoryRepository.save(purchaseHistory);
             }
         }
+        restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/"+cart.getMyShopper(), new PointChangeDto("Checkout", currentPurchaseTotal), Boolean.class);
 
         // set the map to an empty map, save cart
         Map<String, Integer> emptyStockItemMap = new HashMap<String, Integer>();
