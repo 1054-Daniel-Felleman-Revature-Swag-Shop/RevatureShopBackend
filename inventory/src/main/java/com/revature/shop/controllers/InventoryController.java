@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -38,18 +36,15 @@ public class InventoryController
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/view/category")
-//    public ResponseEntity<?> getStockItemsCat(@RequestBody StockItem item){
-//        List<StockItem> itemsList = inventoryService.getStockByCategory(item.getCategory());
-//        if(itemsList == null){
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
-//
-//    }
+    @GetMapping("/view/getallcategories")
+    public ResponseEntity<?> getAllCategories()
+    {
+//        List<String> listOfCategories = inventoryService.getAllStock();
+        return new ResponseEntity<>(List.class, HttpStatus.ACCEPTED);
+    }
 
-    @PostMapping("/view/category")
-    public ResponseEntity<?> getStockItemsCat(@RequestBody String category)
+    @PostMapping("/view/itemsbycategory")
+    public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category)
     {
         List<StockItem> itemsList = inventoryService.getStockByCategory(category);
         if(category == null)
@@ -57,7 +52,6 @@ public class InventoryController
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
-
     }
 
     @PutMapping(value = "/stockitem/new", consumes = {MediaType.APPLICATION_JSON_VALUE})
