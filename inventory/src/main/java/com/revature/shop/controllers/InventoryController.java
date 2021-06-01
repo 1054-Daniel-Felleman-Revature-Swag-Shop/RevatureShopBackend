@@ -39,8 +39,13 @@ public class InventoryController
     @GetMapping("/view/getallcategories")
     public ResponseEntity<?> getAllCategories()
     {
-//        List<String> listOfCategories = inventoryService.getAllStock();
-        return new ResponseEntity<>(List.class, HttpStatus.ACCEPTED);
+        List<String> listOfCategories = inventoryService.getAllCategories();
+        if(listOfCategories == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(listOfCategories, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/view/itemsbycategory")
@@ -80,7 +85,7 @@ public class InventoryController
 
         boolean uploadWorked = inventoryService.uploadImageForItemWithId(Integer.parseInt(itemIdAsString), imageFile);
 
-        return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(uploadWorked, HttpStatus.ACCEPTED);
 
     }
 

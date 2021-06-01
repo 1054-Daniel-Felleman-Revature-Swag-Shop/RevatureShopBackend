@@ -38,6 +38,10 @@ public class InventoryService {
         return iRep.findAll();
     }
 
+    public List<String> getAllCategories() {
+        return iRep.getDistinctCategories();
+    }
+
     public List<StockItem> getStockByCategory(String cat) {
         return iRep.findByCategory(cat);
     }
