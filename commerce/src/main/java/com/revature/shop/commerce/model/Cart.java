@@ -22,9 +22,9 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(String myShopper) {
+    public Cart(String myShopper, Map<String, Integer> stockItemMap) {
         this.myShopper = myShopper;
-        this.stockItemMap = new HashMap<String, Integer>();
+        this.stockItemMap = stockItemMap;
     }
 
     public Cart(int cartId, String myShopper, Map<String, Integer> stockItemMap) {

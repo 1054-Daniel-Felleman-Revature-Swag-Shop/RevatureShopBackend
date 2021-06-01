@@ -35,6 +35,8 @@ public class CartService {
         StockItem stockItem = restTemplate.getForObject(getStockItemQuery + stockItemDto.getItemName(), StockItem.class);
         if (stockItem != null && stockItem.getQuantity() > 0) {
             Cart cart = cartRepository.findOneByMyShopper(stockItemDto.getMyshopper());
+            if (cart == null)
+                cart = new Cart(stockItemDto.getMyshopper(), new HashMap<>());
             if (cart.getStockItemMap().containsKey(stockItemDto.getItemName()))
                 cart.getStockItemMap().put(stockItemDto.getItemName(), cart.getStockItemMap().get(stockItemDto.getItemName()) + 1);
             else cart.getStockItemMap().put(stockItemDto.getItemName(), 1);
@@ -113,7 +115,7 @@ public class CartService {
     public Cart getShopperCart(String shopper){
         Cart cart = cartRepository.findOneByMyShopper(shopper);
         if(cart == null){
-            cart = new Cart(shopper);
+            cart = new Cart(shopper, new HashMap<>());
             cartRepository.save(cart);
         }
         return cart;
