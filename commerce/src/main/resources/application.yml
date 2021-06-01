@@ -1,4 +1,9 @@
+server:
+  port: 8200
+
 spring:
+  datasource:
+    url: jdbc:h2:mem:commerce
   application:
     name: commerceMS
   profiles:
