@@ -20,6 +20,8 @@ management:
     hystrix:
       stream:
         enabled: true
+    shutdown:
+      enabled: true
   endpoints:
     web:
       exposure:
