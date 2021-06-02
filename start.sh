@@ -17,8 +17,6 @@ for ((i = 0; i < 6; i++)); do
     printf '.'
     sleep 2
   done
-
-  sleep 4
 done
 
 exit 0
