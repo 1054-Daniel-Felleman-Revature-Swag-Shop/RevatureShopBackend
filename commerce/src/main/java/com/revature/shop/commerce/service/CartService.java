@@ -94,13 +94,15 @@ public class CartService {
         // compute your purchase total points
         int currentPurchaseTotal = 0;
         int numItems = 0;
+        int totalItems = 0;
         String[] items = new String[cart.getStockItemMap().size()];
         for(String key : cart.getStockItemMap().keySet()){
 
             StockItem curStockItem = restTemplate.getForObject(getStockItemQuery + key, StockItem.class);
             if(curStockItem != null) {
                 int thisItemTotal = curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
-                items[numItems] = key + ", RevCoins:"+thisItemTotal;
+                totalItems += cart.getStockItemMap().get(key);
+                items[numItems] = key + " x "+cart.getStockItemMap().get(key)+", RevCoins:"+thisItemTotal;
                 numItems++;
                 //increment cart total
                 currentPurchaseTotal += thisItemTotal;
@@ -111,7 +113,7 @@ public class CartService {
             }
         }
         try {
-            restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/" + cart.getMyShopper(), new PointChangeDto("Purchased "+numItems+" item(s) from the shop: " + Arrays.toString(items), -currentPurchaseTotal), Boolean.class);
+            restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/" + cart.getMyShopper(), new PointChangeDto("Purchased "+totalItems+" item(s) from the shop: " + Arrays.toString(items), -currentPurchaseTotal), Boolean.class);
         }
         catch(RestClientException e){
 
