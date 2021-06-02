@@ -42,7 +42,7 @@ public class AccountService {
     //@HystrixCommand(fallbackMethod = "downService")
     public boolean modPoints(String user, PointChange change) {
         Account account = repo.findByEmail(user);
-
+        change.setAccount(account);
         if (account == null) {
             return false;
         }

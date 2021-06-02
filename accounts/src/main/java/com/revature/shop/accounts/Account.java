@@ -48,6 +48,10 @@ public class Account {
         return role;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
     public int getPoints() {
         return points;
     }
