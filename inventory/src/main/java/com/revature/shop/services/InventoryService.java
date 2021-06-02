@@ -57,7 +57,7 @@ public class InventoryService {
     public int addToStock(StockItem sItem, MultipartFile itemImage) {
         System.out.println("ADD TO STOCK start");
 
-        if (iRep.existsById(sItem.getId()) || iRep.findByItemName(sItem.getItemName()) == null) {
+        if (iRep.existsById(sItem.getId()) || iRep.findByItemName(sItem.getItemName()) != null) {
             return -1;
         }
 
