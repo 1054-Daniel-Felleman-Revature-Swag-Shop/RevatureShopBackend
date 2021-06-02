@@ -1,13 +1,17 @@
 package com.revature.shop.commerce.dto;
 
+import java.time.LocalDate;
+
 public class PointChangeDto {
 
     private String cause;
     private int change;
+    private LocalDate date;
 
     public PointChangeDto(String cause, int change) {
         this.cause = cause;
         this.change = change;
+        date = LocalDate.now();
     }
 
     public String getCause() {
@@ -24,5 +28,9 @@ public class PointChangeDto {
 
     public void setChange(int change) {
         this.change = change;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 }

@@ -11,6 +11,7 @@ import com.revature.shop.models.StockItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -107,8 +108,12 @@ public class CartService {
                 purchaseHistoryRepository.save(purchaseHistory);
             }
         }
-        restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/"+cart.getMyShopper(), new PointChangeDto("Checkout", -currentPurchaseTotal), Boolean.class);
+        try {
+            restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/" + cart.getMyShopper(), new PointChangeDto("Checkout", -currentPurchaseTotal), Boolean.class);
+        }
+        catch(RestClientException e){
 
+        }
         // set the map to an empty map, save cart
         Map<String, Integer> emptyStockItemMap = new HashMap<String, Integer>();
         cart.setStockItemMap(emptyStockItemMap);
