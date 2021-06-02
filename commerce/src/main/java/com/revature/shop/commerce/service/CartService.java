@@ -15,10 +15,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -97,11 +94,14 @@ public class CartService {
         // compute your purchase total points
         int currentPurchaseTotal = 0;
         int numItems = 0;
+        String[] items = new String[cart.getStockItemMap().size()];
         for(String key : cart.getStockItemMap().keySet()){
-            numItems++;
+
             StockItem curStockItem = restTemplate.getForObject(getStockItemQuery + key, StockItem.class);
             if(curStockItem != null) {
                 int thisItemTotal = curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
+                items[numItems] = key + ", RevCoins:"+thisItemTotal;
+                numItems++;
                 //increment cart total
                 currentPurchaseTotal += thisItemTotal;
 
@@ -111,7 +111,7 @@ public class CartService {
             }
         }
         try {
-            restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/" + cart.getMyShopper(), new PointChangeDto("Purchased "+numItems+" item(s) from the shop", -currentPurchaseTotal), Boolean.class);
+            restTemplate.postForObject("http://localhost:9001/accountsms/api/account/points/" + cart.getMyShopper(), new PointChangeDto("Purchased "+numItems+" item(s) from the shop: " + Arrays.toString(items), -currentPurchaseTotal), Boolean.class);
         }
         catch(RestClientException e){
 
