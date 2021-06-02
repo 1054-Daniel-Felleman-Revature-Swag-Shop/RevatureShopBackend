@@ -11,7 +11,7 @@ for ((i = 0; i < 6; i++)); do
 
   echo "Starting $service"
 
-  nohup java -jar "$service/target/$service-1.jar" >"logs/$service.log" &
+  java -jar "$service/target/$service-1.jar" >"logs/$service.log" &
 
   until $(curl --output /dev/null --silent --head "http://localhost:$port"); do
     printf '.'
