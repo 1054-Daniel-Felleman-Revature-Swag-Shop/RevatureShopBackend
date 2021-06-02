@@ -7,18 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
     private final AccountService service;
     private final AccountRepository repo;
+    private final PointRepository pr;
 
     @Autowired
-    public AccountController(AccountService service, AccountRepository repo) {
+    public AccountController(AccountService service, AccountRepository repo, PointRepository pr) {
         this.service = service;
         this.repo = repo;
+        this.pr = pr;
     }
 
     @PostMapping("/points/{email}")
@@ -34,5 +38,12 @@ public class AccountController {
     @GetMapping("/all")
     public List<Account> allUsers() {
         return repo.findAll();
+    }
+
+    @GetMapping("pointHistory/{id}")
+    public List<PointChange> pointHistory(@PathVariable int id){
+        Account account = repo.findAccountById(id);
+        System.out.println(account);
+        return pr.findPointChangeByAccount(account);
     }
 }
