@@ -14,7 +14,7 @@ With the Swag Shop, users can log in and add items to their cart they wish to pu
 
 ---
 
-> ### Sign in with a with a pre loaded Employee email.
+### Sign in with a with a pre loaded Employee email.
 
 ---
 
@@ -63,9 +63,7 @@ As an admin, you have all the same functionality as a User with the additinoal f
 - [Maven](https://maven.apache.org/guides/)
 - [Jenkins](https://www.jenkins.io/doc/)
 
-> ### Servlet Container
 
-- [Tomcat 9](http://tomcat.apache.org/tomcat-9.0-doc/)
 
 ## Authors
 
@@ -77,3 +75,8 @@ As an admin, you have all the same functionality as a User with the additinoal f
 - [Dante Pizzini](https://github.com/DanPizzini)
 - [Muhammad Abdul Moeed](https://github.com/abdulmoeedak)
 - [Ryan Maxwell](https://github.com/RMaxwell404)
+- [Kent Berry](https://github.com/kentwberry4)
+- [Jacob Erdmann](https://github.com/Jerdmann94)
+- [Ben Markos](https://github.com/Ben30000)
+- [James Sassser](https://github.com/J-Sasser)
+- [Hassan Shallal](https://github.com/hassanshallal)
