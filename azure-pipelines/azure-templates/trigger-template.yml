@@ -1,0 +1,30 @@
+
+parameters:
+  - name: 'triggerBranch'
+    type: string
+    default: 'devops_pipeline'
+
+
+trigger:
+  branches:
+    include:
+    - ${{ parameters.triggerBranch }}
+
+    
+variables:
+- name: service
+    value:
+    ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: 
+      env: base
+    ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: 
+      env: RevShopConfig
+    ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: 
+      env: inventory
+    ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: 
+      env: eureka-server
+    ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: 
+      env: RevShopCommerce
+    ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: 
+      env: RevShopAccounts
+    ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: 
+      env: spring-cloud-gateway
