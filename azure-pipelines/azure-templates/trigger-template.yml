@@ -13,18 +13,17 @@ trigger:
     
 variables:
 - name: service
-    value:
     ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: 
-      env: base
+      value: base
     ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: 
-      env: RevShopConfig
+      value: RevShopConfig
     ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: 
-      env: inventory
+      value: inventory
     ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: 
-      env: eureka-server
+      value: eureka-server
     ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: 
-      env: RevShopCommerce
+      value: RevShopCommerce
     ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: 
-      env: RevShopAccounts
+      value: RevShopAccounts
     ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: 
-      env: spring-cloud-gateway
+      value: spring-cloud-gateway
