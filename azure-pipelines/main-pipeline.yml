@@ -1,8 +1,20 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
 # And using the Build.SourcesDirectory variable to set a condition that will set variables.
-
 trigger:
-- template: ./azure-pipelines/azure-templates/trigger-template.yml
+  branches:
+    include:
+    - ${{ parameters.triggerBranch }}
+
+    
+variables:
+- name: service
+  ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: value: base
+  ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: value:  RevShopConfig
+  ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: value: inventory
+  ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: value: eureka-server
+  ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: value: RevShopCommerce
+  ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: value: RevShopAccounts
+  ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: value: spring-cloud-gateway
 
 stages:
 - stage: TestPipelineLogic
