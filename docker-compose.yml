@@ -1,0 +1,83 @@
+version: "2.1"
+services:
+  eureka:
+   image: aypas/eureka-server
+   healthcheck:
+    test: "curl -f http://eureka:9000 || exit 1"
+    interval: 30s
+    timeout: 10s
+    retries: 5
+   ports:
+    - "9000:9000"
+
+  gateway:
+   image: aypas/spring-cloud-gateway
+   ports:
+    - "9001:9001"
+   environment:
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+   depends_on:
+    - eureka
+   healthcheck:
+    test: "curl -f http://gateway:9001 || exit 1"
+    interval: 30s
+    timeout: 10s
+    retries: 5
+   links:
+    - eureka
+
+  config:
+   image: aypas/config
+   ports:
+    - "8888:8888"
+   environment:
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+   healthcheck:
+    test: "curl -f http://config:8888/configs/eureka || exit 1"
+    interval: 30s
+    timeout: 10s
+    retries: 5
+   depends_on:
+    - eureka
+    - gateway
+
+  account:
+   image: aypas/accounts
+   ports:
+    - "8000:8000"
+   environment:
+    spring.config.import: configserver:http://config:8888
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+   depends_on:
+    - config
+   links:
+    - config
+    - eureka
+
+  commerce:
+   image: aypas/commerce
+   ports:
+    - "8200:8200"
+   environment:
+    spring.config.import: configserver:http://config:8888
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+   depends_on:
+    - config
+    - gateway
+   links:
+    - config
+    - eureka
+
+  inventory:
+   image: aypas/inventory
+   ports:
+    - "8100:8100"
+   environment:
+    spring.config.import: configserver:http://config:8888
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+   depends_on:
+    - config
+    - gateway
+   links:
+    - config
+    - eureka
