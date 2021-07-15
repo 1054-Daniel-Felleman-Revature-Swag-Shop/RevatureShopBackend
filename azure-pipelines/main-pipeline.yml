@@ -8,13 +8,14 @@ trigger:
     
 variables:
 - name: service
-  ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: value: base
-  ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: value:  RevShopConfig
-  ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: value: inventory
-  ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: value: eureka-server
-  ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: value: RevShopCommerce
-  ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: value: RevShopAccounts
-  ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: value: spring-cloud-gateway
+  value:
+  ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: base
+  ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: RevShopConfig
+  ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: inventory
+  ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: eureka-server
+  ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: RevShopCommerce
+  ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: RevShopAccounts
+  ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: spring-cloud-gateway
 
 stages:
 - stage: TestPipelineLogic
