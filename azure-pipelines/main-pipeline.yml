@@ -2,8 +2,8 @@
 # And using the Build.SourcesDirectory variable to set a condition that will set variables.
 trigger:
   branches:
-    include:
-    - ${{ parameters.triggerBranch }}
+    include: 
+    - devops_pipeline
 
     
 variables:
