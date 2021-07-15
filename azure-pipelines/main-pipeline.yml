@@ -1,0 +1,45 @@
+# The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
+# And using the Build.SourcesDirectory variable to set a condition that will set variables.
+
+trigger:
+- template: ./azure-pipelines/azure-templates/trigger-template.yml
+
+stages:
+  
+- template: ./build-test-stage-template.yml
+  parameters:
+    mavenPomFile: "./$(service)/pom.xml"
+    options: "-f $(service)/pom.xml"
+    targetPath: "./$(service)/target/$(service)-0.0.1-SNAPSHOT.jar"
+    artifact: $(service)
+    displayName: '${{ variables.service }} Build and Test'
+
+- template: ./docker-stage-template.yml
+  parameters:
+    stage: CommitImage
+    displayName: '${{ variables.service }} Image Build and Push to ACR/Dockerhub'
+    targetPath: './dockerize'
+    Dockerfile: 'dockerize/gateway.Dockerfile'
+    artifact: $(service)
+    tags: "$(Build.SourceVersion)"
+    repository: "team4revops/$(service)"
+
+# - template: ./docker-stage-template.yml
+#   parameters:
+#     stage: LatestImage
+#     displayName: '${{ variables.service }} Image Build and Push to ACR/Dockerhub'
+#     targetPath: './dockerize'
+#     Dockerfile: 'dockerize/gateway.Dockerfile'
+#     artifact: $(service)
+#     tags: latest
+#     repository: "team4revops/$(service)"
+
+# - template: ./helm-deploy-template.yml
+#   parameters:
+#     containerName: team4revops
+#     imageName: $(service)
+#     tag: latest
+#     helmCommand: Upgrade
+#     disableSvc1: quiz
+#     disableSvc2: flashcard
+#     activeSvc: gateway

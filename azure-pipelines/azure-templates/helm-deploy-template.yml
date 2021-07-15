@@ -1,0 +1,65 @@
+
+parameters:
+  - name: 'containerName'
+    type: string
+  - name: 'imageName'
+    type: string
+  - name: 'tag'
+    type: string
+  - name: activeSvc
+    type: string
+  - name: 'namespace'
+    type: string
+  - name: 'cluster'
+    type: string
+  - name: 'chartName'
+    type: string
+  - name: 'releaseName'
+    type: string
+
+stages:
+- stage:
+  displayName: Deploy with Helm
+  jobs:
+  - job: ApplyAndDeploy
+    steps:
+    - task: HelmDeploy@0
+      inputs:
+        command: 'package'
+        chartPath: './helm/${{ parameters.chartName }}'
+        destination: './helm/'
+    - script: find | grep helm
+   
+    # - script: ./helm/temp/commands.sh
+    - task: HelmDeploy@0
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceConnection: ${{ parameters.cluster }}
+        command: 'upgrade'
+        arguments: '--install --atomic --reuse-values --dry-run'
+        releaseName: ${{ parameters.releaseName }}
+        namespace: $ {{ parameters.namespace }}
+        chartType: 'FilePath'
+        chartPath: './helm/-0.1.0.tgz' # Update me!
+        overrideValues: |
+          ${{ parameters.activeSvc }}.deploy.image.name=${{ parameters.containerName}}/${{ parameters.imageName }}
+          ${{ parameters.activeSvc }}.deploy.image.tag=${{ parameters.tag }}
+       
+        valueFile: './helm//values.yaml' # Update me!
+
+    - task: HelmDeploy@0
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceConnection: ${{ parameters.cluster }}
+        command: 'upgrade'
+        arguments: '--install --atomic --reuse-values --create-namespace'
+        releaseName: ${{ parameters.releaseName }}
+        namespace: ${{ parameters.namespace }}
+        chartType: 'FilePath'
+        chartPath: './helm/-0.1.0.tgz' # Update me!
+        overrideValues: |
+          ${{ parameters.activeSvc }}.deploy.image.name=${{ parameters.containerName}}/${{ parameters.imageName }}
+          ${{ parameters.activeSvc }}.deploy.image.tag=${{ parameters.tag }}
+      
+       
+        valueFile: './helm/testchart/values.yaml' # Update me!

@@ -1,0 +1,52 @@
+
+parameters:
+  - name: 'displayName'
+    type: string
+  - name: 'mavenPomFile'
+    type: string
+  - name: 'options'
+    type: string
+  - name: 'targetPath'
+    type: string
+  - name: 'artifact'
+    type: string
+ 
+
+stages:
+- stage: Build_and_Test
+  displayName: ${{ parameters.displayName }}
+
+  jobs:
+  - job: PrepareScan
+    steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud:
+        organization: '2105-may24-devops'
+        scannerMode: 'Other'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: ${{ parameters.mavenPomFile }}
+        options: ${{ parameters.options }}
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        codeCoverageToolOption: 'JaCoCo'
+        codeCoverageRestoreOriginalPomXml: true
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        isJacocoCoverageReportXML: true
+        sqMavenPluginVersionChoice: 'latest'
+
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: ${{ parameters.targetPath }}
+        artifact: ${{ parameters.artifact }}
+        publishLocation: 'pipeline'
