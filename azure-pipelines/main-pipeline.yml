@@ -46,8 +46,12 @@ stages:
                   'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=gateway-service]True" }
               }
           }
+          
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |   
           Write-Output $(base)
-            
           if ( $$(base) )
           {
               Write-Output "##vso[task.setvariable variable=accounts-service]True"
