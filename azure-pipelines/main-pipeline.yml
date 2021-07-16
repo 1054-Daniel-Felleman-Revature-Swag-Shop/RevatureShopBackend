@@ -61,7 +61,7 @@ stages:
           $updatedFiles = git diff HEAD HEAD~ --name-only
           $updatedFiles | ForEach-Object {
               Switch -Wildcard ($_ ) {
-                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts-service]True" }
+                  'accounts/*' { Write-Output "##vso[task.setvariable parameter=accounts-service.value]True" }
                   'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
                   'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
                   'config/*' { Write-Output "##vso[task.setvariable variable=config-service]True" }
@@ -75,7 +75,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |   
-          Write-Output $(base)
+          
           if ( $$(base) )
           {
               Write-Output "##vso[task.setvariable variable=accounts-service]True"
