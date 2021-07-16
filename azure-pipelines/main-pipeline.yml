@@ -89,7 +89,7 @@ stages:
     - ${{ each service in parameters.serviceConditions }}:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  Building ${{ service.name }} - $(${{ service.name }})
-      - ${{ if eq(variables[$(${{ service.name }})], 'True') }}:
+      - ${{ if eq($(${{ service.name }}), 'True') }}:
         - script: echo '${{ service.name }} building...'
         # - template: ./azure-pipelines/azure-templates/build-template.yml
         #   parameters: 
