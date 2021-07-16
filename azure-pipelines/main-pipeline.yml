@@ -20,13 +20,13 @@ parameters:
 - name: serviceConditions
   type: object
   default:
-  - base: 'false'
-  - accounts-service: 'false'
-  - commerce-service: 'false'
-  - config-service: 'false'
-  - eureka-service: 'false'
-  - inventory-service: 'false'
-  - gateway-service: 'false'
+  - base: false
+  - accounts-service: false
+  - commerce-service: false
+  - config-service: false
+  - eureka-service: false
+  - inventory-service: false
+  - gateway-service: false
 
 stages:
 - stage: PipelineLogic
@@ -34,8 +34,8 @@ stages:
   jobs:
   - job: Test
     steps:
-    - ${{ each s in parameters.serviceConditions }}:
-      - script: echo ${{ s }}
+    - ${{ each service in parameters.serviceConditions }}:
+      - script: echo ${{ service }}
       
       # This script will check the Repo for changes and store them in a variable updatedFiles.
       # The script will iterate over every object stored in updatedFiles to select paths with changes.
