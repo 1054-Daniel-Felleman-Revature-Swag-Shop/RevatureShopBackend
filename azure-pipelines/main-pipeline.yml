@@ -49,11 +49,12 @@ stages:
           if ( $(base) )
           {
               Write-Output 'blah'
-  #            { Write-Output "##vso[task.setvariable variable=accounts-service]True" }
-   #           { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
-    #          { Write-Output "##vso[task.setvariable variable=inventory-service]True" }
+  
           }
-
+              
+# { Write-Output "##vso[task.setvariable variable=accounts-service]True" }
+# { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
+# { Write-Output "##vso[task.setvariable variable=inventory-service]True" }
 
       # Output Variables: If true, these are the services that will be built later in the pipeline.
 
