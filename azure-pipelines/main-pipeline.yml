@@ -48,9 +48,9 @@ stages:
           }
           if ( $(base) )
           {
-              Write-Output "##vso[task.setvariable variable=accounts-service]True
-              Write-Output "##vso[task.setvariable variable=commerce-service]True
-              Write-Output "##vso[task.setvariable variable=inventory-service]True
+              Write-Output "##vso[task.setvariable variable=accounts-service]True"
+              Write-Output "##vso[task.setvariable variable=commerce-service]True"
+              Write-Output "##vso[task.setvariable variable=inventory-service]True"
           }
 
 
