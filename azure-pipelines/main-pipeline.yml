@@ -47,7 +47,8 @@ stages:
               }
           }
           Write-Output $(base)
-          if ( $true )
+          Write-Output $(base).GetType()
+          if ( $$(base) )
           {
               Write-Output 'blah'
   
