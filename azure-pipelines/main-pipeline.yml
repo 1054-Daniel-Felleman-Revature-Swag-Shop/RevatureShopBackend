@@ -78,6 +78,6 @@ stages:
         echo $(eureka-service)
         echo $(inventory-service)
         echo $(gateway-service)
-
-  - ${{ each value in parameters.service-conditions }}:
-    - script: echo ${{ value }}
+    
+    - ${{ each value in parameters.service-conditions }}:
+      - script: echo ${{ value }}
