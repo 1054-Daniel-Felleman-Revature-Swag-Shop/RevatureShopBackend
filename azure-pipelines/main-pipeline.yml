@@ -61,7 +61,7 @@ stages:
           $updatedFiles = git diff HEAD HEAD~ --name-only
           $updatedFiles | ForEach-Object {
               Switch -Wildcard ($_ ) {
-                  'accounts/*' { Write-Output "##vso[task.setvariable parameter=accounts-service.value]True" }
+                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts]True" }
                   'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
                   'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
                   'config/*' { Write-Output "##vso[task.setvariable variable=config-service]True" }
@@ -86,7 +86,7 @@ stages:
       # Output Variables: If true, these are the services that will be built later in the pipeline.
 
     - ${{ each service in parameters.serviceConditions }}:
-      - script: echo '${{ service.name }} has been updated - ${{ service.value }}'
+      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  Running ${{ service.name }}
     
 
