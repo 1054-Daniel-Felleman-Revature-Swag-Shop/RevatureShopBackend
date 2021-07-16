@@ -5,26 +5,47 @@ trigger:
     include: 
     - devops_pipeline
 
-    
+# Set some variables with base value to be change by script.
 variables:
-- name: service
-  value:
-  ${{ if eq(variables['Build.SourcesDirectory'], './base') }}: base
-  ${{ if eq(variables['Build.SourcesDirectory'], './config') }}: RevShopConfig
-  ${{ if eq(variables['Build.SourcesDirectory'], './inventory') }}: inventory
-  ${{ if eq(variables['Build.SourcesDirectory'], './eureka-server') }}: eureka-server
-  ${{ if eq(variables['Build.SourcesDirectory'], './commerce') }}: RevShopCommerce
-  ${{ if eq(variables['Build.SourcesDirectory'], './accounts') }}: RevShopAccounts
-  ${{ if eq(variables['Build.SourcesDirectory'], './Spring-Cloud-Gateway') }}: spring-cloud-gateway
+  accounts-service: false
+  base: false
+  commerce-service: false
+  config-service: false
+  eureka-service: false
+  inventory-service: false
+  gateway-service: false
+
+
 
 stages:
-- stage: TestPipelineLogic
+- stage: PipelineLogic
   displayName: Testing... testing...
   jobs:
   - job: Test
     steps:
-    - script:  echo ${{ variables.service }}
-
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $editedFiles = git diff HEAD HEAD~ --name-only
+          $editedFiles | ForEach-Object {
+              Switch -Wildcard ($_ ) {
+                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts-service]True" }
+                  'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
+                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
+                  'config/*' { Write-Output "##vso[task.setvariable variable=config-service]True" }
+                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-service]True" }
+                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory-service]True" }
+                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=gateway-service]True" }
+              }
+          }
+    - script: |
+        echo $(accounts-service)
+        echo $(base)
+        echo $(config-service)
+        echo $(eureka-service)
+        echo $(inventory-service)
+        echo $(gateway-service)
   
 # - template: ./build-test-stage-template.yml
 #   parameters:
