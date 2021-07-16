@@ -8,13 +8,13 @@ trigger:
 
 # Set some variables with base value to be change by script.
 variables:
-  accounts-service: false
+  accounts: false
   base: false
-  commerce-service: false
-  config-service: false
-  eureka-service: false
-  inventory-service: false
-  gateway-service: false
+  commerce: false
+  config: false
+  eureka-server: false
+  inventory: false
+  Spring-Cloud-Gateway: false
 
 parameters:
 - name: serviceConditions
@@ -24,29 +24,29 @@ parameters:
     name: 'base'
     value: false
   - accounts-service:
-    name: 'accounts-service'
+    name: 'accounts'
     value: false
   - commerce-service:
-    name: 'commerce-service'
+    name: 'commerce'
     value: false
   - config-service:
-    name: 'config-service'
+    name: 'config'
     value: false
   - eureka-service:
-    name: 'eureka-service'
+    name: 'eureka-server'
     value: false
   - inventory-service:
-    name: 'inventory-service'
+    name: 'inventory'
     value: false
   - gateway-service:
-    name: 'gateway-service'
+    name: 'Spring-Cloud-Gateway'
     value: false
 
 stages:
-- stage: PipelineLogic
-  displayName: Testing... testing...
+- stage: BuildandTest
+  displayName: Check Service Changes, Test and Build
   jobs:
-  - job: Test
+  - job: CheckChanges
     steps:
    
       # This script will check the Repo for changes and store them in a variable updatedFiles.
@@ -55,6 +55,7 @@ stages:
       # This step controls which build tasks will be triggered.
 
     - task: PowerShell@2
+      displayName: Checking Service Directories
       inputs:
         targetType: 'inline'
         script: |
@@ -63,11 +64,11 @@ stages:
               Switch -Wildcard ($_ ) {
                   'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts]True" }
                   'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
-                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce-service]True" }
-                  'config/*' { Write-Output "##vso[task.setvariable variable=config-service]True" }
-                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-service]True" }
-                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory-service]True" }
-                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=gateway-service]True" }
+                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce]True" }
+                  'config/*' { Write-Output "##vso[task.setvariable variable=config]True" }
+                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server]True" }
+                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory]True" }
+                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway]True" }
               }
           }
           
@@ -87,6 +88,15 @@ stages:
 
     - ${{ each service in parameters.serviceConditions }}:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-        displayName:  Running ${{ service.name }} - $(${{ service.name }})
-    
+        displayName:  Building ${{ service.name }} - $(${{ service.name }})
+      - ${{ if eq(variables[$(${{ service.name }})], 'True') }}:
+        - script: echo '${{ service.name }} building...'
+        # - template: ./azure-pipelines/azure-templates/build-template.yml
+        #   parameters: 
+        #     displayName: Testing and Building ${{ service.name }}
+        #     mavenPomFile: "./${{ service.name }}/pom.xml"
+        #     options:
+        #     targetPath:
+        #     artifact: ${{ service.name }}
+        #     condition: 
 

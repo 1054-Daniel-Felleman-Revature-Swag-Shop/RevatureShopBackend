@@ -13,19 +13,14 @@ parameters:
   - name: 'condition'
     type: string
 
-stages:
-- stage: Build_and_Test
-  displayName: ${{ parameters.displayName }}
-  dependsOn: PipelineLogic
-  condition: ${{ parameters.condition }}
 
-  jobs:
-  - job: PrepareScan
+
     steps:
+    condition: ${{ parameters.condition }}
     - task: SonarCloudPrepare@1
       inputs:
-        SonarCloud:
-        organization: '2105-may24-devops'
+        SonarCloud: 'SonarCloud'
+        organization: '1054-Daniel-Felleman-Revature-Swag-Shop'
         scannerMode: 'Other'
     - task: Maven@3
       inputs:
@@ -36,7 +31,7 @@ stages:
         codeCoverageToolOption: 'JaCoCo'
         codeCoverageRestoreOriginalPomXml: true
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
+        jdkVersionOption: '1.16'
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
