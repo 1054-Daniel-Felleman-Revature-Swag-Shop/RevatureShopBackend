@@ -1,4 +1,5 @@
 test1 (Pipeline Logic)
 test2
 test4
-test5 (powershell script)
+test5 (powershell script logic)
+test6 triggering pipeline...
