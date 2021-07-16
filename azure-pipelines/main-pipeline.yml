@@ -46,6 +46,7 @@ stages:
                   'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=gateway-service]True" }
               }
           }
+          Write-Output $(base)
           if ( $true )
           {
               Write-Output 'blah'
