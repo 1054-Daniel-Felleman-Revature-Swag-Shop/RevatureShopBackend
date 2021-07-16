@@ -23,7 +23,7 @@ stages:
   jobs:
   - job: Test
     steps:
-    - script:  echo $(service)
+    - script:  echo ${{ variables.service }}
 
   
 # - template: ./build-test-stage-template.yml
