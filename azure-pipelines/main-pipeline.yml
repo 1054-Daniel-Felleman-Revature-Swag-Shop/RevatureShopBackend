@@ -34,8 +34,8 @@ stages:
   jobs:
   - job: Test
     steps:
-    - ${{ each value in parameters.serviceConditions }}:
-      - script: echo ${{ value }}
+    - ${{ each s in parameters.serviceConditions }}:
+      - script: echo ${{ s }}
       
       # This script will check the Repo for changes and store them in a variable updatedFiles.
       # The script will iterate over every object stored in updatedFiles to select paths with changes.
