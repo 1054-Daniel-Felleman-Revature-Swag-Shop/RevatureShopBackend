@@ -10,11 +10,14 @@ parameters:
     type: string
   - name: 'artifact'
     type: string
- 
+  - name: 'condition'
+    type: string
 
 stages:
 - stage: Build_and_Test
   displayName: ${{ parameters.displayName }}
+  dependsOn: PipelineLogic
+  condition: ${{ parameters.condition }}
 
   jobs:
   - job: PrepareScan
@@ -50,3 +53,4 @@ stages:
         targetPath: ${{ parameters.targetPath }}
         artifact: ${{ parameters.artifact }}
         publishLocation: 'pipeline'
+
