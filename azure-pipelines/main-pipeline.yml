@@ -20,13 +20,13 @@ parameters:
 - name: serviceConditions
   type: object
   default:
-  - base: false
-  - accounts-service: false
-  - commerce-service: false
-  - config-service: false
-  - eureka-service: false
-  - inventory-service: false
-  - gateway-service: false
+  - base: 'false'
+  - accounts-service: 'false'
+  - commerce-service: 'false'
+  - config-service: 'false'
+  - eureka-service: 'false'
+  - inventory-service: 'false'
+  - gateway-service: 'false'
 
 stages:
 - stage: PipelineLogic
