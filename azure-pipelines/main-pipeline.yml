@@ -17,7 +17,7 @@ variables:
   gateway-service: false
 
 parameters:
-- name: service-conditions
+- name: serviceConditions
   type: object
   default:
   - base: false
@@ -34,8 +34,9 @@ stages:
   jobs:
   - job: Test
     steps:
-    - ${{ each value in parameters.service-conditions }}:
+    - ${{ each value in parameters.serviceConditions }}:
       - script: echo ${{ value }}
+      
       # This script will check the Repo for changes and store them in a variable updatedFiles.
       # The script will iterate over every object stored in updatedFiles to select paths with changes.
       # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
