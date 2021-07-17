@@ -23,22 +23,22 @@ parameters:
   - base:
     name: 'base'
     value: false
-  - accounts-service:
+  - accounts:
     name: 'accounts'
     value: false
-  - commerce-service:
+  - commerce:
     name: 'commerce'
     value: false
-  - config-service:
+  - config:
     name: 'config'
     value: false
-  - eureka-service:
+  - eureka-server:
     name: 'eureka-server'
     value: false
-  - inventory-service:
+  - inventory:
     name: 'inventory'
     value: false
-  - gateway-service:
+  - Spring-Cloud-Gateway:
     name: 'Spring-Cloud-Gateway'
     value: false
 
