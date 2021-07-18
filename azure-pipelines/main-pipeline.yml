@@ -33,13 +33,13 @@ parameters:
     name: 'config'
     #value: false
   - eureka-server:
-    name: 'eurekaServer'
+    name: 'eureka-server'
    # value: false
   - inventory:
     name: 'inventory'
    # value: false
   - Spring-Cloud-Gateway:
-    name: 'springCloudGateway'
+    name: 'Spring-Cloud-Gateway'
     #value: false
 
 stages:
@@ -66,9 +66,9 @@ stages:
                   'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
                   'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce]True" }
                   'config/*' { Write-Output "##vso[task.setvariable variable=config]True" }
-                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eurekaServer]True" }
+                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server]True" }
                   'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory]True" }
-                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=springCloudGateway]True" }
+                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway]True" }
               }
           }
     
@@ -91,7 +91,7 @@ stages:
         displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
      
       - script: echo '${{ service.name }} building...'
-        condition: eq(variables.${{ service.name }}, 'True')
+        condition: eq(variables[${{ service.name }}], 'True')
         #condition: $[ eq('variables.${{ service.name }}', 'True')])
         displayName: Build Run
         
