@@ -99,7 +99,7 @@ stages:
         displayName:  Checking ${{ service.name }} - $(${{ service.name }})
     
       - script: echo '${{ service.name }} building...'
-        condition: ${{ eq(variables.${{ service.name }}, True) }}
+        condition: ${{ 'eq(variables.${{ service.name }}', True) }}
         displayName: Build Run
         
         # - template: ./azure-pipelines/azure-templates/build-template.yml
