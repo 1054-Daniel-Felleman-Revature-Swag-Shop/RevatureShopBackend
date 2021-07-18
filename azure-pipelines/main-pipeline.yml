@@ -22,25 +22,25 @@ parameters:
   default:
   - base:
     name: 'base'
-    value: false
+    #value: false
   - accounts:
     name: 'accounts'
-    value: false
+   # value: false
   - commerce:
     name: 'commerce'
-    value: false
+    #value: false
   - config:
     name: 'config'
-    value: false
+    #value: false
   - eureka-server:
     name: 'eureka-server'
-    value: false
+   # value: false
   - inventory:
     name: 'inventory'
-    value: false
+   # value: false
   - Spring-Cloud-Gateway:
     name: 'Spring-Cloud-Gateway'
-    value: false
+    #value: false
 
 stages:
 - stage: BuildandTest
