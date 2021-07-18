@@ -88,7 +88,7 @@ stages:
 
     - ${{ each service in parameters.serviceConditions }}:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-        displayName:  'Checking ${{ service.name }} - [${{ service.name }}])'
+        displayName:  'Checking ${{ service.name }} - ${{ service.name }})'
     
       - script: echo '${{ service.name }} building...'
         condition: ${{ eq('variables.${{ service.name }}', True) }}
