@@ -85,7 +85,7 @@ stages:
         targetType: 'inline'
         script: |   
           
-          if ( $(base) )
+          if ( $$(base) )
           {
               Write-Output "##vso[task.setvariable variable=accounts]True"
               Write-Output "##vso[task.setvariable variable=commerce]True"
