@@ -97,6 +97,11 @@ stages:
 
       - ${{ if eq('True', 'True') }}:
         # - script: echo "hello world."
+        - task: JavaToolInstaller@0
+          inputs:
+            versionSpec: '16'
+            jdkArchitectureOption: 'x64'
+            jdkSourceOption: 'PreInstalled'
         - template: './azure-templates/build-template.yml'
           parameters: 
             displayName: Testing and Building ${{ service.name }}
