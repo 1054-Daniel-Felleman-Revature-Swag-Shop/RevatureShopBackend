@@ -10,13 +10,8 @@ parameters:
     type: string
   - name: 'artifact'
     type: string
-  - name: 'condition'
-    type: string
-
-
-
+  
     steps:
-    condition: ${{ parameters.condition }}
     - task: SonarCloudPrepare@1
       inputs:
         SonarCloud: 'SonarCloud'

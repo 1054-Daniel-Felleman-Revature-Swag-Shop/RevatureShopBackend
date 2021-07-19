@@ -1,12 +1,12 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
-# And using the  variable to set a condition that will set variables.
+# And using the variable to set a condition that will set pipeline variables variables that will control the flow of the pipeline.
 
 trigger:
   branches:
     include: 
     - devops_pipeline
 
-# Set some variables with base value to be change by script.
+# Was this directory updated? These variables will hold the answer 
 variables:
   accounts: false
   base: false
@@ -25,9 +25,11 @@ parameters:
     #value: false
   - accounts:
     name: 'accounts'
+    requiresBase: true
    # value: false
   - commerce:
     name: 'commerce'
+    requiresBase: true
     #value: false
   - config:
     name: 'config'
@@ -37,6 +39,7 @@ parameters:
    # value: false
   - inventory:
     name: 'inventory'
+    requiresBase: true
    # value: false
   - Spring-Cloud-Gateway:
     name: 'Spring-Cloud-Gateway'
@@ -73,6 +76,7 @@ stages:
           }
     
     - task: PowerShell@2
+      displayName: Rebuild services, if base.
       inputs:
         targetType: 'inline'
         script: |   
@@ -90,17 +94,16 @@ stages:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
      
-      - script: echo '${{ service.name }} building...'
-        condition: eq(variables['${{ service.name }}'], 'True')
-        #condition: $[ eq('variables.${{ service.name }}', 'True')])
+      # - script: echo '${{ service.name }} building...'
+      #   condition: eq(variables['${{ service.name }}'], 'True')
+      
+      - template: ./azure-pipelines/azure-templates/build-template.yml
         displayName: Build Run
-        
-        # - template: ./azure-pipelines/azure-templates/build-template.yml
-        #   parameters: 
-        #     displayName: Testing and Building ${{ service.name }}
-        #     mavenPomFile: "./${{ service.name }}/pom.xml"
-        #     options:
-        #     targetPath:
-        #     artifact: ${{ service.name }}
-        #     condition: 
-#($[ <expression> ])
+        condition: eq(variables['${{ service.name }}'], 'True')
+        parameters: 
+          displayName: Testing and Building ${{ service.name }}
+          mavenPomFile: "./${{ service.name }}/pom.xml"
+          targetPath: "./${{ service.name }}"
+          artifact: ${{ service.name }}
+          ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
+            options: "-f ./base/base-1.jar"
