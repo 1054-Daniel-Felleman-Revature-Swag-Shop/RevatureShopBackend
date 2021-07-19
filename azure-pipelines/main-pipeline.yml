@@ -15,7 +15,7 @@ variables:
   eureka-server: false
   inventory: false
   Spring-Cloud-Gateway: false
-  currentBuild: True
+  currentBuild: false
 
 parameters:
 - name: serviceConditions
@@ -99,7 +99,7 @@ stages:
         displayName:  'Checking ${{ service.name }}'
 
       #- ${{ if eq('True', 'True') }}:
-      - ${{ eq(variables['currentBuild'], 'True') }}:
+      - ${{if eq(variables['currentBuild'], 'True') }}:
         # - script: echo "hello world."
         - template: './azure-templates/build-template.yml'
           parameters: 
