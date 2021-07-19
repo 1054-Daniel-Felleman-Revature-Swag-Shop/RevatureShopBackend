@@ -90,8 +90,9 @@ stages:
 
     - ${{ each service in parameters.serviceConditions }}:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-        displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
+        displayName:  'Checking ${{ service.name }}'
       - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
+        - script: echo "hello world."
 
         - template: './azure-templates/build-template.yml'
           parameters: 
