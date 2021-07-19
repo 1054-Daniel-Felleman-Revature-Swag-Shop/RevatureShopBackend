@@ -17,36 +17,36 @@ parameters:
   - name: 'build'
     type: boolean
 
-  
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: '1054-Daniel-Felleman-Revature-Swag-Shop'
-    scannerMode: 'Other'
-- task: Maven@3
-  inputs:
-    mavenPomFile: ${{ parameters.mavenPomFile }}
-    options: ${{ parameters.options }}
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: 'JaCoCo'
-    codeCoverageRestoreOriginalPomXml: true
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.16'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    isJacocoCoverageReportXML: true
-    sqMavenPluginVersionChoice: 'latest'
+  steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: '1054-Daniel-Felleman-Revature-Swag-Shop'
+        scannerMode: 'Other'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: ${{ parameters.mavenPomFile }}
+        options: ${{ parameters.options }}
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        codeCoverageToolOption: 'JaCoCo'
+        codeCoverageRestoreOriginalPomXml: true
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.16'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        isJacocoCoverageReportXML: true
+        sqMavenPluginVersionChoice: 'latest'
 
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: ${{ parameters.targetPath }}
-    artifact: ${{ parameters.artifact }}
-    publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: ${{ parameters.targetPath }}
+        artifact: ${{ parameters.artifact }}
+        publishLocation: 'pipeline'
 
