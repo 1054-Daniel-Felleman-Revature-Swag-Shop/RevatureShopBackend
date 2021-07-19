@@ -90,13 +90,13 @@ stages:
     
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
+      dependsOn: CheckChanges
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
 
       - ${{ if eq('True', 'True') }}:
         # - script: echo "hello world."
-
         - template: './azure-templates/build-template.yml'
           parameters: 
             displayName: Testing and Building ${{ service.name }}
