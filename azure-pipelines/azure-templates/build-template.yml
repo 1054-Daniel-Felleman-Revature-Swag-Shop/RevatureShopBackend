@@ -9,8 +9,6 @@ parameters:
     type: string
   - name: 'artifact'
     type: string
-  - name: 'serviceName'
-    type: string
 
 
 steps:
