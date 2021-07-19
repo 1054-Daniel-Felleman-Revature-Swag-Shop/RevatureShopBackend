@@ -13,3 +13,10 @@ spring:
       name: shop
   config:
     import: configserver:http://localhost:8888
+
+# can delete
+email:
+  host: ${RSS_EMAIL_HOST:localhost}
+  port: ${RSS_EMAIL_PORT:25}
+  username: ${RSS_EMAIL_USERNAME:user}
+  Password: ${RSS_EMAIL_PASSWORD:password}
