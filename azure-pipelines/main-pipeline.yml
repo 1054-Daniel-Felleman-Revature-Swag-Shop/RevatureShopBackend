@@ -97,7 +97,7 @@ stages:
       # - script: echo '${{ service.name }} building...'
       #   condition: eq(variables['${{ service.name }}'], 'True')
       
-      - template: ./azure-pipelines/azure-templates/build-template.yml
+      - template: './azure-templates/build-template.yml'
         # displayName: Build Run
         # condition: eq(variables['${{ service.name }}'], 'True')
         parameters: 
