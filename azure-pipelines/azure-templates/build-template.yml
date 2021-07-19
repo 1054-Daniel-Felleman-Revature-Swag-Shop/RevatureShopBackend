@@ -11,8 +11,8 @@ parameters:
   - name: 'artifact'
     type: string
   
-    steps:
-    displayName: Build Run
+    # steps:
+    # displayName: Build Run
     condition: eq(variables['${{ service.name }}'], 'True')
     - task: SonarCloudPrepare@1
       inputs:
