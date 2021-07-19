@@ -95,15 +95,15 @@ stages:
         displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
      
       # - script: echo '${{ service.name }} building...'
-      ${{ if eq(variables['${{ service.name }}'], 'True') }}:
+      - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
       
-      - template: './azure-templates/build-template.yml'
-        # displayName: Build Run
-        # condition: eq(variables['${{ service.name }}'], 'True')
-        parameters: 
-          displayName: Testing and Building ${{ service.name }}
-          mavenPomFile: "./${{ service.name }}/pom.xml"
-          targetPath: "./${{ service.name }}"
-          artifact: ${{ service.name }}
-          ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
-            options: "-f ./base/base-1.jar"
+        - template: './azure-templates/build-template.yml'
+          # displayName: Build Run
+          # condition: eq(variables['${{ service.name }}'], 'True')
+          parameters: 
+            displayName: Testing and Building ${{ service.name }}
+            mavenPomFile: "./${{ service.name }}/pom.xml"
+            targetPath: "./${{ service.name }}"
+            artifact: ${{ service.name }}
+            ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
+              options: "-f ./base/base-1.jar"
