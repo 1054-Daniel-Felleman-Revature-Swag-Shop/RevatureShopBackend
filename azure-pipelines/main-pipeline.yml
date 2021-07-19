@@ -95,11 +95,11 @@ stages:
         displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
      
       # - script: echo '${{ service.name }} building...'
-      #   condition: eq(variables['${{ service.name }}'], 'True')
+      ${{ if eq(variables['${{ service.name }}'], 'True') }}
       
       - template: './azure-templates/build-template.yml'
         # displayName: Build Run
-        condition: eq(variables['${{ service.name }}'], 'True')
+        # condition: eq(variables['${{ service.name }}'], 'True')
         parameters: 
           displayName: Testing and Building ${{ service.name }}
           mavenPomFile: "./${{ service.name }}/pom.xml"
