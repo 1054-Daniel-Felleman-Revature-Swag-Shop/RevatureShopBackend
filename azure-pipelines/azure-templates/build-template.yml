@@ -18,7 +18,7 @@ parameters:
     type: boolean
 
 
-    steps:
+
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
