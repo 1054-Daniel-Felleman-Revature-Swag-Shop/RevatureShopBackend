@@ -89,7 +89,7 @@ stages:
           }
   
   - ${{ each service in parameters.serviceConditions }}:
-    - job: ${{ service.name }}
+    - job: $[counter(format('{0:yyyyMMdd}', 'Build'), 100)]
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
