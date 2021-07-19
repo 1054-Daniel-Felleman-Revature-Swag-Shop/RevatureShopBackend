@@ -28,7 +28,7 @@ steps:
     codeCoverageToolOption: 'JaCoCo'
     codeCoverageRestoreOriginalPomXml: true
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.16'
+    jdkVersionOption: '16.0.1'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
