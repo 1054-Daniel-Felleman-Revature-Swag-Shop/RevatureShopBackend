@@ -99,7 +99,7 @@ stages:
         displayName:  'Checking ${{ service.name }}'
 
       #- ${{ if eq('True', 'True') }}:
-      - ${{ eq(variables[$(currentBuild)], 'True') }}:
+      - ${{ eq(variables['currentBuild'], 'True') }}:
         # - script: echo "hello world."
         - template: './azure-templates/build-template.yml'
           parameters: 
