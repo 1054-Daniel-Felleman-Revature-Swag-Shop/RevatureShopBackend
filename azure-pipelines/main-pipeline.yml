@@ -87,7 +87,7 @@ stages:
               Write-Output "##vso[task.setvariable variable=commerce]True"
               Write-Output "##vso[task.setvariable variable=inventory]True"
           }
-          
+
     - ${{ each service in parameters.serviceConditions }}:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
