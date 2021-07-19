@@ -99,7 +99,7 @@ stages:
       
       - template: './azure-templates/build-template.yml'
         # displayName: Build Run
-        # condition: eq(variables['${{ service.name }}'], 'True')
+        condition: eq(variables['${{ service.name }}'], 'True')
         parameters: 
           displayName: Testing and Building ${{ service.name }}
           mavenPomFile: "./${{ service.name }}/pom.xml"
