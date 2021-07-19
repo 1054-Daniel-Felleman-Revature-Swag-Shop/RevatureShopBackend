@@ -93,13 +93,11 @@ stages:
     - job: ${{ service.jobName }}
       dependsOn: CheckChanges
       steps:
-      - script: |
-          echo ##vso[task.setvariable variable=currentBuild]$(${{ service.name }})
-          echo '${{ service.name }} has been updated - $(${{ service.name }})'
+      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
 
       #- ${{ if eq('True', 'True') }}:
-      - ${{if eq(variables['currentBuild'], 'True') }}:
+      - ${{if eq(variables['${{ service.name }}'], 'True') }}:
         # - script: echo "hello world."
         - template: './azure-templates/build-template.yml'
           parameters: 
