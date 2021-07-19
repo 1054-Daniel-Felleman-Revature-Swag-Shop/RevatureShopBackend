@@ -1,10 +1,9 @@
 
 parameters:
-  - name: 'displayName'
-    type: string
   - name: 'mavenPomFile'
     type: string
   - name: 'options'
+    default: ''
     type: string
   - name: 'targetPath'
     type: string
@@ -12,10 +11,6 @@ parameters:
     type: string
   - name: 'serviceName'
     type: string
-  - name: 'requiresBase'
-    type: boolean
-  - name: 'build'
-    type: boolean
 
 
 steps:
