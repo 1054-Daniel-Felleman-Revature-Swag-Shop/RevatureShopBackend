@@ -10,19 +10,16 @@ parameters:
     type: string
   - name: 'artifact'
     type: string
+  - name: 'serviceName'
+    type: string
+  - name: 'requiresBase'
+    type: boolean
+  - name: 'build'
+    type: boolean
 
-stages:
-- stage: Build_and_Test
-  condition: eq(variables['${{ service.name }}'], 'True')
-  displayName: ${{ parameters.displayName }}
-  
   jobs:
   - job:  
     steps:
-    - ${{ each service in parameters.serviceConditions }}:
-      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-        displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
-      - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
