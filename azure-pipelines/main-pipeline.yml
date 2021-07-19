@@ -15,7 +15,7 @@ variables:
   eureka-server: false
   inventory: false
   Spring-Cloud-Gateway: false
-  currentBuild: false
+  currentBuild: True
 
 parameters:
 - name: serviceConditions
