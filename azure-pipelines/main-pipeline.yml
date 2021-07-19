@@ -22,28 +22,28 @@ parameters:
   default:
   - base:
     name: 'base'
-    #value: false
+    jobName: 'BaseBuild'
   - accounts:
     name: 'accounts'
     requiresBase: true
-   # value: false
+    jobName: 'AccountsBuild'
   - commerce:
     name: 'commerce'
     requiresBase: true
-    #value: false
+    jobName: 'CommerceBuild'
   - config:
     name: 'config'
-    #value: false
+    jobName: 'ConfigBuild'
   - eureka-server:
     name: 'eureka-server'
-   # value: false
+    jobName: 'EurekaBuild'
   - inventory:
     name: 'inventory'
     requiresBase: true
-   # value: false
+    jobName: 'InventoryBuild'
   - Spring-Cloud-Gateway:
     name: 'Spring-Cloud-Gateway'
-    #value: false
+    jobName: 'SpringBuild'
 
 stages:
 - stage: Check
@@ -87,9 +87,9 @@ stages:
               Write-Output "##vso[task.setvariable variable=commerce]True"
               Write-Output "##vso[task.setvariable variable=inventory]True"
           }
-  
+    
   - ${{ each service in parameters.serviceConditions }}:
-    - job: Build
+    - job: ${{ service.jobName }}
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
