@@ -101,7 +101,13 @@ stages:
           inputs:
             versionSpec: '16'
             jdkArchitectureOption: 'x64'
-            jdkSourceOption: 'PreInstalled'
+            jdkSourceOption: 'AzureStorage'
+            azureResourceManagerEndpoint: 'AJ''s Azure(39f07811-27d7-419b-a70a-75c73c55f2b4)'
+            azureStorageAccountName: 'team3project3'
+            azureContainerName: 'java-versions'
+            azureCommonVirtualFile: '''jdk-16.0.1_linux-x64_bin.tar.gz'''
+            jdkDestinationDirectory: '$(agent.toolsDirectory)/jdk6'
+            cleanDestinationDirectory: true
         - template: './azure-templates/build-template.yml'
           parameters: 
             displayName: Testing and Building ${{ service.name }}
