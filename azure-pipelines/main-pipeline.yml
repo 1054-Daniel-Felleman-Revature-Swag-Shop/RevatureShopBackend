@@ -89,7 +89,7 @@ stages:
           }
   
   - ${{ each service in parameters.serviceConditions }}:
-    - job: BuildCycle
+    - job: ${{ service.name }}
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
