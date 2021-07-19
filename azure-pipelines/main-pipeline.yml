@@ -95,9 +95,9 @@ stages:
 
         - template: './azure-templates/build-template.yml'
           parameters: 
-          displayName: Testing and Building ${{ service.name }}
-          mavenPomFile: "./${{ service.name }}/pom.xml"
-          targetPath: "./${{ service.name }}"
-          artifact: ${{ service.name }}
-          ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
-            options: "-f ./base/base-1.jar"
+            displayName: Testing and Building ${{ service.name }}
+            mavenPomFile: "./${{ service.name }}/pom.xml"
+            targetPath: "./${{ service.name }}"
+            artifact: ${{ service.name }}
+            ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
+              options: "-f ./base/base-1.jar"
