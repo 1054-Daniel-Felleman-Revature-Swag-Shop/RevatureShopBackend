@@ -46,7 +46,7 @@ parameters:
     #value: false
 
 stages:
-- stage: BuildandTest
+- stage: Check
   displayName: Check Service Changes, Test and Build
   jobs:
   - job: CheckChanges
@@ -88,22 +88,11 @@ stages:
               Write-Output "##vso[task.setvariable variable=inventory]True"
           }
 
-      # Output Variables: If true, these are the services that will be built later in the pipeline.
-
-    - ${{ each service in parameters.serviceConditions }}:
-      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-        displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
-     
-      # - script: echo '${{ service.name }} building...'
-      - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
-      
-        - template: './azure-templates/build-template.yml'
-          # displayName: Build Run
-          # condition: eq(variables['${{ service.name }}'], 'True')
-          parameters: 
-            displayName: Testing and Building ${{ service.name }}
-            mavenPomFile: "./${{ service.name }}/pom.xml"
-            targetPath: "./${{ service.name }}"
-            artifact: ${{ service.name }}
-            ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
-              options: "-f ./base/base-1.jar"
+- template: './azure-templates/build-template.yml'
+  parameters: 
+  displayName: Testing and Building ${{ service.name }}
+  mavenPomFile: "./${{ service.name }}/pom.xml"
+  targetPath: "./${{ service.name }}"
+  artifact: ${{ service.name }}
+  ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
+    options: "-f ./base/base-1.jar"

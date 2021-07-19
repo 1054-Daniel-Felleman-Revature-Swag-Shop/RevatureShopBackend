@@ -10,39 +10,48 @@ parameters:
     type: string
   - name: 'artifact'
     type: string
+
+stages:
+- stage: Build_and_Test
+  condition: eq(variables['${{ service.name }}'], 'True')
+  displayName: ${{ parameters.displayName }}
   
-    # steps:
-    # displayName: Build Run
-    #condition: eq(variables['${{ service.name }}'], 'True')
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'SonarCloud'
-        organization: '1054-Daniel-Felleman-Revature-Swag-Shop'
-        scannerMode: 'Other'
-    - task: Maven@3
-      inputs:
-        mavenPomFile: ${{ parameters.mavenPomFile }}
-        options: ${{ parameters.options }}
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        codeCoverageToolOption: 'JaCoCo'
-        codeCoverageRestoreOriginalPomXml: true
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.16'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        isJacocoCoverageReportXML: true
-        sqMavenPluginVersionChoice: 'latest'
+  jobs:
+  - job:  
+    steps:
+    - ${{ each service in parameters.serviceConditions }}:
+      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
+        displayName:  'Checking ${{ service.name }} - $(${{ service.name }})'
+      - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: '1054-Daniel-Felleman-Revature-Swag-Shop'
+          scannerMode: 'Other'
+      - task: Maven@3
+        inputs:
+          mavenPomFile: ${{ parameters.mavenPomFile }}
+          options: ${{ parameters.options }}
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          codeCoverageToolOption: 'JaCoCo'
+          codeCoverageRestoreOriginalPomXml: true
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.16'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: true
+          isJacocoCoverageReportXML: true
+          sqMavenPluginVersionChoice: 'latest'
 
-    - task: SonarCloudPublish@1
-      inputs:
-        pollingTimeoutSec: '300'
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: ${{ parameters.targetPath }}
-        artifact: ${{ parameters.artifact }}
-        publishLocation: 'pipeline'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: ${{ parameters.targetPath }}
+          artifact: ${{ parameters.artifact }}
+          publishLocation: 'pipeline'
 
