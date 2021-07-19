@@ -1,5 +1,7 @@
 
 parameters:
+  - name: 'displayName'
+    type: string
   - name: 'mavenPomFile'
     type: string
   - name: 'options'
