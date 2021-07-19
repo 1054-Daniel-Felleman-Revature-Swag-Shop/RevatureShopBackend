@@ -17,9 +17,6 @@ parameters:
   - name: 'build'
     type: boolean
 
-  jobs:
-  - job:  
-    steps:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
