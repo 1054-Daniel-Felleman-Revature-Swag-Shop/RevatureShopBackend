@@ -88,7 +88,15 @@ stages:
               Write-Output "##vso[task.setvariable variable=commerce]True"
               Write-Output "##vso[task.setvariable variable=inventory]True"
           }
-    
+    - script: |
+          echo 'Base will rebuild: $(base)'
+          echo 'Accounts will rebuild: $(accounts)'
+          echo 'Commerce will rebuild: $(commerce)'
+          echo 'Inventory will rebuild: $(inventory)'
+          echo 'Config will rebuild: $(config)'
+          echo 'Eureka Server will rebuild: $(eureka-server)'
+          echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
+
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
       dependsOn: CheckChanges
@@ -97,7 +105,7 @@ stages:
         displayName:  'Checking ${{ service.name }}'
 
       #- ${{ if eq('True', 'True') }}:
-      - ${{if eq(variables['${{ service.name }}'], 'True') }}:
+      - ${{ if eq(variables['${{ service.name }}'], 'True') }}:
         # - script: echo "hello world."
         - template: './azure-templates/build-template.yml'
           parameters: 
