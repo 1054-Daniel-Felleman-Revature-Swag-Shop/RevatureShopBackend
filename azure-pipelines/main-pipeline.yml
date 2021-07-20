@@ -92,19 +92,14 @@ stages:
           }
       name: checkBuild
 
-    - task: PowerShell@2
-      name: secondCheckBuild
-      displayName: Rebuild services, if base.
-      inputs:
-        targetType: 'inline'
-        script: |   
-          
-          if ( $$checkBuild.base )
+    - script: |   
+          if ( $$(checkBuild.base) )
           {
-              Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
-              Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
-              Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True"
+            Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
+            Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
+            Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True"
           }
+
     - script: |
           echo 'Base will rebuild: $(checkBuild.base)'
           echo 'Accounts will rebuild: $(secondCheckBuild.accounts)'
