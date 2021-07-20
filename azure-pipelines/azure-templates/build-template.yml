@@ -30,7 +30,7 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '16.0.1'
     mavenVersionOption: 'Default'
-    mavenDirectory: /usr/local/bin/apache-maven-3.8.1/bin/mvn
+    mavenDirectory: /usr/local/bin/apache-maven-3.8.1/bin
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: true
