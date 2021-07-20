@@ -15,7 +15,6 @@ variables:
   eureka-server: false
   inventory: false
   Spring-Cloud-Gateway: false
-  currentBuild: false
 
 parameters:
 - name: serviceConditions
@@ -59,6 +58,7 @@ stages:
       # This step controls which build tasks will be triggered.
 
     - task: PowerShell@2
+      name: checkBuild
       displayName: Checking Service Directories
       inputs:
         targetType: 'inline'
@@ -66,17 +66,19 @@ stages:
           $updatedFiles = git diff HEAD HEAD~ --name-only
           $updatedFiles | ForEach-Object {
               Switch -Wildcard ($_ ) {
-                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts]True" }
-                  'base/*' { Write-Output "##vso[task.setvariable variable=base]True" }
-                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce]True" }
-                  'config/*' { Write-Output "##vso[task.setvariable variable=config]True" }
-                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server]True" }
-                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory]True" }
-                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway]True" }
+                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True" }
+                  'base/*' { Write-Output "##vso[task.setvariable variable=base;isOutput=true]True" }
+                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True" }
+                  'config/*' { Write-Output "##vso[task.setvariable variable=config;isOutput=true]True" }
+                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server;isOutput=true]True" }
+                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True" }
+                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
               }
           }
+        
     
     - task: PowerShell@2
+      name: secondCheckBuild
       displayName: Rebuild services, if base.
       inputs:
         targetType: 'inline'
@@ -84,9 +86,9 @@ stages:
           
           if ( $$(base) )
           {
-              Write-Output "##vso[task.setvariable variable=accounts]True"
-              Write-Output "##vso[task.setvariable variable=commerce]True"
-              Write-Output "##vso[task.setvariable variable=inventory]True"
+              Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
+              Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
+              Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True"
           }
     - script: |
           echo 'Base will rebuild: $(base)'
@@ -101,7 +103,9 @@ stages:
     - job: ${{ service.jobName }}
       pool: java-16
       dependsOn: CheckChanges
-      condition: eq($[variables['${{ service.name }}']], 'True')
+      variables:
+        currentBuild: $[ dependencies.A.outputs['checkBuild.${{ service.name }}'] ] 
+      condition: eq(variables.currentBuild, 'True')
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
