@@ -56,26 +56,7 @@ stages:
       # This script will check the Repo for changes and store them in a variable updatedFiles.
       # The script will iterate over every object stored in updatedFiles to select paths with changes.
       # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
-      # This step controls which build tasks will be triggered.
-
-    # - task: PowerShell@2
-    #   name: checkBuild
-    #   displayName: Checking Service Directories
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       $updatedFiles = git diff HEAD HEAD~ --name-only
-    #       $updatedFiles | ForEach-Object {
-    #           Switch -Wildcard ($_ ) {
-    #               'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True" }
-    #               'base/*' { Write-Output "##vso[task.setvariable variable=base;isOutput=true]True" }
-    #               'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True" }
-    #               'config/*' { Write-Output "##vso[task.setvariable variable=config;isOutput=true]True" }
-    #               'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server;isOutput=true]True" }
-    #               'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True" }
-    #               'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
-    #           }
-    #       }
+      # This step controls which build tasks will be triggered
         
     - powershell: |
         $updatedFiles = git diff HEAD HEAD~ --name-only
@@ -92,7 +73,7 @@ stages:
           }
       name: checkBuild
 
-    - script: |   
+    - powershell: |   
           if ( $$(checkBuild.base) )
           {
             Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
