@@ -9,7 +9,7 @@ trigger:
 # Was this directory updated? These variables will hold the answer 
 variables:
   accounts: false
-  base: false
+  base: true
   commerce: false
   config: false
   eureka-server: false
