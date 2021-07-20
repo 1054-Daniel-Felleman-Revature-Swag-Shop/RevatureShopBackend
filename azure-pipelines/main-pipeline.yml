@@ -61,72 +61,61 @@ stages:
       Spring-Cloud-Gateway: false
     steps:
 
-
-    - script: echo '##vso[task.setvariable variable=MyVar;isOutput=true]True'
-      name: ProduceVar  # because we're going to depend on it, we need to name the step
-    - script: echo $(ProduceVar.MyVar)
-    
       # This script will check the Repo for changes and store them in a variable updatedFiles.
       # The script will iterate over every object stored in updatedFiles to select paths with changes.
       # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
       # This step controls which build tasks will be triggered   
-      # - powershell: |
-      #   $updatedFiles = git diff HEAD HEAD~ --name-only
-      #     $updatedFiles | ForEach-Object {
-      #         Switch -Wildcard ($_ ) {
-      #             'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True" }
-      #             'base/*' { Write-Output "##vso[task.setvariable variable=base;isOutput=true]True" }
-      #             'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True" }
-      #             'config/*' { Write-Output "##vso[task.setvariable variable=config;isOutput=true]True" }
-      #             'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server;isOutput=true]True" }
-      #             'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True" }
-      #             'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
-      #         }
-      #     }
-    #   # name: checkBuild
-    # - task: PowerShell@2
-    #   name: checkBuild
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #         $updatedFiles = git diff HEAD HEAD~ --name-only
-    #           $updatedFiles | ForEach-Object {
-    #             Switch -Wildcard ($_ ) {
-    #                 'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
-    #                 'base/*' { Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' }
-    #                 'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
-    #                 'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
-    #                 'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
-    #                 'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
-    #                 'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
-    #             }
-    #         }
-    # - script: |
-    #     echo 'Base will rebuild: $(base)'
-    #     echo 'Accounts will rebuild: $(accounts)'
-    #     echo 'Commerce will rebuild: $(commerce)'
-    #     echo 'Inventory will rebuild: $(inventory)'
-    #     echo 'Config will rebuild: $(config)'
-    #     echo 'Eureka Server will rebuild: $(eureka-server)'
-    #     echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
 
-    # - powershell: |   
-    #     if ( $checkBuild.base )
-    #     {
-    #       Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
-    #       Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
-    #       Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True"
-    #     }
-    #   name: secondCheckBuild
+    # - powershell: |
+    #     $updatedFiles = git diff HEAD HEAD~ --name-only
+    #       $updatedFiles | ForEach-Object {
+    #           Switch -Wildcard ($_ ) {
+    #               'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True" }
+    #               'base/*' { Write-Output "##vso[task.setvariable variable=base;isOutput=true]True" }
+    #               'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True" }
+    #               'config/*' { Write-Output "##vso[task.setvariable variable=config;isOutput=true]True" }
+    #               'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server;isOutput=true]True" }
+    #               'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True" }
+    #               'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
+    #           }
+    #       }
+      # name: checkBuild
+    - task: PowerShell@2
+      name: ProduceVar
+      inputs:
+        targetType: 'inline'
+        script: |
+            $updatedFiles = git diff HEAD HEAD~ --name-only
+              $updatedFiles | ForEach-Object {
+                Switch -Wildcard ($_ ) {
+                    'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
+                    'base/*' { Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' }
+                    'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
+                    'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
+                    'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
+                    'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
+                    'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
+                }
+            }
+      
 
-    # - script: |
-    #       echo 'Base will rebuild: $(base)'
-    #       echo 'Accounts will rebuild: $(accounts)'
-    #       echo 'Commerce will rebuild: $(commerce)'
-    #       echo 'Inventory will rebuild: $(inventory)'
-    #       echo 'Config will rebuild: $(config)'
-    #       echo 'Eureka Server will rebuild: $(eureka-server)'
-    #       echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
+    - powershell: |   
+        if ( $checkBuild.base )
+        {
+          Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
+          Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
+          Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
+        }
+      name: ProduceVar2
+
+    - script: |
+          echo Base will rebuild: $(ProduceVar2.base)
+          echo Accounts will rebuild: $(ProduceVar2.accounts)
+          echo Commerce will rebuild: $(ProduceVar2.commerce)
+          echo Inventory will rebuild: $(ProduceVar2.inventory)
+          echo Config will rebuild: $(ProduceVar.config)
+          echo Eureka Server will rebuild: $(ProduceVar.eureka-server)
+          echo Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
@@ -134,14 +123,29 @@ stages:
         name: java-16
       dependsOn: CheckChanges
       variables:
-        currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
-        currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
-        varFromA: $[ dependencies.CheckChanges.outputs['ProduceVar.MyVar'] ]
+         accounts: $[ dependencies.CheckChanges.outputs['ProduceVar2.accounts'] ]
+         base: $[ dependencies.CheckChanges.outputs['ProduceVar2.base'] ]
+         commerce: $[ dependencies.CheckChanges.outputs['ProduceVar2.commerce'] ]
+         config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
+         eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
+         inventory: $[ dependencies.CheckChanges.outputs['ProduceVar2.inventory'] ]
+         Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
+      steps:
+       - script: |
+            echo Base will rebuild: $(base)
+            echo Accounts will rebuild: $(accounts)
+            echo Commerce will rebuild: $(commerce)
+            echo Inventory will rebuild: $(inventory)
+            echo Config will rebuild: $(config)
+            echo Eureka Server will rebuild: $(eureka-server)
+            echo Spring Cloud Gateway will rebuild: $(Cloud-Gateway)
+
+        # currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
+        # currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
+        # varFromA: $[ dependencies.CheckChanges.outputs['ProduceVar.MyVar'] ]
 
       #condition: or(eq(variables['currentBuild'], 'True'), eq(variables['currentBuild2'], 'True')
-    
-      steps:
-      - script: echo $(varFromA) # this step uses the mapped-in variable
+
       # - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
       #   displayName:  'Checking ${{ service.name }}'
       
