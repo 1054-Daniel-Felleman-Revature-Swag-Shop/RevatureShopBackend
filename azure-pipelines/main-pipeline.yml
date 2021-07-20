@@ -99,20 +99,20 @@ stages:
         targetType: 'inline'
         script: |   
           
-          if ( $$(base) )
+          if ( $$(checkBuild.base) )
           {
               Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
               Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
               Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True"
           }
     - script: |
-          echo 'Base will rebuild: $(base)'
-          echo 'Accounts will rebuild: $(accounts)'
-          echo 'Commerce will rebuild: $(commerce)'
-          echo 'Inventory will rebuild: $(inventory)'
-          echo 'Config will rebuild: $(config)'
-          echo 'Eureka Server will rebuild: $(eureka-server)'
-          echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
+          echo 'Base will rebuild: $(checkBuild.base)'
+          echo 'Accounts will rebuild: $(secondCheckBuild.accounts)'
+          echo 'Commerce will rebuild: $(secondCheckBuild.commerce)'
+          echo 'Inventory will rebuild: $(secondCheckBuil.inventory)'
+          echo 'Config will rebuild: $(checkBuild.config)'
+          echo 'Eureka Server will rebuild: $(checkBuild.eureka-server)'
+          echo 'Spring Cloud Gateway will rebuild: $(checkBuild.Spring-Cloud-Gateway)'
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
@@ -121,7 +121,7 @@ stages:
       dependsOn: CheckChanges
       variables:
         currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
-      condition: eq(variables['${{ service.name }}'], 'True')
+      condition: or(eq(variables['checkBuild.${{ service.name }}'], 'True'), eq(variables['secondCheckBuild.$service.name']))
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
