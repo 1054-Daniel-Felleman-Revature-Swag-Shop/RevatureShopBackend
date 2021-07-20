@@ -105,13 +105,13 @@ stages:
           }
 
     - script: |
-          echo 'Base will rebuild: $(checkBuild.base)'
-          echo 'Accounts will rebuild: $(secondCheckBuild.accounts)'
-          echo 'Commerce will rebuild: $(secondCheckBuild.commerce)'
-          echo 'Inventory will rebuild: $(secondCheckBuil.inventory)'
-          echo 'Config will rebuild: $(checkBuild.config)'
-          echo 'Eureka Server will rebuild: $(checkBuild.eureka-server)'
-          echo 'Spring Cloud Gateway will rebuild: $(checkBuild.Spring-Cloud-Gateway)'
+          echo 'Base will rebuild: $(base)'
+          echo 'Accounts will rebuild: $(accounts)'
+          echo 'Commerce will rebuild: $(commerce)'
+          echo 'Inventory will rebuild: $(inventory)'
+          echo 'Config will rebuild: $(config)'
+          echo 'Eureka Server will rebuild: $(eureka-server)'
+          echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
