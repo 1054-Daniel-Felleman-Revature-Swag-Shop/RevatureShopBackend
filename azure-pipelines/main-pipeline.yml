@@ -115,7 +115,10 @@ stages:
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
-      pool: java-16
+      pool:
+        name: java-16
+        demands: 
+        - Agent.Version -gtVersion 2.189.0
       dependsOn: CheckChanges
       variables:
         currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
