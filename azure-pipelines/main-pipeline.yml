@@ -99,7 +99,7 @@ stages:
         targetType: 'inline'
         script: |   
           
-          if ( $$(checkBuild.base) )
+          if ( $$checkBuild.base )
           {
               Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True"
               Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True"
