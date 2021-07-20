@@ -109,13 +109,13 @@ stages:
       name: ProduceVar2
 
     - script: |
-          echo Base will rebuild: $(ProduceVar2.base)
-          echo Accounts will rebuild: $(ProduceVar2.accounts)
-          echo Commerce will rebuild: $(ProduceVar2.commerce)
-          echo Inventory will rebuild: $(ProduceVar2.inventory)
-          echo Config will rebuild: $(ProduceVar.config)
-          echo Eureka Server will rebuild: $(ProduceVar.eureka-server)
-          echo Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)
+          echo 'Base will rebuild: $(ProduceVar2.base)'
+          echo 'Accounts will rebuild: $(ProduceVar2.accounts)'
+          echo 'Commerce will rebuild: $(ProduceVar2.commerce)'
+          echo 'Inventory will rebuild: $(ProduceVar2.inventory)'
+          echo 'Config will rebuild: $(ProduceVar.config)'
+          echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
+          echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
@@ -132,13 +132,13 @@ stages:
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
       steps:
        - script: |
-            echo Base will rebuild: $(base)
-            echo Accounts will rebuild: $(accounts)
-            echo Commerce will rebuild: $(commerce)
-            echo Inventory will rebuild: $(inventory)
-            echo Config will rebuild: $(config)
-            echo Eureka Server will rebuild: $(eureka-server)
-            echo Spring Cloud Gateway will rebuild: $(Cloud-Gateway)
+            echo 'Base will rebuild: $(base)'
+            echo 'Accounts will rebuild: $(accounts)'
+            echo 'Commerce will rebuild: $(commerce)'
+            echo 'Inventory will rebuild: $(inventory)'
+            echo 'Config will rebuild: $(config)'
+            echo 'Eureka Server will rebuild: $(eureka-server)'
+            echo 'Spring Cloud Gateway will rebuild: $(Cloud-Gateway)'
 
         # currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
         # currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
