@@ -75,7 +75,7 @@ stages:
                   'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
               }
           }
-        
+         
     
     - task: PowerShell@2
       name: secondCheckBuild
@@ -104,7 +104,7 @@ stages:
       pool: java-16
       dependsOn: CheckChanges
       variables:
-        currentBuild: $[ dependencies.A.outputs['checkBuild.${{ service.name }}'] ] 
+        currentBuild: $[ dependencies.A.outputs['checkBuild.sdeffd'] ] 
       condition: eq(variables.currentBuild, 'True')
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
