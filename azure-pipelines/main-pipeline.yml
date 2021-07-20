@@ -117,8 +117,6 @@ stages:
     - job: ${{ service.jobName }}
       pool:
         name: java-16
-        demands: 
-        - Agent.Version -gtVersion 2.189.0
       dependsOn: CheckChanges
       variables:
         currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
@@ -126,15 +124,12 @@ stages:
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
+      
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: $(organization)
+          scannerMode: 'CLI'
+          configMode: 'file'
 
-      #- ${{ if eq('True', 'True') }}:
-      #- ${{ if eq(variables['${{ service.name }}'], 'True') }}:
-        # - script: echo "hello world."
-      - template: './azure-templates/build-template.yml'
-        parameters: 
-          displayName: Testing and Building ${{ service.name }}
-          mavenPomFile: "./${{ service.name }}/pom.xml"
-          targetPath: "./${{ service.name }}"
-          artifact: ${{ service.name }}
-          ${{ if eq(variables['${{ service.requiresBase'], 'true') }}:
-            options: "-f ./base/base-1.jar"
+      - script:  echo 'test'
