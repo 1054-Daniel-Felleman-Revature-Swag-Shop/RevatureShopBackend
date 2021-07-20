@@ -51,6 +51,14 @@ stages:
   displayName: Check Service Changes, Test and Build
   jobs:
   - job: CheckChanges
+    variables:
+      accounts: false
+      base: false
+      commerce: false
+      config: false
+      eureka-server: false
+      inventory: false
+      Spring-Cloud-Gateway: false
     steps:
    
       # This script will check the Repo for changes and store them in a variable updatedFiles.
