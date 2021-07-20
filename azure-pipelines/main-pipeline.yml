@@ -121,7 +121,7 @@ stages:
       dependsOn: CheckChanges
       variables:
         currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
-      condition: or(eq(variables['checkBuild.${{ service.name }}'], 'True'), eq(variables['secondCheckBuild.$service.name']))
+      condition: or(eq(variables['checkBuild.${{ service.name }}'], 'True'), eq(variables['secondCheckBuild.${{service.name}}'], 'True'))
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
