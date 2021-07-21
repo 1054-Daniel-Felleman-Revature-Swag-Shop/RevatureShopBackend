@@ -109,6 +109,7 @@ stages:
           cliProjectKey: '$(projectKey)'
           cliProjectName: '$(projectName)'
           cliSources: '.'
+          extraProperties: 'sonar.java.binaries=**/target/classes'
 
       - script: 'mvn clean package -f ./base/pom.xml '
       - task: SonarCloudAnalyze@1
@@ -166,6 +167,7 @@ stages:
           cliProjectKey: '$(projectKey)'
           cliProjectName: '$(projectName)'
           cliSources: '.'
+          extraProperties: 'sonar.java.binaries=**/target/classes'
         
       - script: |
           if [ ${{ service.name }} = accounts ] || [ ${{ service.name }} = commerce ] || [ ${{ service.name }} = inventory ]
