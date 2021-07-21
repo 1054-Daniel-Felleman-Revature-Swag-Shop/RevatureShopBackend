@@ -7,15 +7,12 @@ trigger:
     - devops_pipeline
     - experimental-pipeline
 
-# Was this directory updated? These variables will hold the answer 
+# Parameters to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 
 parameters:
 - name: serviceConditions
   type: object
   default:
-  # - base:
-  #   name: 'base'
-  #   jobName: 'BaseBuild'
   - accounts:
     name: 'accounts'
     requiresBase: true
@@ -43,20 +40,13 @@ stages:
   displayName: Check Service Changes, Test and Build
   jobs:
   - job: CheckChanges
-    variables:
-      accounts: false
-      base: false
-      commerce: false
-      config: false
-      eureka-server: false
-      inventory: false
-      Spring-Cloud-Gateway: false
     steps:
 
-      # This script will check the Repo for changes and store them in a variable updatedFiles.
-      # The script will iterate over every object stored in updatedFiles to select paths with changes.
-      # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
-      # This step controls which build tasks will be triggered   
+# This script will check the Repo for changes and store them in a variable updatedFiles.
+# The script will iterate over every object stored in updatedFiles to select paths with changes.
+# Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
+# This step controls which build tasks will be triggered.
+# If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
 
     - powershell: |
         $updatedFiles = git diff HEAD HEAD~ --name-only
@@ -78,6 +68,8 @@ stages:
           }
       name: ProduceVar
 
+# Printing a To-Do (Build) list.
+
     - script: |
           echo 'Base will rebuild: $(ProduceVar.base)'
           echo 'Accounts will rebuild: $(ProduceVar.accounts)'
@@ -86,6 +78,10 @@ stages:
           echo 'Config will rebuild: $(ProduceVar.config)'
           echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
           echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
+
+# This job ensures Base is built first, in case of dependencies.
+# Setting a variable with the output variable from the previous job.
+# It then checks that it's true, and continues on with the build, or skips.
 
   - job: BaseBuild
     pool:
@@ -98,8 +94,18 @@ stages:
       - script: echo 'Base has been updated - $(base)'
         displayName:  'Checking Base'
 
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: $(organization)
+          scannerMode: 'CLI'
+          configMode: 'file'
+      
+
       - script:  echo 'Built base'
 
+# Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
+# that are created as part of the loop. The job checks if a service is to be built, or skips the job.
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
@@ -116,30 +122,15 @@ stages:
          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
-      # steps:
-      #  - script: |
-      #       echo 'Base will rebuild: $(base)'
-      #       echo 'Accounts will rebuild: $(accounts)'
-      #       echo 'Commerce will rebuild: $(commerce)'
-      #       echo 'Inventory will rebuild: $(inventory)'
-      #       echo 'Config will rebuild: $(config)'
-      #       echo 'Eureka Server will rebuild: $(eureka-server)'
-      #       echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
-
-        # currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
-        # currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
-        # varFromA: $[ dependencies.CheckChanges.outputs['ProduceVar.MyVar'] ]
-
       condition: eq(variables['${{ service.name }}'], 'True')
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
       
-      # - task: SonarCloudPrepare@1
-      #   inputs:
-      #     SonarCloud: 'SonarCloud'
-      #     organization: $(organization)
-      #     scannerMode: 'CLI'
-      #     configMode: 'file'
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: $(organization)
+          scannerMode: 'CLI'
+          configMode: 'file'
 
-      - script:  echo 'test'
