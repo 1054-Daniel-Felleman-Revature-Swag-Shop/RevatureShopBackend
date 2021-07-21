@@ -63,7 +63,12 @@ stages:
           $updatedFiles | ForEach-Object {
               Switch -Wildcard ($_ ) {
                   'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
-                  'base/*' { Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' }
+                  'base/*' { 
+                      Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' 
+                      Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
+                      Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
+                      Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
+                  }
                   'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
                   'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
                   'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
@@ -73,23 +78,23 @@ stages:
           }
       name: ProduceVar    
 
-    - script: |
+    # - script: |
 
-          echo $(ProduceVar.base)
+    #       echo $(ProduceVar.base)
           
-          if [ $(ProduceVar.base) ]
-          then
-            echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
-            echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
-            echo '##vso[task.setvariable variable=inventory;isOutput=true]True'
-          fi
-      name: ProduceVar2
+    #       if [ $(ProduceVar.base) ]
+    #       then
+    #         echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
+    #         echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
+    #         echo '##vso[task.setvariable variable=inventory;isOutput=true]True'
+    #       fi
+    #   name: ProduceVar2
 
     - script: |
           echo 'Base will rebuild: $(ProduceVar.base)'
-          echo 'Accounts will rebuild: $(ProduceVar2.accounts)'
-          echo 'Commerce will rebuild: $(ProduceVar2.commerce)'
-          echo 'Inventory will rebuild: $(ProduceVar2.inventory)'
+          echo 'Accounts will rebuild: $(ProduceVar.accounts)'
+          echo 'Commerce will rebuild: $(ProduceVar.commerce)'
+          echo 'Inventory will rebuild: $(ProduceVar.inventory)'
           echo 'Config will rebuild: $(ProduceVar.config)'
           echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
           echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
@@ -101,12 +106,12 @@ stages:
       dependsOn: CheckChanges
       
       variables:
-         accounts: or($[ dependencies.CheckChanges.outputs['ProduceVar2.accounts'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ])
+         accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
          base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
-         commerce: or($[ dependencies.CheckChanges.outputs['ProduceVar2.commerce'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ])
+         commerce: $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ]
          config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
          eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
-         inventory: or($[ dependencies.CheckChanges.outputs['ProduceVar2.inventory'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ])
+         inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
       steps:
