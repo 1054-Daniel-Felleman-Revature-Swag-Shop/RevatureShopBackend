@@ -87,7 +87,7 @@ stages:
 
           echo $(ProduceVar.base)
           
-          if [ $(ProduceVar.base) -eq True ]
+          if [ $(ProduceVar.base) ]
           then
             echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
             echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
