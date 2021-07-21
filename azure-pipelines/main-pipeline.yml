@@ -75,7 +75,7 @@ stages:
 
     - powershell: |   
         $myScriptVariable = $env:ProduceVar.base
-        Write-Output '$myScriptVariable'
+        Write-Output $myScriptVariable
         if ( $myScriptVariable )
         {
           Write-Output 'Inside loop.'
