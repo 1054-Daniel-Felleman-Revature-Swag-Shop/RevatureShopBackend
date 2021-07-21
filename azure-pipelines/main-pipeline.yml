@@ -40,6 +40,7 @@ stages:
   displayName: Check Service Changes, Test and Build
   jobs:
   - job: CheckChanges
+    pool: java-16
     steps:
 
 # This script will check the Repo for changes and store them in a variable updatedFiles.
