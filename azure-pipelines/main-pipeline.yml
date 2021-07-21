@@ -112,7 +112,7 @@ stages:
             echo 'Inventory will rebuild: $(inventory)'
             echo 'Config will rebuild: $(config)'
             echo 'Eureka Server will rebuild: $(eureka-server)'
-            echo 'Spring Cloud Gateway will rebuild: $(Cloud-Gateway)'
+            echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
 
         # currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
         # currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
