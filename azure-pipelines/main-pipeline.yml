@@ -74,8 +74,8 @@ stages:
       name: ProduceVar    
 
     - powershell: |   
-        Write-Output $[ProduceVar.base]
-        if ( $[ProduceVar.base] )
+        Write-Output $env:ProduceVar.base
+        if ( $env:ProduceVar.base )
         {
           Write-Output 'Inside loop.'
           Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
