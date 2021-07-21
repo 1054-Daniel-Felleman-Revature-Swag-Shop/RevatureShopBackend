@@ -1,3 +1,4 @@
+{{ if not .Values.ingress.useIngress }}
 {{- with .Values.gateway }}
 apiVersion: apps/v1
 kind: Deployment
@@ -28,4 +29,5 @@ spec:
             cpu: {{ quote .cpuLimit }}
         ports:
         - containerPort: {{ .containerPort }}
+{{ end }}
 {{ end }}

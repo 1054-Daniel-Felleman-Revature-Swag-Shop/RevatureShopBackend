@@ -8,5 +8,4 @@ spec:
   ports:
   - port: {{ .Values.inventory.containerPort }}
     targetPort: {{ .Values.inventory.containerPort }}
-  type: LoadBalancer
   # add if statement to make it a load balancer if some variable is true

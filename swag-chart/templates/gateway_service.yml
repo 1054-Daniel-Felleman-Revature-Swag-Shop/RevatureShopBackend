@@ -1,3 +1,4 @@
+{{ if not .Values.ingress.useIngress }}
 {{- with .Values.gateway}}
 apiVersion: v1
 kind: Service
@@ -10,4 +11,5 @@ spec:
   - port: {{ .containerPort }}
     targetPort: {{ .containerPort }}
   type: LoadBalancer
+{{ end }}
 {{ end }}

@@ -9,5 +9,4 @@ spec:
   ports:
   - port: {{ .containerPort }}
     targetPort: {{ .containerPort }}
-  type: LoadBalancer
 {{ end }}

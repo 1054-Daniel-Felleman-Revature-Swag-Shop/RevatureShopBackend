@@ -1,6 +1,8 @@
 #!/bin/bash
 
-make_jars () {
+# convenience script for creating/deleting docker files after compiling services
+
+make_images () {
 services=("eureka-server" "config" "Spring-Cloud-Gateway" "accounts" "inventory" "commerce")
 
 for ((i=0; i<${#services[@]}; i++)); do
@@ -18,7 +20,7 @@ for ((i=0; i<${#services[@]}; i++)); do
 done
 }
 
-delete_jars() {
+delete_images() {
 	services=("eureka-server" "config" "Spring-Cloud-Gateway" "accounts" "inventory" "commerce")
 
 	for ((i=0; i<${#services[@]}; i++)); do
@@ -29,10 +31,10 @@ delete_jars() {
 }
 
 
-if [ $1 = "jars" ] ; then
-	make_jars
+if [ $1 = "make" ] ; then
+	make_images
 elif [ $1 = "del" ] ; then
-	delete_jars
+	delete_images
 else
 	echo unknown command
 	exit 1
