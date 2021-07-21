@@ -8,14 +8,6 @@ trigger:
     - experimental-pipeline
 
 # Was this directory updated? These variables will hold the answer 
-# variables:
-#   accounts: false
-#   base: false
-#   commerce: false
-#   config: false
-#   eureka-server: false
-#   inventory: false
-#   Spring-Cloud-Gateway: false
 
 parameters:
 - name: serviceConditions
@@ -70,34 +62,16 @@ stages:
         $updatedFiles = git diff HEAD HEAD~ --name-only
           $updatedFiles | ForEach-Object {
               Switch -Wildcard ($_ ) {
-                  'accounts/*' { Write-Output "##vso[task.setvariable variable=accounts;isOutput=true]True" }
-                  'base/*' { Write-Output "##vso[task.setvariable variable=base;isOutput=true]True" }
-                  'commerce/*' { Write-Output "##vso[task.setvariable variable=commerce;isOutput=true]True" }
-                  'config/*' { Write-Output "##vso[task.setvariable variable=config;isOutput=true]True" }
-                  'eureka-server/*' { Write-Output "##vso[task.setvariable variable=eureka-server;isOutput=true]True" }
-                  'inventory/*' { Write-Output "##vso[task.setvariable variable=inventory;isOutput=true]True" }
-                  'Spring-Cloud-Gateway/*' { Write-Output "##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True" }
+                  'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
+                  'base/*' { Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' }
+                  'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
+                  'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
+                  'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
+                  'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
+                  'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
               }
           }
-      name: checkBuild
-    # - task: PowerShell@2
-    #   name: ProduceVar
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #         $updatedFiles = git diff HEAD HEAD~ --name-only
-    #           $updatedFiles | ForEach-Object {
-    #             Switch -Wildcard ($_ ) {
-    #                 'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
-    #                 'base/*' { Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' }
-    #                 'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
-    #                 'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
-    #                 'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
-    #                 'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
-    #                 'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
-    #             }
-    #         }
-      
+      name: ProduceVar    
 
     - powershell: |   
         if ( $checkBuild.base )
