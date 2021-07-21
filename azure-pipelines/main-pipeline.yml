@@ -13,9 +13,9 @@ parameters:
 - name: serviceConditions
   type: object
   default:
-  - base:
-    name: 'base'
-    jobName: 'BaseBuild'
+  # - base:
+  #   name: 'base'
+  #   jobName: 'BaseBuild'
   - accounts:
     name: 'accounts'
     requiresBase: true
@@ -76,19 +76,7 @@ stages:
                   'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
               }
           }
-      name: ProduceVar    
-
-    # - script: |
-
-    #       echo $(ProduceVar.base)
-          
-    #       if [ $(ProduceVar.base) ]
-    #       then
-    #         echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
-    #         echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
-    #         echo '##vso[task.setvariable variable=inventory;isOutput=true]True'
-    #       fi
-    #   name: ProduceVar2
+      name: ProduceVar
 
     - script: |
           echo 'Base will rebuild: $(ProduceVar.base)'
@@ -99,11 +87,25 @@ stages:
           echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
           echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
 
+  - job: BaseBuild
+    pool:
+      name: java-16
+    dependsOn: CheckChanges
+    variables:
+        base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
+    condition: eq(variables['base'], 'True')
+    steps:
+      - script: echo 'Base has been updated - $(base)'
+        displayName:  'Checking Base'
+
+      - script:  echo 'Built base'
+
+
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
       pool:
         name: java-16
-      dependsOn: CheckChanges
+      dependsOn: BaseBuild
       
       variables:
          accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
