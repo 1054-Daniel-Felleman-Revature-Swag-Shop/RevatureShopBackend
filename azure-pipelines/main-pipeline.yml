@@ -99,14 +99,14 @@ stages:
 
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: '$(organization)'
+          SonarCloud: 'SonarCloud'
           organization: '$(organization)'
           scannerMode: 'CLI'
           configMode: 'manual'
           cliProjectKey: '$(organization)'
           cliSources: '.'
 
-      - script: 'mvn clean install -f '
+      - script: 'mvn clean package -f ./base/pom.xml '
       - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
         inputs:
@@ -155,11 +155,6 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: $(organization)
-          scannerMode: 'CLI'
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: '$(organization)'
           organization: '$(organization)'
           scannerMode: 'CLI'
           configMode: 'manual'
@@ -177,5 +172,6 @@ stages:
             -Dpackaging=.jar \
             -DgeneratePom=true
           else
+            mvn install -f ./${service.name}/pom.xml
 
 
