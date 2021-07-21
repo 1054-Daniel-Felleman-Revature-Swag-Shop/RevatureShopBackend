@@ -74,7 +74,7 @@ stages:
       name: ProduceVar    
 
     - powershell: |   
-        Write-Output '$ProduceVar.base'
+        Write-Output $$ProduceVar.base
         if ( $ProduceVar.base )
         {
           Write-Output 'Inside loop.'
