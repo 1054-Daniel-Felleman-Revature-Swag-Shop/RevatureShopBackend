@@ -178,8 +178,10 @@ stages:
             -DartifactId=base \
             -Dversion=1 \
             -Dpackaging=.jar \
-            -DgeneratePom=true
-          else
-            mvn install -f ./${service.name}/pom.xml
+            -DgeneratePom=true;
 
+            mvn package -f sonar.java.binaries=**/target/classes
+            
+          else
+            mvn install -f sonar.java.binaries=**/target/classes
 
