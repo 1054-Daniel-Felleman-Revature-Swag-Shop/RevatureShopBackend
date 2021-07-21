@@ -84,10 +84,10 @@ stages:
     #       Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
     #     }
     - script: |
-    
+
           echo $(ProduceVar.base)
           
-          if [ $(ProduceVar.base -eq 'True' ]
+          if [ $(ProduceVar.base) -eq True ]
           then
             echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
             echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
