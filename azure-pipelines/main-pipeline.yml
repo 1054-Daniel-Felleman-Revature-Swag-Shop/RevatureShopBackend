@@ -97,10 +97,21 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: $(organization)
+          organization: '$(organization)'
           scannerMode: 'CLI'
-          configMode: 'file'
-      
+          configMode: 'manual'
+          cliSources: '.'
+
+      - script: 'mvn clean install -f '
+      - task: SonarCloudAnalyze@1
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Build.Repository.LocalPath)/base/target/*.jar'
+          artifact: 'base'
+          publishLocation: 'pipeline'
 
       - script:  echo 'Built base'
 
@@ -126,11 +137,41 @@ stages:
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
-      
+
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'specific'
+          project: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e'
+          definition: '147'
+          buildVersionToDownload: 'latest'
+          artifactName: 'base'
+          itemPattern: '**/*.jar'
+          targetPath: '$(Build.Repository.LocalPath)/base'
+
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
           organization: $(organization)
           scannerMode: 'CLI'
-          configMode: 'file'
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: '$(organization)'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: '''SonarCloud'''
+          cliSources: '.'
+        
+      - script: |
+          if [ ${{ service.name }} = accounts ] || [ ${{ service.name }} = commerce ] || [ ${{ service.name }} = inventory ]
+          then
+            mvn install:install-file \
+            -Dfile=$(Build.Repository.LocalPath)/base/ \
+            -DgroupId=com.revature \
+            -DartifactId=base \
+            -Dversion=1 \
+            -Dpackaging=.jar \
+            -DgeneratePom=true
+          else
+
 
