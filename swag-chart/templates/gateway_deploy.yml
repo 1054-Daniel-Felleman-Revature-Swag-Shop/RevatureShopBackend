@@ -1,0 +1,31 @@
+{{- with .Values.gateway }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .deploymentName }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+    spec:
+      containers:
+      - name: {{ .deploymentName }}
+        image: {{ .image }}:{{ .tag }}
+        env:
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          valueFrom:
+            configMapKeyRef:
+              name: env-vars
+              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        resources:
+          limits:
+            memory: {{quote .memoryLimit }}
+            cpu: {{ quote .cpuLimit }}
+        ports:
+        - containerPort: {{ .containerPort }}
+{{ end }}

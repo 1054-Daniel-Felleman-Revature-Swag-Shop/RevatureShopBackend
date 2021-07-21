@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-vars
+data:
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+  eureka.client.service-url.defaultZone: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+  spring.config.import: configserver:http://{{ .Values.config.serviceName }}:{{ .Values.config.containerPort }}
+  {{- with .Values.envVars }}
+  {{ .emailHost.key }}: {{ .emailHost.value }}
+  {{ .emailPort.key }}: {{ .emailPort.value }}
+  {{ .emailUsername.key}}: {{ .emailUsername.value }}
+  {{ .emailPassword.key }}: {{ .emailPassword.value }}
+  {{ .awsAccessID.key }}: {{ .awsAccessID.value}}
+  {{ .awsSecret.key }}: {{ .awsSecret.value }}
+  {{ end }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.inventory.serviceName }}
+spec:
+  selector:
+    app: {{ .Values.inventory.app }}
+  ports:
+  - port: {{ .Values.inventory.containerPort }}
+    targetPort: {{ .Values.inventory.containerPort }}
+  type: LoadBalancer
+  # add if statement to make it a load balancer if some variable is true

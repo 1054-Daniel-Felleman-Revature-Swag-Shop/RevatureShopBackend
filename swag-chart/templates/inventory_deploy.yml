@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.inventory.deploymentName }}
+spec:
+  replicas: {{ .Values.inventory.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.inventory.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.inventory.app }}
+    spec:
+      containers:
+      - name: {{ .Values.inventory.app }}
+        image: {{ .Values.inventory.image }}:{{ .Values.inventory.tag }}
+        env:
+          - name: spring.config.import
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: spring.config.import
+          - name: eureka.client.service-url.defaultZone
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: eureka.client.service-url.defaultZone
+          - name: email.host
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: email.host
+          - name: email.port
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: email.port
+          - name: email.username
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: email.username
+          - name: email.Password
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: email.Password
+          - name: aws.accessKeyId
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: aws.accessKeyId
+          - name: aws.secretAccessKey
+            valueFrom:
+              configMapKeyRef:
+                name: env-vars
+                key: aws.secretAccessKey
+        resources:
+          limits:
+            memory: {{ quote .Values.inventory.memoryLimit }}
+            cpu: {{ quote .Values.inventory.cpuLimit }}
+        ports:
+        - containerPort: {{ .Values.inventory.containerPort }}
