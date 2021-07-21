@@ -112,10 +112,13 @@ stages:
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
       - script: 'mvn clean package -f ./base/pom.xml '
+
       - task: SonarCloudAnalyze@1
+
       - task: SonarCloudPublish@1
         inputs:
           pollingTimeoutSec: '300'
+          
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
