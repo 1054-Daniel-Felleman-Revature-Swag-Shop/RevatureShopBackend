@@ -114,24 +114,24 @@ stages:
          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
-      steps:
-       - script: |
-            echo 'Base will rebuild: $(base)'
-            echo 'Accounts will rebuild: $(accounts)'
-            echo 'Commerce will rebuild: $(commerce)'
-            echo 'Inventory will rebuild: $(inventory)'
-            echo 'Config will rebuild: $(config)'
-            echo 'Eureka Server will rebuild: $(eureka-server)'
-            echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
+      # steps:
+      #  - script: |
+      #       echo 'Base will rebuild: $(base)'
+      #       echo 'Accounts will rebuild: $(accounts)'
+      #       echo 'Commerce will rebuild: $(commerce)'
+      #       echo 'Inventory will rebuild: $(inventory)'
+      #       echo 'Config will rebuild: $(config)'
+      #       echo 'Eureka Server will rebuild: $(eureka-server)'
+      #       echo 'Spring Cloud Gateway will rebuild: $(Spring-Cloud-Gateway)'
 
         # currentBuild: $[ dependencies.CheckChanges.outputs['checkBuild.${{ service.name }}'] ] 
         # currentBuild2: $[ dependencies.CheckChanges.outputs['secondCheckBuild.${{ service.name }}'] ]
         # varFromA: $[ dependencies.CheckChanges.outputs['ProduceVar.MyVar'] ]
 
-      #condition: or(eq(variables['currentBuild'], 'True'), eq(variables['currentBuild2'], 'True')
-
-      # - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-      #   displayName:  'Checking ${{ service.name }}'
+      condition: eq(variables['${{ service.name }}'], 'True')
+      steps:
+      - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
+        displayName:  'Checking ${{ service.name }}'
       
       # - task: SonarCloudPrepare@1
       #   inputs:
@@ -140,4 +140,4 @@ stages:
       #     scannerMode: 'CLI'
       #     configMode: 'file'
 
-      # - script:  echo 'test'
+      - script:  echo 'test'
