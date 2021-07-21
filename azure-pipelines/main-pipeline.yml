@@ -118,7 +118,7 @@ stages:
           pollingTimeoutSec: '300'
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(Build.Repository.LocalPath)/base/target/*.jar'
+          targetPath: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
           artifact: 'base'
           publishLocation: 'pipeline'
 
