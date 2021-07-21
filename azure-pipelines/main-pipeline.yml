@@ -9,8 +9,11 @@ trigger:
 
 # Parameters to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 variables:
- - name: 'organization'
-   value: 1054-daniel-felleman-revature-swag-shop
+    
+    org: '1054-daniel-felleman-revature-swag-shop'
+    projectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
+    projectName: 'RevatureShopBackend'
+
 parameters:
 - name: serviceConditions
   type: object
@@ -100,10 +103,11 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: '$(organization)'
+          organization: '$(org)'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: '$(organization)'
+          cliProjectKey: '$(projectKey)'
+          cliProjectName: '$(projectName)'
           cliSources: '.'
 
       - script: 'mvn clean package -f ./base/pom.xml '
@@ -152,13 +156,15 @@ stages:
           itemPattern: '**/*.jar'
           targetPath: '$(Build.Repository.LocalPath)/base'
 
+
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: '$(organization)'
+          organization: '$(org)'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: '$(organization)'
+          cliProjectKey: '$(projectKey)'
+          cliProjectName: '$(projectName)'
           cliSources: '.'
         
       - script: |
