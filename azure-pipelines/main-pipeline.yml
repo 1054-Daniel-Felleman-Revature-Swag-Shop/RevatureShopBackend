@@ -74,9 +74,10 @@ stages:
       name: ProduceVar    
 
     - powershell: |   
-        echo $ProduceVar.base
+        Write-Output '$ProduceVar.base'
         if ( $ProduceVar.base )
         {
+          Write-Output 'Inside loop.'
           Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
           Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
           Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
@@ -99,7 +100,7 @@ stages:
       dependsOn: CheckChanges
       variables:
          accounts: $[ dependencies.CheckChanges.outputs['ProduceVar2.accounts'] ]
-         base: $[ dependencies.CheckChanges.outputs['ProduceVar2.base'] ]
+         base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
          commerce: $[ dependencies.CheckChanges.outputs['ProduceVar2.commerce'] ]
          config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
          eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
