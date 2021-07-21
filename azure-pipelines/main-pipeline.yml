@@ -73,16 +73,6 @@ stages:
           }
       name: ProduceVar    
 
-    # - powershell: |   
-    #     $myScriptVariable = $env:ProduceVar.base
-    #     Write-Output $myScriptVariable
-    #     if ( $myScriptVariable )
-    #     {
-    #       Write-Output 'Inside loop.'
-    #       Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
-    #       Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
-    #       Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
-    #     }
     - script: |
 
           echo $(ProduceVar.base)
@@ -109,14 +99,16 @@ stages:
       pool:
         name: java-16
       dependsOn: CheckChanges
+      
       variables:
-         accounts: $[ dependencies.CheckChanges.outputs['ProduceVar2.accounts'] ]
+         accounts: or($[ dependencies.CheckChanges.outputs['ProduceVar2.accounts'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ])
          base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
-         commerce: $[ dependencies.CheckChanges.outputs['ProduceVar2.commerce'] ]
+         commerce: or($[ dependencies.CheckChanges.outputs['ProduceVar2.commerce'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ])
          config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
          eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
-         inventory: $[ dependencies.CheckChanges.outputs['ProduceVar2.inventory'] ]
+         inventory: or($[ dependencies.CheckChanges.outputs['ProduceVar2.inventory'] ], $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ])
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
+
       steps:
        - script: |
             echo 'Base will rebuild: $(base)'
