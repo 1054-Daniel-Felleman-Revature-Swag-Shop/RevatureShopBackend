@@ -73,16 +73,26 @@ stages:
           }
       name: ProduceVar    
 
-    - powershell: |   
-        $myScriptVariable = $env:ProduceVar.base
-        Write-Output $myScriptVariable
-        if ( $myScriptVariable )
-        {
-          Write-Output 'Inside loop.'
-          Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
-          Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
-          Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
-        }
+    # - powershell: |   
+    #     $myScriptVariable = $env:ProduceVar.base
+    #     Write-Output $myScriptVariable
+    #     if ( $myScriptVariable )
+    #     {
+    #       Write-Output 'Inside loop.'
+    #       Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
+    #       Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
+    #       Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
+    #     }
+    - script: |
+    
+          echo $(ProduceVar.base)
+          
+          if [ $(ProduceVar.base -eq 'True' ]
+          then
+            echo '##vso[task.setvariable variable=accounts;isOutput=true]True'
+            echo '##vso[task.setvariable variable=commerce;isOutput=true]True'
+            echo '##vso[task.setvariable variable=inventory;isOutput=true]True'
+          fi
       name: ProduceVar2
 
     - script: |
