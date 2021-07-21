@@ -8,7 +8,9 @@ trigger:
     - experimental-pipeline
 
 # Parameters to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
-
+variables:
+ - name: 'organization'
+   value: 1054-daniel-felleman-revature-swag-shop
 parameters:
 - name: serviceConditions
   type: object
@@ -97,10 +99,11 @@ stages:
 
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: 'SonarCloud'
+          SonarCloud: '$(organization)'
           organization: '$(organization)'
           scannerMode: 'CLI'
           configMode: 'manual'
+          cliProjectKey: '$(organization)'
           cliSources: '.'
 
       - script: 'mvn clean install -f '
@@ -156,11 +159,11 @@ stages:
           scannerMode: 'CLI'
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: 'SonarCloud'
+          SonarCloud: '$(organization)'
           organization: '$(organization)'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: '''SonarCloud'''
+          cliProjectKey: '$(organization)'
           cliSources: '.'
         
       - script: |
