@@ -181,8 +181,8 @@ stages:
             -Dpackaging=.jar \
             -DgeneratePom=true;
 
-            mvn package -f sonar.java.binaries=**/target/classes
-            
+            mvn package -f './${{ service.name }}/pom.xml'
+
           else
-            mvn install -f sonar.java.binaries=**/target/classes
+             mvn package -f './${{ service.name }}/pom.xml'
 
