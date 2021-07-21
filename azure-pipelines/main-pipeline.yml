@@ -155,7 +155,7 @@ stages:
           buildVersionToDownload: 'latest'
           artifactName: 'base'
           itemPattern: '**/*.jar'
-          targetPath: '$(Build.Repository.LocalPath)/base'
+          targetPath: '$(Build.Repository.LocalPath)/base/target/'
 
 
       - task: SonarCloudPrepare@1
