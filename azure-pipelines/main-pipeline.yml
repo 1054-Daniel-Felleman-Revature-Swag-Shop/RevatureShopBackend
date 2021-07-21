@@ -153,6 +153,7 @@ stages:
           project: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e'
           definition: '147'
           buildVersionToDownload: 'latest'
+          allowPartiallySucceededBuilds: true
           artifactName: 'base'
           itemPattern: '**/*.jar'
           targetPath: '$(Build.Repository.LocalPath)/base/target/'
