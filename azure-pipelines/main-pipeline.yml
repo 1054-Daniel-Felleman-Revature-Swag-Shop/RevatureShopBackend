@@ -114,7 +114,7 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
-      - script: 'mvn clean package -f ./base/pom.xml '
+      - script: 'mvn clean install -f ./base/pom.xml '
 
       - task: SonarCloudAnalyze@1
 
@@ -180,8 +180,8 @@ stages:
 
 # Install Parent Pom to resolve dependencies.
 
-      - script:  mvn clean install -f "./pom.xml"
-        name: InstallParent
+      # - script:  mvn clean install -f "./pom.xml"
+      #   name: InstallParent
 
 # Package Individual Service to create artifacts from.  
 
