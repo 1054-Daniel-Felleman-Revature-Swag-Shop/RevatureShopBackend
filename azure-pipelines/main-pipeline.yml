@@ -19,9 +19,9 @@ pr:
 # Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 variables:
     
-    org: '1054-daniel-felleman-revature-swag-shop'
-    projectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
-    projectName: 'RevatureShopBackend'
+    sonarOrg: '1054-daniel-felleman-revature-swag-shop'
+    sonarProjectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
+    sonarProjectName: 'RevatureShopBackend'
 
 parameters:
 - name: serviceConditions
@@ -115,11 +115,11 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: '$(org)'
+          organization: '$(sonarOrg)'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: '$(projectKey)'
-          cliProjectName: '$(projectName)'
+          cliProjectKey: '$(sonarProjectKey)'
+          cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
@@ -182,11 +182,11 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
-          organization: '$(org)'
+          organization: '$(sonarOrg)'
           scannerMode: 'CLI'
           configMode: 'manual'
-          cliProjectKey: '$(projectKey)'
-          cliProjectName: '$(projectName)'
+          cliProjectKey: '$(sonarProjectKey)'
+          cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
