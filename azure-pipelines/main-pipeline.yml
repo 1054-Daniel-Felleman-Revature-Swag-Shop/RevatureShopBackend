@@ -57,11 +57,11 @@ stages:
     pool: java-16
     steps:
 
-# This script will check the Repo for changes and store them in a variable updatedFiles.
-# The script will iterate over every object stored in updatedFiles to select paths with changes.
-# Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
-# This step controls which build tasks will be triggered.
-# If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
+    # This script will check the Repo for changes and store them in a variable updatedFiles.
+    # The script will iterate over every object stored in updatedFiles to select paths with changes.
+    # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
+    # This step controls which build tasks will be triggered.
+    # If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
 
     - powershell: |
         $updatedFiles = git diff HEAD HEAD~ --name-only
@@ -107,9 +107,7 @@ stages:
         base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
     condition: eq(variables['base'], 'True')
     steps:
-      - script: echo 'Base has been updated - $(base)'
-        displayName:  'Checking Base'
-
+      
       # Sonar Cloud Prep 
 
       - task: SonarCloudPrepare@1
