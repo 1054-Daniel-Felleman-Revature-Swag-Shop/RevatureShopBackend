@@ -171,9 +171,9 @@ stages:
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
       - script:  mvn clean install -f "./pom.xml"
+        name: InstallParent
       
-      - script: |
-          
+      - script: |      
 
           if [ ${{ service.requiresBase }} = true ]
           then
@@ -190,4 +190,12 @@ stages:
           else
              mvn package -f './${{ service.name }}/pom.xml'
           fi
+        name: BuildScript
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Build.Repository.LocalPath)/base/target/${{ service.name}}-1.jar'
+          artifact: '${{ service.name }}'
+          publishLocation: 'pipeline'
+
 
