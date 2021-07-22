@@ -184,4 +184,5 @@ stages:
 
           else
              mvn package -f './${{ service.name }}/pom.xml'
+          fi
 
