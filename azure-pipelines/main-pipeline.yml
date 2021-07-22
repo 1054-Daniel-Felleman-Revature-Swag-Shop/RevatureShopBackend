@@ -2,12 +2,21 @@
 # And using the variable to set a condition that will set pipeline variables variables that will control the flow of the pipeline.
 
 trigger:
+
   branches:
     include: 
-    - devops_pipeline
     - experimental-pipeline
 
-# Parameters to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
+pr:
+  branches:
+    include:
+    - main
+    - staging
+    - development
+    - feature_*
+    
+
+# Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 variables:
     
     org: '1054-daniel-felleman-revature-swag-shop'
@@ -114,10 +123,13 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
+# Install Base service.
+
       - script: 'mvn clean package -f ./base/pom.xml '
 
-      - task: SonarCloudAnalyze@1
+# Sonar Analysis
 
+      - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
         inputs:
           pollingTimeoutSec: '300'
@@ -178,10 +190,6 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
-# Install Parent Pom to resolve dependencies.
-
-      #  - script:  mvn clean install -f "./pom.xml"
-      #     name: InstallParent
 
 # Package Individual Service to create artifacts from.  
 
