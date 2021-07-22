@@ -169,8 +169,12 @@ stages:
           cliProjectName: '$(projectName)'
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
-        
+
+      - script:  mvn clean install -f "./pom.xml"
+      
       - script: |
+          
+
           if [ ${{ service.requiresBase }} = true ]
           then
             mvn install:install-file
