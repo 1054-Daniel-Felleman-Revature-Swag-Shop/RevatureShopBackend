@@ -166,7 +166,7 @@ stages:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
 
-      # Download Base Artifact to install wich dependant services.
+      # Download Base Artifact to install in dependent services.
 
       - task: DownloadPipelineArtifact@2
         inputs:
