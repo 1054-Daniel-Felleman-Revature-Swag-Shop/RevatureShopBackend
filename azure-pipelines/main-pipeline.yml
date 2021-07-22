@@ -171,10 +171,9 @@ stages:
           extraProperties: 'sonar.java.binaries=**/target/classes'
         
       - script: |
-          if [[ ${{ service.name }} = accounts  ||  ${{ service.name }} = commerce ] ||  ${{ service.name }} = inventory ]];
-          then
+          if [ ${{ service.requiresBase }} = true ]
             mvn install:install-file \
-            -Dfile=$(Build.Repository.LocalPath)/base/ \
+            -Dfile=$(Build.Repository.LocalPath)/base/target/base-1.jar \
             -DgroupId=com.revature \
             -DartifactId=base \
             -Dversion=1 \
