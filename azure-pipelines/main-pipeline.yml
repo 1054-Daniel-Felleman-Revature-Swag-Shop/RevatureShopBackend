@@ -101,6 +101,8 @@ stages:
       - script: echo 'Base has been updated - $(base)'
         displayName:  'Checking Base'
 
+# Sonar Cloud Prep 
+
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarCloud'
@@ -136,7 +138,9 @@ stages:
       pool:
         name: java-16
       dependsOn: BaseBuild
-      
+
+# Setting Variables that contain values for the conditional logic below.
+
       variables:
          accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
          base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
@@ -146,10 +150,14 @@ stages:
          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
+# Jobs created dynamically will only run if they were marked True, previously.
+
       condition: eq(variables['${{ service.name }}'], 'True')
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
+
+# Download Base Artifact to install wich dependant services.
 
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -170,9 +178,13 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
+# Install Parent Pom to resolve dependencies.
+
       - script:  mvn clean install -f "./pom.xml"
         name: InstallParent
-      
+
+# Package Individual Service to create artifacts from.  
+
       - script: |      
 
           if [ ${{ service.requiresBase }} = true ]
@@ -192,9 +204,18 @@ stages:
           fi
         name: BuildScript
 
+# Sonar Cloud Analysis and Result Publish
+      - task: SonarCloudAnalyze@1
+
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
+
+# Publish Artifacts to be used in Docker Stage
+
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(Build.Repository.LocalPath)/base/target/${{ service.name}}-1.jar'
+          targetPath: '$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar'
           artifact: '${{ service.name }}'
           publishLocation: 'pipeline'
 
