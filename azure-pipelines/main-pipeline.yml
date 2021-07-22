@@ -87,13 +87,13 @@ stages:
     # The script will print literal.
 
     - script: |
-          echo 'Base will rebuild: $(ProduceVar.base)'
-          echo 'Accounts will rebuild: $(ProduceVar.accounts)'
-          echo 'Commerce will rebuild: $(ProduceVar.commerce)'
-          echo 'Inventory will rebuild: $(ProduceVar.inventory)'
-          echo 'Config will rebuild: $(ProduceVar.config)'
-          echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
-          echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
+        echo 'Base will rebuild: $(ProduceVar.base)'
+        echo 'Accounts will rebuild: $(ProduceVar.accounts)'
+        echo 'Commerce will rebuild: $(ProduceVar.commerce)'
+        echo 'Inventory will rebuild: $(ProduceVar.inventory)'
+        echo 'Config will rebuild: $(ProduceVar.config)'
+        echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
+        echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
 
   # This job ensures Base is built first, in case of dependencies.
   # Setting a variable with the output variable from the previous job.
@@ -107,7 +107,7 @@ stages:
         base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
     condition: eq(variables['base'], 'True')
     steps:
-      
+
       # Sonar Cloud Prep 
 
       - task: SonarCloudPrepare@1
