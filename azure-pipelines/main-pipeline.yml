@@ -65,26 +65,26 @@ stages:
 
     - powershell: |
         $updatedFiles = git diff HEAD HEAD~ --name-only
-          $updatedFiles | ForEach-Object {
-              Switch -Wildcard ($_ ) {
-                  'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
-                  'base/*' { 
-                      Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' 
-                      Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
-                      Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
-                      Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
-                  }
-                  'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
-                  'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
-                  'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
-                  'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
-                  'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
-              }
+        $updatedFiles | ForEach-Object {
+            Switch -Wildcard ($_ ) {
+                'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
+                'base/*' { 
+                    Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' 
+                    Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
+                    Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
+                    Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
+                }
+                'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
+                'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
+                'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
+                'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
+                'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
+            }
           }
       name: ProduceVar
 
-# Printing a To-Do (Build) list. Note, that these are dynamic variables and if no variables exist
-# The script will print literal.
+    # Printing a To-Do (Build) list. Note, that these are dynamic variables and if no variables exist
+    # The script will print literal.
 
     - script: |
           echo 'Base will rebuild: $(ProduceVar.base)'
@@ -95,9 +95,9 @@ stages:
           echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
           echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
 
-# This job ensures Base is built first, in case of dependencies.
-# Setting a variable with the output variable from the previous job.
-# It then checks that it's true, and continues on with the build, or skips.
+  # This job ensures Base is built first, in case of dependencies.
+  # Setting a variable with the output variable from the previous job.
+  # It then checks that it's true, and continues on with the build, or skips.
 
   - job: BaseBuild
     pool:
@@ -110,7 +110,7 @@ stages:
       - script: echo 'Base has been updated - $(base)'
         displayName:  'Checking Base'
 
-# Sonar Cloud Prep 
+      # Sonar Cloud Prep 
 
       - task: SonarCloudPrepare@1
         inputs:
@@ -123,11 +123,11 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
-# Install Base service.
+      # Install Base service.
 
       - script: 'mvn clean package -f ./base/pom.xml'
 
-# Sonar Analysis
+      # Sonar Analysis
 
       - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
@@ -141,8 +141,8 @@ stages:
           publishLocation: 'pipeline'
 
 
-# Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
-# that are created as part of the loop. The job checks if a service is to be built, or skips the job.
+  # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
+  # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
 
   - ${{ each service in parameters.serviceConditions }}:
     - job: ${{ service.jobName }}
@@ -150,7 +150,7 @@ stages:
         name: java-16
       dependsOn: BaseBuild
 
-# Setting Variables that contain values for the conditional logic below.
+    # Setting Variables that contain values for the conditional logic below.
 
       variables:
          accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
@@ -161,14 +161,14 @@ stages:
          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
-# Jobs created dynamically will only run if they were marked True, previously.
+    # Jobs created dynamically will only run if they were marked True, previously.
 
       condition: eq(variables['${{ service.name }}'], 'True')
       steps:
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
 
-# Download Base Artifact to install wich dependant services.
+      # Download Base Artifact to install wich dependant services.
 
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -190,7 +190,7 @@ stages:
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
 
-# Package Individual Service to create artifacts from.  
+      # Package Individual Service to create artifacts from.  
 
       - script: |      
 
@@ -209,13 +209,13 @@ stages:
           
         name: BuildScript
 
-# Sonar Cloud Analysis and Result Publish
+      # Sonar Cloud Analysis and Result Publish
       - task: SonarCloudAnalyze@1
       - task: SonarCloudPublish@1
         inputs:
           pollingTimeoutSec: '300'
 
-# Publish Artifacts to be used in Docker Stage
+      # Publish Artifacts to be used in Docker Stage
 
       - task: PublishPipelineArtifact@1
         inputs:
