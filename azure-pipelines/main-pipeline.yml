@@ -1,5 +1,5 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
-# And using the variable to set a condition that will set pipeline variables variables that will control the flow of the pipeline.
+# And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline.
 
 trigger:
 
