@@ -2,6 +2,7 @@ package com.revature.shop.services;
 
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
+
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

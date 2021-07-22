@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.exception;
+package com.revature.shop.commerce.exceptions;
 
 public class UnableToSaveCartException extends Exception  {
 

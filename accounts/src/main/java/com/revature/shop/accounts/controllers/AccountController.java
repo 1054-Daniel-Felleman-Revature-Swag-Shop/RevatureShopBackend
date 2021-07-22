@@ -1,4 +1,4 @@
-package com.revature.shop.accounts;
+package com.revature.shop.accounts.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -6,6 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+
+import com.revature.shop.accounts.models.Account;
+import com.revature.shop.accounts.models.PointHistory;
+import com.revature.shop.accounts.repositories.AccountRepository;
+import com.revature.shop.accounts.repositories.PointRepository;
+import com.revature.shop.accounts.services.AccountService;
 
 import java.awt.*;
 import java.util.List;
@@ -26,7 +32,7 @@ public class AccountController {
     }
 
     @PostMapping("/points/{email}")
-    public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointChange change) {
+    public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
         return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
@@ -41,7 +47,7 @@ public class AccountController {
     }
 
     @GetMapping("pointHistory/{id}")
-    public List<PointChange> pointHistory(@PathVariable int id){
+    public List<PointHistory> pointHistory(@PathVariable int id){
         Account account = repo.findAccountById(id);
         System.out.println(account);
         return pr.findPointChangeByAccount(account);

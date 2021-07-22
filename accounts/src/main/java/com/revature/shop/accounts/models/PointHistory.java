@@ -1,22 +1,24 @@
-package com.revature.shop.accounts;
+package com.revature.shop.accounts.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "point_history")
-public final class PointChange {
+public final class PointHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_account")
     private Account account;
 
@@ -24,9 +26,9 @@ public final class PointChange {
     private int change;
     private LocalDate date;
 
-    public PointChange() {}
+    public PointHistory() {}
 
-    public PointChange(String cause, int change) {
+    public PointHistory(String cause, int change) {
         this.cause = cause;
         this.change = change;
 

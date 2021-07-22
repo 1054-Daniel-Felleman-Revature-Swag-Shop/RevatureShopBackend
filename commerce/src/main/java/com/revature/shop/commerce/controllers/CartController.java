@@ -1,8 +1,8 @@
-package com.revature.shop.commerce.controller;
+package com.revature.shop.commerce.controllers;
 
-import com.revature.shop.commerce.dto.StockItemDto;
-import com.revature.shop.commerce.model.Cart;
-import com.revature.shop.commerce.exception.*;
+import com.revature.shop.commerce.dtos.StockItemDto;
+import com.revature.shop.commerce.exceptions.*;
+import com.revature.shop.commerce.models.Cart;
 import com.revature.shop.commerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

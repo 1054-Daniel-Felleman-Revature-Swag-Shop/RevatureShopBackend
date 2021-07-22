@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.dto;
+package com.revature.shop.commerce.dtos;
 
 import java.util.Objects;
 

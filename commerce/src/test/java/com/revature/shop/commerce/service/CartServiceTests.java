@@ -1,12 +1,11 @@
 package com.revature.shop.commerce.service;
 
-import com.revature.shop.commerce.dto.CartDto;
-import com.revature.shop.commerce.dto.StockItemDto;
-import com.revature.shop.commerce.exception.ItemNotInCartException;
-import com.revature.shop.commerce.exception.ItemOutOfStockException;
-
-import com.revature.shop.commerce.model.Cart;
-import com.revature.shop.commerce.repository.CartRepository;
+import com.revature.shop.commerce.dtos.CartDto;
+import com.revature.shop.commerce.dtos.StockItemDto;
+import com.revature.shop.commerce.exceptions.ItemNotInCartException;
+import com.revature.shop.commerce.exceptions.ItemOutOfStockException;
+import com.revature.shop.commerce.models.Cart;
+import com.revature.shop.commerce.repositories.CartRepository;
 import com.revature.shop.models.StockItem;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

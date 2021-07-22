@@ -4,6 +4,12 @@ package com.revature.shop.accounts;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import com.revature.shop.accounts.models.Account;
+import com.revature.shop.accounts.models.PointHistory;
+import com.revature.shop.accounts.repositories.AccountRepository;
+import com.revature.shop.accounts.repositories.PointRepository;
+import com.revature.shop.accounts.services.AccountService;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,20 +35,20 @@ public class AccountServiceTest {
         AccountService service = new AccountService(repo, pointsRepo, null, null);
 
         // Test if account exists
-        assertTrue(service.modPoints("test", new PointChange("test", 0)));
-        assertFalse(service.modPoints("test2", new PointChange("test", 0)));
+        assertTrue(service.modPoints("test", new PointHistory("test", 0)));
+        assertFalse(service.modPoints("test2", new PointHistory("test", 0)));
 
         // Test modification to points
-        assertTrue(service.modPoints("test", new PointChange("test", -40)));
+        assertTrue(service.modPoints("test", new PointHistory("test", -40)));
         assertEquals(60, account.getPoints());
 
-        assertTrue(service.modPoints("test", new PointChange("test", -60)));
+        assertTrue(service.modPoints("test", new PointHistory("test", -60)));
         assertEquals(0, account.getPoints());
 
-        assertFalse(service.modPoints("test", new PointChange("test", -5)));
+        assertFalse(service.modPoints("test", new PointHistory("test", -5)));
         assertEquals(0, account.getPoints());
 
-        assertTrue(service.modPoints("test", new PointChange("test", 1)));
+        assertTrue(service.modPoints("test", new PointHistory("test", 1)));
         assertEquals(1, account.getPoints());
     }
 }
