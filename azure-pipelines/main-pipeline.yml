@@ -171,7 +171,7 @@ stages:
           extraProperties: 'sonar.java.binaries=**/target/classes'
         
       - script: |
-          if [ ${{ service.name }} = accounts ] || [ ${{ service.name }} = commerce ] || [ ${{ service.name }} = inventory ]
+          if [[ ${{ service.name }} = accounts  ||  ${{ service.name }} = commerce ] ||  ${{ service.name }} = inventory ]];
           then
             mvn install:install-file \
             -Dfile=$(Build.Repository.LocalPath)/base/ \
