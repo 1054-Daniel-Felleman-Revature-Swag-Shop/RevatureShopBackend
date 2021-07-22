@@ -114,7 +114,7 @@ stages:
           cliSources: '.'
           extraProperties: 'sonar.java.binaries=**/target/classes'
 
-      - script: 'mvn clean install -f ./base/pom.xml '
+      - script: 'mvn clean package -f ./base/pom.xml '
 
       - task: SonarCloudAnalyze@1
 
@@ -164,7 +164,7 @@ stages:
           buildType: 'current'
           artifactName: 'base'
           itemPattern: '**/*.jar'
-          targetPath: '$(Build.Repository.LocalPath)/'
+          targetPath: '$(Build.Repository.LocalPath)'
 
 
       - task: SonarCloudPrepare@1
@@ -180,8 +180,8 @@ stages:
 
 # Install Parent Pom to resolve dependencies.
 
-      # - script:  mvn clean install -f "./pom.xml"
-      #   name: InstallParent
+      #  - script:  mvn clean install -f "./pom.xml"
+      #     name: InstallParent
 
 # Package Individual Service to create artifacts from.  
 
@@ -190,23 +190,21 @@ stages:
           if [ ${{ service.requiresBase }} = true ]
           then
             mvn install:install-file
-            -Dfile="$(Build.Repository.LocalPath)/base/target/base-1.jar"
+            -Dfile="$(Build.Repository.LocalPath)/base-1.jar"
             -DgroupId="com.revature"
             -DartifactId="base"
             -Dversion="1"
             -Dpackaging=jar
             -DgeneratePom=true;
-
-            mvn package -f './${{ service.name }}/pom.xml'
-
-          else
-             mvn package -f './${{ service.name }}/pom.xml'
+            
+            ls -a ~/.m2/repository/com/revature/base/1/
           fi
+             mvn package -f './${{ service.name }}/pom.xml'
+          
         name: BuildScript
 
 # Sonar Cloud Analysis and Result Publish
       - task: SonarCloudAnalyze@1
-
       - task: SonarCloudPublish@1
         inputs:
           pollingTimeoutSec: '300'
