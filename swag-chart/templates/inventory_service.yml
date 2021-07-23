@@ -1,11 +1,12 @@
+{{- with .Values.inventory }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.inventory.serviceName }}
+  name: {{ .serviceName }}
 spec:
   selector:
-    app: {{ .Values.inventory.app }}
+    app: {{ .app }}
   ports:
-  - port: {{ .Values.inventory.containerPort }}
-    targetPort: {{ .Values.inventory.containerPort }}
-  # add if statement to make it a load balancer if some variable is true
+  - port: {{ .containerPort }}
+    targetPort: {{ .containerPort }}
+{{ end }}
