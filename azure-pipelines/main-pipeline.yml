@@ -131,7 +131,7 @@ stages:
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: |
-              sonar.java.binaries=**/target/classes
+              sonar.java.binaries=**/target/classes \
               sonar.exclusions=/jdk/**/*
 
       # Install Base service.
@@ -212,7 +212,7 @@ stages:
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: |
-              sonar.java.binaries=**/target/classes
+              sonar.java.binaries=**/target/classes \
               sonar.exclusions=/jdk/**/*
 
 
@@ -251,5 +251,3 @@ stages:
           targetPath: '$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar'
           artifact: '${{ service.name }}'
           publishLocation: 'pipeline'
-
-
