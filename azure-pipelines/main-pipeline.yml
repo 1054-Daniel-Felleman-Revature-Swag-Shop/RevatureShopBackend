@@ -218,7 +218,8 @@ stages:
 
       # Package Individual Service to create artifacts from.  
       
-      - script: |      
+      - script: |
+          echo ${{ service.requiresBase }}
 
           if [ ${{ service.requiresBase }} = true ]
           then
