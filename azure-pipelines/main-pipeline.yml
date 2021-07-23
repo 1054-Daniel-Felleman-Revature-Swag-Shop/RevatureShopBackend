@@ -130,7 +130,7 @@ stages:
           cliProjectKey: '$(sonarProjectKey)'
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
-          extraProperties: 'sonar.java.binaries=**/target/classes'
+          extraProperties: 'sonar.java.binaries=**/target/classes \ sonar.exclusions=./jdk/*'
 
       # Install Base service.
 
@@ -209,7 +209,7 @@ stages:
           cliProjectKey: '$(sonarProjectKey)'
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
-          extraProperties: 'sonar.java.binaries=**/target/classes'
+          extraProperties: 'sonar.java.binaries=**/target/classes \ sonar.exclusions=./jdk/*'
 
 
       # Package Individual Service to create artifacts from.  
