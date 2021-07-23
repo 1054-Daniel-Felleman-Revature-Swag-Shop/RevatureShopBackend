@@ -152,6 +152,7 @@ stages:
       #     publishLocation: 'pipeline'
       
       - task: UniversalPackages@0
+        displayName: Publish Base Artifact
         inputs:
           command: 'publish'
           publishDirectory: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
@@ -204,13 +205,23 @@ stages:
 
       # Download Base Artifact to install in dependent services.
 
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          buildType: 'current'
-          artifactName: 'base'
-          itemPattern: '**/*.jar'
-          targetPath: '$(Build.Repository.LocalPath)'
+      # - task: DownloadPipelineArtifact@2
+      #   inputs:
+      #     buildType: 'current'
+      #     artifactName: 'base'
+      #     itemPattern: '**/*.jar'
+      #     targetPath: '$(Build.Repository.LocalPath)'
 
+      - task: UniversalPackages@0
+        displayName: Download Base Artifact
+        condition: eq(${{ service.requiresBase }}, 'True')
+        inputs:
+          command: 'download'
+          downloadDirectory: '$(Build.Repository.LocalPath)'
+          feedsToUse: 'internal'
+          vstsFeed: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e/0f47a7ae-aa33-4d2a-b8ad-22bf9d3ba176'
+          vstsFeedPackage: '41ba8461-e00b-4f49-9399-8b4e0d70b3a7'
+          vstsPackageVersion: '*'
 
       - task: SonarCloudPrepare@1
         inputs:
