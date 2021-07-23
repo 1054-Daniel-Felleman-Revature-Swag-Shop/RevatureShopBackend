@@ -59,6 +59,7 @@ stages:
     # Install Java 16 on agent.
 
     - script: ./azure-pipelines/java-16-install.sh
+      name: Install_JDK_16
     - task: JavaToolInstaller@0
       inputs:
         versionSpec: '16'
