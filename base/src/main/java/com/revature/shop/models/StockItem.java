@@ -23,7 +23,13 @@ public class StockItem
     private String category;
 
     private String description;
-
+    
+    private String size;
+    
+    public StockItem() {
+	
+	}
+    
     public StockItem(String item_name, int itemPrice, int quantity, String category, String description) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
@@ -32,8 +38,13 @@ public class StockItem
         this.description = Objects.requireNonNullElse(description, "No description provided.");
     }
 
-    public StockItem() {
-
+	public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size) {
+        this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
+        this.itemPrice = Math.max(itemPrice, 0);
+        this.quantity = Math.max(quantity, 0);
+        this.category = Objects.requireNonNullElse(category, "Misc");
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
+        this.size = Objects.requireNonNullElse(size, "No sizes provided.");
     }
 
     public int getId(){
@@ -63,20 +74,20 @@ public class StockItem
     public void setItemName(String item_name) {
         this.itemName = item_name;
     }
+    
+    public String getSize() {
+		return size;
+	}
 
-    //    public void setItem_name(String item_name) {
-//        this.item_name = Objects.requireNonNullElse(itemName, "Revature Swag");
-//    }
+	public void setSize(String size) {
+		this.size = size;
+	}
 
-    @Override
-    public String toString() {
-        return "StockItem{" +
-                "id=" + id +
-                ", item_name='" + itemName + '\'' +
-                ", item_price=" + itemPrice +
-                ", quantity=" + quantity +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "StockItem [id=" + id + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", quantity=" + quantity
+				+ ", category=" + category + ", description=" + description + ", size=" + size + "]";
+	}
 
     public String getDescription() {
         return description;
