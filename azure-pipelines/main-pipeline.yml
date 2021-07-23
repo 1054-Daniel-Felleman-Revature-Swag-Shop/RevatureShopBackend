@@ -56,20 +56,6 @@ stages:
     
     steps:
 
-    # Install Java 16 on agent.
-
-    - script: ./azure-pipelines/java-16-install.sh
-      name: Install_JDK_16
-    - task: JavaToolInstaller@0
-      inputs:
-        versionSpec: '16'
-        jdkArchitectureOption: 'x64'
-        jdkSourceOption: 'LocalDirectory'
-        jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
-        jdkDestinationDirectory: './jdk'
-        cleanDestinationDirectory: true
-    
-
     # This script will check the Repo for changes and store them in a variable updatedFiles.
     # The script will iterate over every object stored in updatedFiles to select paths with changes.
     # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
@@ -119,6 +105,20 @@ stages:
     condition: eq(variables['base'], 'True')
     steps:
 
+     # Install JDK 16
+
+      - script: ./azure-pipelines/java-16-install.sh
+        name: Install_JDK_16
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '16'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'LocalDirectory'
+          jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
+          jdkDestinationDirectory: './jdk'
+          cleanDestinationDirectory: true
+      - script: java --version
+
       # Sonar Cloud Prep 
 
       - task: SonarCloudPrepare@1
@@ -154,9 +154,7 @@ stages:
   # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
 
   - ${{ each service in parameters.serviceConditions }}:
-    - job: ${{ service.jobName }}
-      pool:
-        name: java-16
+    - job: ${{ service.jobName }} 
       dependsOn: BaseBuild
 
     # Setting Variables that contain values for the conditional logic below.
@@ -174,6 +172,21 @@ stages:
 
       condition: eq(variables['${{ service.name }}'], 'True')
       steps:
+      
+      # install JDK 16
+      
+      - script: ./azure-pipelines/java-16-install.sh
+        name: Install_JDK_16
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '16'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'LocalDirectory'
+          jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
+          jdkDestinationDirectory: './jdk'
+          cleanDestinationDirectory: true
+      - script: java --version
+
       - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
         displayName:  'Checking ${{ service.name }}'
 
