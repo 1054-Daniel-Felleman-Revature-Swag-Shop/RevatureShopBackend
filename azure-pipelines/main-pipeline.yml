@@ -234,7 +234,7 @@ stages:
             -e;
             
           fi
-             mvn package -f './${{ service.name }}/pom.xml'
+#             mvn package -f './${{ service.name }}/pom.xml'
           
         name: BuildScript
 
