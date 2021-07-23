@@ -7,15 +7,13 @@ trigger:
     include: 
     - experimental-pipeline
 
-
 pr:
   branches:
     include:
     - main
     - staging
     - development
-    - feature_*
-    
+    - feature_* 
 
 # Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 variables:
@@ -23,7 +21,6 @@ variables:
     sonarOrg: '1054-daniel-felleman-revature-swag-shop'
     sonarProjectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
     sonarProjectName: 'RevatureShopBackend'
-
 
 parameters:
 - name: serviceConditions
@@ -68,7 +65,7 @@ stages:
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'LocalDirectory'
         jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
-        jdkDestinationDirectory: '/usr/bin/java'
+        jdkDestinationDirectory: './jdk'
         cleanDestinationDirectory: true
     
 
