@@ -10,9 +10,7 @@
 -- // for h2database sorting purpose
 
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Rev It Up Hat', 10, 1000, 'Misc', 'A sweet hat to ACCELERATE your development!');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Small');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Medium');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Large');
+INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Programmer Socks', 1000, 10, 'Misc', 'Scientifically proven to make you a better programmer.');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Revature: Party Game', 175, 95, 'Misc', 'Simple board game to test your tech skills');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Anime Collection Blu-Ray', 50, 300, 'Movies', 'Only old-school anime fans will understand.');

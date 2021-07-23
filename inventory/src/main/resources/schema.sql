@@ -7,5 +7,5 @@ CREATE TABLE inventory(
     quantity int,
     category varchar,
     description varchar,
-    size varchar
+    size varchar default null
 );
