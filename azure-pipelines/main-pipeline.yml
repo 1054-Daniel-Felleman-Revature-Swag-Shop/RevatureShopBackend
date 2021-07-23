@@ -217,18 +217,20 @@ stages:
 
 
       # Package Individual Service to create artifacts from.  
-
+      
       - script: |      
 
           if [ ${{ service.requiresBase }} = true ]
           then
+            echo 'Requires base...'
             mvn install:install-file
             -Dfile="$(Build.Repository.LocalPath)/base-1.jar"
             -DgroupId="com.revature"
             -DartifactId="base"
             -Dversion="1"
             -Dpackaging=jar
-            -DgeneratePom=true;
+            -DgeneratePom=true
+            -e;
             
           fi
              mvn package -f './${{ service.name }}/pom.xml'
