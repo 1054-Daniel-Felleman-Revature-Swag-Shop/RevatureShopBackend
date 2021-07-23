@@ -59,8 +59,7 @@ stages:
 
     # Install Java 16 on agent.
 
-    - script: ./azure-pipelines/java-16-install.sh
-      name: InstallJava16
+    
 
     # This script will check the Repo for changes and store them in a variable updatedFiles.
     # The script will iterate over every object stored in updatedFiles to select paths with changes.
