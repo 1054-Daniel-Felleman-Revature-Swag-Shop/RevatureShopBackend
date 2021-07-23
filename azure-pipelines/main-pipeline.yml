@@ -214,19 +214,6 @@ stages:
           vstsFeedPackage: $(artifactPackage)
           vstsPackageVersion: '*'
 
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: 'SonarCloud'
-          organization: '$(sonarOrg)'
-          scannerMode: 'CLI'
-          configMode: 'manual'
-          cliProjectKey: '$(sonarProjectKey)'
-          cliProjectName: '$(sonarProjectName)'
-          cliSources: '.'
-          extraProperties: |
-              sonar.java.binaries=**/target/classes
-              sonar.exclusions=/jdk/**/*
-
       # Package Individual Service to create artifacts from.  
       
       - script: |
@@ -247,12 +234,6 @@ stages:
             mvn package -f './${{ service.name }}/pom.xml'
           
         name: BuildScript
-
-      # Sonar Cloud Analysis and Result Publish
-      - task: SonarCloudAnalyze@1
-      - task: SonarCloudPublish@1
-        inputs:
-          pollingTimeoutSec: '300'
 
       # Publish Artifacts to be used in Docker Stage
 
