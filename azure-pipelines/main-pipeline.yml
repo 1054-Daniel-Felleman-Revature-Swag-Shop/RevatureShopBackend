@@ -36,9 +36,11 @@ parameters:
     jobName: 'CommerceBuild'
   - config:
     name: 'config'
+    requiresBase: false
     jobName: 'ConfigBuild'
   - eureka-server:
     name: 'eureka-server'
+    requiresBase: false
     jobName: 'EurekaBuild'
   - inventory:
     name: 'inventory'
@@ -46,6 +48,7 @@ parameters:
     jobName: 'InventoryBuild'
   - Spring-Cloud-Gateway:
     name: 'Spring-Cloud-Gateway'
+    requiresBase: false
     jobName: 'SpringBuild'
 
 stages:
@@ -214,7 +217,7 @@ stages:
 
       - task: UniversalPackages@0
         displayName: Download Base Artifact
-        condition: eq(${{ service.requiresBase }}, 'True')
+        condition: eq('${{ service.requiresBase }}', 'True')
         inputs:
           command: 'download'
           downloadDirectory: '$(Build.Repository.LocalPath)'
