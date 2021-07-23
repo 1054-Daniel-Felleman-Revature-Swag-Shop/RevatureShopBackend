@@ -1,5 +1,5 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
-# And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline.
+# And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline and what builds.
 
 trigger: none
 
@@ -17,10 +17,13 @@ pr:
 
 # Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
 variables:
-    
-    sonarOrg: '1054-daniel-felleman-revature-swag-shop'
-    sonarProjectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
-    sonarProjectName: 'RevatureShopBackend'
+  - group: artifactGroup
+  - name: sonarOrg
+    value: '1054-daniel-felleman-revature-swag-shop'
+  - name: sonarProjectKey
+    value: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
+  - name: sonarProjectName
+    value: 'RevatureShopBackend'
 
 parameters:
 - name: serviceConditions
@@ -120,7 +123,6 @@ stages:
           jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
           jdkDestinationDirectory: './jdk'
           cleanDestinationDirectory: true
-      - script: java --version
 
       # Sonar Cloud Prep 
 
@@ -155,7 +157,7 @@ stages:
           command: 'publish'
           publishDirectory: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
           feedsToUsePublish: 'internal'
-          vstsFeedPublish: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e/0f47a7ae-aa33-4d2a-b8ad-22bf9d3ba176'
+          vstsFeedPublish: $(artifactFeed)
           vstsFeedPackagePublish: 'base'
           versionOption: 'minor'
           packagePublishDescription: 'Base dependency for services'
@@ -208,8 +210,8 @@ stages:
           command: 'download'
           downloadDirectory: '$(Build.Repository.LocalPath)'
           feedsToUse: 'internal'
-          vstsFeed: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e/0f47a7ae-aa33-4d2a-b8ad-22bf9d3ba176'
-          vstsFeedPackage: '41ba8461-e00b-4f49-9399-8b4e0d70b3a7'
+          vstsFeed: $(artifactFeed)
+          vstsFeedPackage: $(artifactPackage)
           vstsPackageVersion: '*'
 
       - task: SonarCloudPrepare@1
