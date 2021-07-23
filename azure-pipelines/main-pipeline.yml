@@ -131,7 +131,7 @@ stages:
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: |
-              sonar.java.binaries=**/target/classes \
+              sonar.java.binaries=**/target/classes
               sonar.exclusions=/jdk/**/*
 
       # Install Base service.
@@ -212,7 +212,7 @@ stages:
           cliProjectName: '$(sonarProjectName)'
           cliSources: '.'
           extraProperties: |
-              sonar.java.binaries=**/target/classes \
+              sonar.java.binaries=**/target/classes
               sonar.exclusions=/jdk/**/*
 
 
@@ -234,7 +234,7 @@ stages:
             -e;
             
           fi
-#             mvn package -f './${{ service.name }}/pom.xml'
+            mvn package -f './${{ service.name }}/pom.xml'
           
         name: BuildScript
 
