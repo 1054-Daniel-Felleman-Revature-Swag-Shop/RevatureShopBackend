@@ -224,13 +224,13 @@ stages:
           if [ ${{ service.requiresBase }} = 'True' ]
           then
             echo 'Requires base...'
-            mvn install:install-file
-            -Dfile="$(Build.Repository.LocalPath)/base-1.jar"
-            -DgroupId="com.revature"
-            -DartifactId="base"
-            -Dversion="1"
-            -Dpackaging=jar
-            -DgeneratePom=true
+            mvn install:install-file \
+            -Dfile="$(Build.Repository.LocalPath)/base-1.jar" \
+            -DgroupId="com.revature" \
+            -DartifactId="base" \
+            -Dversion="1" \
+            -Dpackaging=jar \
+            -DgeneratePom=true \
             -e;
             
           fi
