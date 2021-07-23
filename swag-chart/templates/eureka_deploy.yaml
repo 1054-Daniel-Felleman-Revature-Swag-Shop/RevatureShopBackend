@@ -1,0 +1,34 @@
+{{ if not .Values.ingress.useIngress }}
+{{- with .Values.eureka }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .deploymentName}}
+  labels:
+    app: {{ .app }}
+    role: {{ .role }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .app }}
+      role: {{ .role }}
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+        role: {{ .role }}
+    spec:
+      containers:
+      - name: {{ .deploymentName }}
+        image: {{ .image }}:{{ .tag }}
+        resources:
+          requests:
+            memory: {{ quote .memoryRequest }}
+            cpu: {{ quote .cpuRequest }}
+          limits:
+            memory: {{ quote .memoryLimit }}
+            cpu: {{ quote .cpuLimit }}
+        ports:
+        - containerPort: {{ .containerPort }}
+{{ end }}
+{{ end }}

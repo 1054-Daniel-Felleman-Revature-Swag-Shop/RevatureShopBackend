@@ -1,0 +1,33 @@
+{{- with .Values.inventory }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .deploymentName }}
+  labels:
+    app: {{ .app }}
+    role: {{ .role }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .app }}
+      role: {{ .role }}
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+        role: {{ .role }}
+    spec:
+      containers:
+      - name: {{ .app }}
+        image: {{ .image }}:{{ .tag }}
+        envFrom:
+        - configMapRef:
+            name: env-vars
+        resources:
+          limits:
+            memory: {{ quote .memoryLimit }}
+            cpu: {{ quote .cpuLimit }}
+        ports:
+        - containerPort: {{ .containerPort }}
+{{ end }}

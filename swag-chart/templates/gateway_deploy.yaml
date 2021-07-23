@@ -1,0 +1,41 @@
+{{ if not .Values.ingress.useIngress }}
+{{- with .Values.gateway }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .deploymentName }}
+  labels:
+    app: {{ .app }}
+    role: {{ .role }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .app }}
+      role: {{ .role }}
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+        role: {{ .role }}
+    spec:
+      containers:
+      - name: {{ .deploymentName }}
+        image: {{ .image }}:{{ .tag }}
+        env:
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          valueFrom:
+            configMapKeyRef:
+              name: env-vars
+              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        resources:
+          requests:
+            memory: {{ quote .memoryRequest }}
+            cpu: {{ quote .cpuRequest }}
+          limits:
+            memory: {{quote .memoryLimit }}
+            cpu: {{ quote .cpuLimit }}
+        ports:
+        - containerPort: {{ .containerPort }}
+{{ end }}
+{{ end }}
