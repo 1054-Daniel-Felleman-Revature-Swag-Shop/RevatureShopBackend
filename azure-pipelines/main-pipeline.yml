@@ -132,7 +132,7 @@ stages:
           cliSources: '.'
           extraProperties: |
               sonar.java.binaries=**/target/classes
-              sonar.exclusions=./jdk/*
+              sonar.exclusions=/jdk/**/*
 
       # Install Base service.
 
@@ -213,7 +213,7 @@ stages:
           cliSources: '.'
           extraProperties: |
               sonar.java.binaries=**/target/classes
-              sonar.exclusions=./jdk/*
+              sonar.exclusions=/jdk/**/*
 
 
       # Package Individual Service to create artifacts from.  
