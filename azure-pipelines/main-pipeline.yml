@@ -221,7 +221,7 @@ stages:
       - script: |
           echo ${{ service.requiresBase }}
 
-          if [ ${{ service.requiresBase }} = true ]
+          if [ ${{ service.requiresBase }} ]
           then
             echo 'Requires base...'
             mvn install:install-file
