@@ -145,11 +145,21 @@ stages:
         inputs:
           pollingTimeoutSec: '300'
           
-      - task: PublishPipelineArtifact@1
+      # - task: PublishPipelineArtifact@1
+      #   inputs:
+      #     targetPath: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
+      #     artifact: 'base'
+      #     publishLocation: 'pipeline'
+      
+      - task: UniversalPackages@0
         inputs:
-          targetPath: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
-          artifact: 'base'
-          publishLocation: 'pipeline'
+          command: 'publish'
+          publishDirectory: '$(Build.Repository.LocalPath)/base/target/base-1.jar'
+          feedsToUsePublish: 'internal'
+          vstsFeedPublish: 'd2963c1a-e6cb-47b0-8d51-e0051b0d446e/0f47a7ae-aa33-4d2a-b8ad-22bf9d3ba176'
+          vstsFeedPackagePublish: 'base'
+          versionOption: 'minor'
+          packagePublishDescription: 'Base dependency for services'
 
 
   # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
