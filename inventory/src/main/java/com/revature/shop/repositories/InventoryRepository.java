@@ -32,4 +32,7 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
     public List<StockItem> findByQuantityEquals(Integer quantity);
 
     void deleteByItemName(String itemName);
+    @Modifying
+    @Query("update StockItem item set item.discount = :discount where item.itemName = :name")
+	public void updateDiscount(String name, Double discount);
 }

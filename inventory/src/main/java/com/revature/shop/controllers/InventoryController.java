@@ -98,5 +98,13 @@ public class InventoryController
     public void deleteItemByName (@RequestParam String itemName) {
         inventoryService.deleteItemByName(itemName);
     }
+    
+    //update the item's discount amount
+    @PutMapping("/stockitem/update/discount")
+    public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
+    	boolean isChangedQuantity = inventoryService.updateItemDiscount(item.getItemName(), item.getDiscount());
+
+        return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
+    }
 
 }

@@ -98,4 +98,13 @@ public class InventoryService {
         }
         return true;
     }
+    
+    public boolean updateItemDiscount(String name, Double discount) {
+    	if (iRep.findByItemName(name) != null) {
+            iRep.updateDiscount(name, discount);
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -47,7 +47,7 @@ public class e2eInventoryTesting
     @Test
     public void addItemE2E()
     {
-        StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.");
+        StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.", 0);
         URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/new");
         restTemplate.put(uri, item);
 
@@ -60,7 +60,7 @@ public class e2eInventoryTesting
     @Test
     public void updateQuantitiesE2E()
     {
-        StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!");
+        StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!", 0);
         URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity");
         restTemplate.put(uri, item);
 

@@ -6,5 +6,6 @@ CREATE TABLE inventory(
     item_price int,
     quantity int,
     category varchar,
-    description varchar
+    description varchar,
+    discount numeric(3, 2)
 );
