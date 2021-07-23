@@ -7,6 +7,7 @@ trigger:
     include: 
     - experimental-pipeline
 
+
 pr:
   branches:
     include:
@@ -22,6 +23,7 @@ variables:
     sonarOrg: '1054-daniel-felleman-revature-swag-shop'
     sonarProjectKey: '1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend'
     sonarProjectName: 'RevatureShopBackend'
+
 
 parameters:
 - name: serviceConditions
@@ -59,6 +61,15 @@ stages:
 
     # Install Java 16 on agent.
 
+    - script: ./azure-pipelines/java-16-install.sh
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '16'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'LocalDirectory'
+        jdkFile: './jdk-16.0.2_linux-x64_bin.tar.gz'
+        jdkDestinationDirectory: '/usr/bin/java'
+        cleanDestinationDirectory: true
     
 
     # This script will check the Repo for changes and store them in a variable updatedFiles.
