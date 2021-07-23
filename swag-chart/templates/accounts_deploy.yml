@@ -20,6 +20,9 @@ spec:
         - configMapRef:
             name: env-vars
         resources:
+          requests:
+            memory: {{ quote .memoryRequest }}
+            cpu: {{ quote .cpuRequest }}
           limits:
             memory: {{ quote .memoryLimit }}
             cpu: {{ quote .cpuLimit }}

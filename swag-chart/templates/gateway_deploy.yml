@@ -24,6 +24,9 @@ spec:
               name: env-vars
               key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         resources:
+          requests:
+            memory: {{ quote .memoryRequest }}
+            cpu: {{ quote .cpuRequest }}
           limits:
             memory: {{quote .memoryLimit }}
             cpu: {{ quote .cpuLimit }}

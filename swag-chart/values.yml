@@ -5,8 +5,10 @@ accounts:
   app: accounts-app
   image: aypas/accounts
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 8000
 
@@ -17,6 +19,8 @@ frontend:
   app: frontend-app
   image: aypas/swag-frontend
   tag: latest
+  memoryRequest: 128Mi
+  cpuRequest: 250m
   memoryLimit: 256Mi
   cpuLimit: 500m
   replicas: 1
@@ -29,8 +33,10 @@ inventory:
   app: inventory-app
   image: aypas/inventory
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 8100
 
@@ -41,8 +47,10 @@ commerce:
   app: commerce-app
   image: aypas/commerce
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 8200
 
@@ -52,8 +60,10 @@ config:
   app: config-app
   image: aypas/config
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 8888
 
@@ -63,8 +73,10 @@ eureka:
   app: eureka-app
   image: aypas/eureka-server
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 9000
 
@@ -74,8 +86,10 @@ gateway:
   app: gateway-app
   image: aypas/spring-cloud-gateway
   tag: latest
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
   replicas: 1
   containerPort: 9001
 
