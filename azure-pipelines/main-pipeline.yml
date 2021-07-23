@@ -54,15 +54,20 @@ stages:
   displayName: Check Service Changes, Test and Build
   jobs:
   - job: CheckChanges
-    pool: java-16
+    
     steps:
+
+    # Install Java 16 on agent.
+
+    - script: ./azure-pipelines/java-16-install.sh
+      name: InstallJava16
 
     # This script will check the Repo for changes and store them in a variable updatedFiles.
     # The script will iterate over every object stored in updatedFiles to select paths with changes.
     # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
     # This step controls which build tasks will be triggered.
     # If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
-
+   
     - powershell: |
         $updatedFiles = git diff HEAD HEAD~ --name-only
         $updatedFiles | ForEach-Object {
@@ -100,8 +105,6 @@ stages:
   # It then checks that it's true, and continues on with the build, or skips.
 
   - job: BaseBuild
-    pool:
-      name: java-16
     dependsOn: CheckChanges
     variables:
         base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
