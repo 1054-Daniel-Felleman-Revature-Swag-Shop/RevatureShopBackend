@@ -1,11 +1,11 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
 # And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline.
 
-trigger:
+# trigger:
 
-  branches:
-    include: 
-    - experimental-pipeline
+#   branches:
+#     include: 
+# #    - experimental-pipeline
 
 pr:
   branches:
