@@ -1,0 +1,37 @@
+parameters:
+  - name: 'displayName'
+    type: string
+  - name: 'targetPath'
+    type: string
+  - name: 'artifact'
+    type: string
+  - name: 'tags'
+    type: string
+  - name: 'Dockerfile'
+    type: string
+  - name: 'repository'
+    type: string
+
+
+
+  jobs:
+  - job: BuildPushAzure
+    displayName: ${{ parameters.displayName }}
+    steps:
+    
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: ${{ parameters.artifact }}
+        itemPattern: '**.jar'
+        targetPath: ${{ parameters.targetPath }}
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: ${{ parameters.repository }}
+        repository: $(service)
+        command: 'buildAndPush'
+        Dockerfile: ${{ parameters.Dockerfile }}
+        tags: ${{ parameters.tags }}
+      
+  - template: ./discord-job-template.yml
