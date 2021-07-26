@@ -1,11 +1,12 @@
 # The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
 # And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline and what builds.
 
-trigger: none
-
-#   branches:
-#     include: 
-#    - experimental-pipeline
+trigger:
+  branches:
+    include: 
+    - main
+    - staging
+    - development
 
 pr:
   branches:
@@ -109,12 +110,14 @@ stages:
     variables:
         base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
     condition: eq(variables['base'], 'True')
+
     steps:
 
      # Install JDK 16
 
       - script: ./azure-pipelines/java-16-install.sh
         name: Install_JDK_16
+
       - task: JavaToolInstaller@0
         inputs:
           versionSpec: '16'
@@ -147,6 +150,7 @@ stages:
       # Sonar Analysis
 
       - task: SonarCloudAnalyze@1
+
       - task: SonarCloudPublish@1
         inputs:
           pollingTimeoutSec: '300'
@@ -217,7 +221,6 @@ stages:
       # Package Individual Service to create artifacts from.  
       
       - bash: |
-
           if [ ${{ service.requiresBase }} = 'True' ]
           then
             
