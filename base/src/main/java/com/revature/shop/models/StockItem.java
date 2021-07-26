@@ -35,15 +35,6 @@ public class StockItem
         this.size = Objects.requireNonNullElse(size, "No size");
     }
 
-	public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size) {
-        this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
-        this.itemPrice = Math.max(itemPrice, 0);
-        this.quantity = Math.max(quantity, 0);
-        this.category = Objects.requireNonNullElse(category, "Misc");
-        this.description = Objects.requireNonNullElse(description, "No description provided.");
-        this.size = Objects.requireNonNullElse(size, "No sizes provided.");
-    }
-
     public int getId(){
         return this.id;
     }
@@ -102,11 +93,4 @@ public class StockItem
         this.category = Objects.requireNonNullElse(category, "Misc");
     }
 
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
 }
