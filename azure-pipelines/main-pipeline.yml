@@ -21,7 +21,7 @@ variables:
   - group: artifactGroup
   - name: sonarOrg
     value: "1054-daniel-felleman-revature-swag-shop"
-  - name: sonarProjectKey
+  - name: sonarKeyPrefix
     value: "1054-daniel-felleman-revature-swag-shop_"
 
 parameters:
@@ -134,7 +134,7 @@ stages:
               organization: "$(sonarOrg)"
               scannerMode: "CLI"
               configMode: "manual"
-              cliProjectKey: "$(sonarProjectKey)base"
+              cliProjectKey: "$(sonarKeyPrefix)base"
               cliProjectName: "base"
               cliSources: "."
               extraProperties: |
@@ -226,7 +226,7 @@ stages:
                   organization: "$(sonarOrg)"
                   scannerMode: "CLI"
                   configMode: "manual"
-                  cliProjectKey: "$(sonarProjectKey)${{ service.name }}"
+                  cliProjectKey: "$(sonarKeyPrefix)${{ service.name }}"
                   cliProjectName: "${{ service.name }}"
                   cliSources: "."
                   extraProperties: |
