@@ -148,80 +148,80 @@ stages:
   # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
   # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
 
-  - ${{ each service in parameters.serviceConditions }}:
-      - job: ${{ service.jobName }}
-        dependsOn: BaseBuild
+      - ${{ each service in parameters.serviceConditions }}:
+          - job: ${{ service.jobName }}
+            dependsOn: BaseBuild
 
-        # Setting Variables that contain values for the conditional logic below.
+            # Setting Variables that contain values for the conditional logic below.
 
-        variables:
-          accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
-          base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
-          commerce: $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ]
-          config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
-          eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
-          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
-          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
+            variables:
+              accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
+              base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
+              commerce: $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ]
+              config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
+              eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
+              inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
+              Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
-        # Jobs created dynamically will only run if they were marked True, previously.
+            # Jobs created dynamically will only run if they were marked True, previously.
 
-        condition: eq(variables['${{ service.name }}'], 'True')
-        steps:
-          # install JDK 16
+            condition: eq(variables['${{ service.name }}'], 'True')
+            steps:
+              # install JDK 16
 
-          - script: ./azure-pipelines/java-16-install.sh
-            name: Install_JDK_16
-          - task: JavaToolInstaller@0
-            inputs:
-              versionSpec: "16"
-              jdkArchitectureOption: "x64"
-              jdkSourceOption: "LocalDirectory"
-              jdkFile: "./jdk-16.0.2_linux-x64_bin.tar.gz"
-              jdkDestinationDirectory: "./jdk"
-              cleanDestinationDirectory: true
+              - script: ./azure-pipelines/java-16-install.sh
+                name: Install_JDK_16
+              - task: JavaToolInstaller@0
+                inputs:
+                  versionSpec: "16"
+                  jdkArchitectureOption: "x64"
+                  jdkSourceOption: "LocalDirectory"
+                  jdkFile: "./jdk-16.0.2_linux-x64_bin.tar.gz"
+                  jdkDestinationDirectory: "./jdk"
+                  cleanDestinationDirectory: true
 
-          - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
-            displayName: "Checking ${{ service.name }}"
+              - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
+                displayName: "Checking ${{ service.name }}"
 
-          # Download Base Artifact to install in dependent services.
+              # Download Base Artifact to install in dependent services.
 
-          - task: UniversalPackages@0
-            displayName: Download Base Artifact
-            condition: eq('${{ service.requiresBase }}', 'True')
-            inputs:
-              command: "download"
-              downloadDirectory: "$(Build.Repository.LocalPath)"
-              feedsToUse: "internal"
-              vstsFeed: $(artifactFeed)
-              vstsFeedPackage: $(artifactPackage)
-              vstsPackageVersion: "*"
+              - task: UniversalPackages@0
+                displayName: Download Base Artifact
+                condition: eq('${{ service.requiresBase }}', 'True')
+                inputs:
+                  command: "download"
+                  downloadDirectory: "$(Build.Repository.LocalPath)"
+                  feedsToUse: "internal"
+                  vstsFeed: $(artifactFeed)
+                  vstsFeedPackage: $(artifactPackage)
+                  vstsPackageVersion: "*"
 
-          # Package Individual Service to create artifacts from.
+              # Package Individual Service to create artifacts from.
 
-          - bash: |
-              if [ ${{ service.requiresBase }} = 'True' ]
-              then   
-                mvn install:install-file \
-                -Dfile="$(Build.Repository.LocalPath)/base-1.jar" \
-                -DgroupId="com.revature" \
-                -DartifactId="base" \
-                -Dversion="1" \
-                -Dpackaging=jar \
-                -DgeneratePom=true \
-                -e;   
-              fi
-                mvn package -f './${{ service.name }}/pom.xml'
-            name: BuildScript
+              - bash: |
+                  if [ ${{ service.requiresBase }} = 'True' ]
+                  then   
+                    mvn install:install-file \
+                    -Dfile="$(Build.Repository.LocalPath)/base-1.jar" \
+                    -DgroupId="com.revature" \
+                    -DartifactId="base" \
+                    -Dversion="1" \
+                    -Dpackaging=jar \
+                    -DgeneratePom=true \
+                    -e;   
+                  fi
+                    mvn package -f './${{ service.name }}/pom.xml'
+                name: BuildScript
 
-          # Publish Artifacts to be used in Docker Stage
+              # Publish Artifacts to be used in Docker Stage
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
-              artifact: "${{ service.name }}"
-              publishLocation: "pipeline"
-        # Static Analysis with SonarCloud. In extra properties, we're pointing to Java Binaries and excluding the JDK
-          # tar file that will be installed in the pipeline. This step scans all services.
+              - task: PublishPipelineArtifact@1
+                inputs:
+                  targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
+                  artifact: "${{ service.name }}"
+                  publishLocation: "pipeline"
+            # Static Analysis with SonarCloud. In extra properties, we're pointing to Java Binaries and excluding the JDK
+              # tar file that will be installed in the pipeline. This step scans all services.
       - job: Analysis
         steps:
           - task: SonarCloudPrepare@1
