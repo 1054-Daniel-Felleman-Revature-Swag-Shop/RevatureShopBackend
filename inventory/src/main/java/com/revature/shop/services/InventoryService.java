@@ -2,8 +2,10 @@ package com.revature.shop.services;
 
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Service
+@PropertySource("classpath:aws.properties")
 public class InventoryService {
     private final InventoryRepository iRep;
 

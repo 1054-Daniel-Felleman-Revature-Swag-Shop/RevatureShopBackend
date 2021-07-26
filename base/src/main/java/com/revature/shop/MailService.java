@@ -1,14 +1,17 @@
 package com.revature.shop;
 
+import java.util.Properties;
+
+import javax.mail.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
-import java.util.Properties;
-
 @Service
+@PropertySource("classpath:email.properties")
 public class MailService {
     private final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 

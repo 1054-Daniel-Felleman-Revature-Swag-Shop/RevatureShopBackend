@@ -1,10 +1,11 @@
 
 
-package com.revature.shop.commerce.repository;
+package com.revature.shop.commerce.repositories;
 
-import com.revature.shop.commerce.model.PurchaseHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.revature.shop.commerce.models.PurchaseHistory;
 
 import java.util.List;
 

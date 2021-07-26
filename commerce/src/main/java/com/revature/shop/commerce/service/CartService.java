@@ -1,13 +1,15 @@
 package com.revature.shop.commerce.service;
 
-import com.revature.shop.commerce.dto.CartDto;
-import com.revature.shop.commerce.dto.PointChangeDto;
-import com.revature.shop.commerce.dto.StockItemDto;
-import com.revature.shop.commerce.exception.*;
-import com.revature.shop.commerce.model.Cart;
-import com.revature.shop.commerce.model.PurchaseHistory;
-import com.revature.shop.commerce.repository.*;
+import com.revature.shop.commerce.dtos.CartDto;
+import com.revature.shop.commerce.dtos.PointChangeDto;
+import com.revature.shop.commerce.dtos.StockItemDto;
+import com.revature.shop.commerce.exceptions.*;
+import com.revature.shop.commerce.models.Cart;
+import com.revature.shop.commerce.models.PurchaseHistory;
+import com.revature.shop.commerce.repositories.*;
 import com.revature.shop.models.StockItem;
+
+//import com.revature.shop.models.StockItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
