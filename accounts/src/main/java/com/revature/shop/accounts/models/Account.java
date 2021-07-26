@@ -1,8 +1,9 @@
-package com.revature.shop.accounts;
+package com.revature.shop.accounts.models;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,8 +26,8 @@ public class Account {
 
     private int points;
 
-    @OneToMany(mappedBy = "account")
-    private List<PointChange> pointHistory;
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    private List<PointHistory> pointHistory;
 
     public Account() { }
 
@@ -60,7 +61,7 @@ public class Account {
         this.points = points;
     }
 
-    public List<PointChange> getPointHistory() {
+    public List<PointHistory> getPointHistory() {
         return pointHistory;
     }
 

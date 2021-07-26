@@ -94,4 +94,3 @@ public class StockItem
         this.category = Objects.requireNonNullElse(category, "Misc");
     }
 }
-

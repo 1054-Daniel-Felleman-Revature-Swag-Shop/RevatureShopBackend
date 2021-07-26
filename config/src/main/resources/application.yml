@@ -11,6 +11,9 @@ spring:
       server:
         native:
           search-locations: [ "classpath:configs/", "file:${user.home}/" ]
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:      ddl-auto: create
 
 eureka:
   client:

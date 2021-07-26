@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.model;
+package com.revature.shop.commerce.models;
 
 import javax.persistence.*;
 
