@@ -1,0 +1,267 @@
+# The idea is to be inclusive of all source directories. (I.E. Commerce, Accounts, Eureka, Gateway, Inventory, Config, and Base(?))
+# And using the variables to set a condition that will set pipeline variables that, in turn, will control the flow of the pipeline and what builds.
+
+trigger:
+  branches:
+    include:
+      - main
+      - staging
+      - development
+
+pr:
+  branches:
+    include:
+      - main
+      - staging
+      - development
+      - feature_*
+
+# Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
+variables:
+  - group: artifactGroup
+  - name: sonarOrg
+    value: "1054-daniel-felleman-revature-swag-shop"
+  - name: sonarKeyPrefix
+    value: "1054-daniel-felleman-revature-swag-shop_"
+
+parameters:
+  - name: serviceConditions
+    type: object
+    default:
+      - accounts:
+        name: "accounts"
+        requiresBase: true
+        jobName: "AccountsBuild"
+      - commerce:
+        name: "commerce"
+        requiresBase: true
+        jobName: "CommerceBuild"
+      - config:
+        name: "config"
+        requiresBase: false
+        jobName: "ConfigBuild"
+      - eureka-server:
+        name: "eureka-server"
+        requiresBase: false
+        jobName: "EurekaBuild"
+      - inventory:
+        name: "inventory"
+        requiresBase: true
+        jobName: "InventoryBuild"
+      - Spring-Cloud-Gateway:
+        name: "Spring-Cloud-Gateway"
+        requiresBase: false
+        jobName: "SpringBuild"
+
+stages:
+  - stage: Check
+    displayName: Check Service Changes and Build
+    jobs:
+      - job: CheckChanges
+        steps:
+
+          # This script will check the Repo for changes and store them in a variable updatedFiles.
+          # The script will iterate over every object stored in updatedFiles to select paths with changes.
+          # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
+          # This step controls which build tasks will be triggered.
+          # If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.
+
+          - powershell: |
+              $updatedFiles = git diff HEAD HEAD~ --name-only
+              $updatedFiles | ForEach-Object {
+                  Switch -Wildcard ($_ ) {
+                      'accounts/*' { Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True' }
+                      'base/*' { 
+                          Write-Output '##vso[task.setvariable variable=base;isOutput=true]True' 
+                          Write-Output '##vso[task.setvariable variable=accounts;isOutput=true]True'
+                          Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True'
+                          Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True'
+                      }
+                      'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
+                      'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
+                      'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
+                      'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
+                      'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
+                  }
+                }
+            name: ProduceVar
+
+          # Printing a To-Do (Build) list. Note, that these are dynamic variables and if no variables exist
+          # The script will print literal.
+
+          - script: |
+              echo 'Base will rebuild: $(ProduceVar.base)'
+              echo 'Accounts will rebuild: $(ProduceVar.accounts)'
+              echo 'Commerce will rebuild: $(ProduceVar.commerce)'
+              echo 'Inventory will rebuild: $(ProduceVar.inventory)'
+              echo 'Config will rebuild: $(ProduceVar.config)'
+              echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
+              echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
+            name: BuildList
+
+      # This job ensures Base is built first, in case of dependencies.
+      # Setting a variable with the output variable from the previous job.
+      # It then checks that it's true, and continues on with the build, or skips.
+
+      - job: BaseBuild
+        dependsOn: CheckChanges
+        variables:
+          base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
+        condition: eq(variables['base'], 'True')
+
+        steps:
+          # Install JDK 16
+
+          - script: ./azure-pipelines/java-16-install.sh
+            name: Download_JDK_16
+            displayName: Download JDK.
+
+          - task: JavaToolInstaller@0
+            displayName: Install JDK.
+            inputs:
+              versionSpec: "16"
+              jdkArchitectureOption: "x64"
+              jdkSourceOption: "LocalDirectory"
+              jdkFile: "./jdk-16.0.2_linux-x64_bin.tar.gz"
+              jdkDestinationDirectory: "./jdk"
+              cleanDestinationDirectory: true
+
+          # Sonar Cloud Prep
+
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: "SonarCloud"
+              organization: "$(sonarOrg)"
+              scannerMode: "CLI"
+              configMode: "manual"
+              cliProjectKey: "$(sonarKeyPrefix)base"
+              cliProjectName: "base"
+              cliSources: "."
+              extraProperties: |
+                sonar.java.binaries=**/target/classes
+                sonar.exclusions=/jdk/**/*
+
+          # Install Base service.
+
+          - script: "mvn clean package -f ./base/pom.xml"
+            displayName: Install Base
+          
+          # SonarCloud Analysis
+
+          - task: SonarCloudAnalyze@1
+
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: "300"
+          
+          # Publishing base artifact to feed.
+
+          - task: UniversalPackages@0
+            displayName: Publish Base Artifact
+            inputs:
+              command: "publish"
+              publishDirectory: "$(Build.Repository.LocalPath)/base/target/base-1.jar"
+              feedsToUsePublish: "internal"
+              vstsFeedPublish: $(artifactFeed)
+              vstsFeedPackagePublish: "base"
+              versionOption: "minor"
+              packagePublishDescription: "Base dependency for services"
+
+      # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
+      # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
+
+      - ${{ each service in parameters.serviceConditions }}:
+          - job: ${{ service.jobName }}
+            dependsOn: BaseBuild
+
+            # Setting Variables that contain values for the conditional logic below.
+
+            variables:
+              accounts: $[ dependencies.CheckChanges.outputs['ProduceVar.accounts'] ]
+              base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
+              commerce: $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ]
+              config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
+              eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
+              inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
+              Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
+
+            # Jobs created dynamically will only run if they were marked True, previously.
+
+            condition: eq(variables['${{ service.name }}'], 'True')
+            steps:
+              # install JDK 16
+
+              - script: ./azure-pipelines/java-16-install.sh
+                name: Install_JDK_16
+              - task: JavaToolInstaller@0
+                inputs:
+                  versionSpec: "16"
+                  jdkArchitectureOption: "x64"
+                  jdkSourceOption: "LocalDirectory"
+                  jdkFile: "./jdk-16.0.2_linux-x64_bin.tar.gz"
+                  jdkDestinationDirectory: "./jdk"
+                  cleanDestinationDirectory: true
+
+              - script: echo '${{ service.name }} has been updated - $(${{ service.name }})'
+                displayName: "Checking ${{ service.name }}"
+
+              # Download Base Artifact to install in dependent services.
+
+              - task: UniversalPackages@0
+                displayName: Download Base Artifact
+                condition: eq('${{ service.requiresBase }}', 'True')
+                inputs:
+                  command: "download"
+                  downloadDirectory: "$(Build.Repository.LocalPath)"
+                  feedsToUse: "internal"
+                  vstsFeed: $(artifactFeed)
+                  vstsFeedPackage: $(artifactPackage)
+                  vstsPackageVersion: "*"
+
+              # Sonar Cloud Setup
+
+              - task: SonarCloudPrepare@1
+                inputs:
+                  SonarCloud: "SonarCloud"
+                  organization: "$(sonarOrg)"
+                  scannerMode: "CLI"
+                  configMode: "manual"
+                  cliProjectKey: "$(sonarKeyPrefix)${{ service.name }}"
+                  cliProjectName: "${{ service.name }}"
+                  cliSources: "."
+                  extraProperties: |
+                    sonar.java.binaries=**/target/classes
+                    sonar.exclusions=/jdk/**/*
+
+              # Package Individual Service to create artifacts from.
+
+              - bash: |
+                  if [ ${{ service.requiresBase }} = 'True' ]
+                  then   
+                    mvn install:install-file \
+                    -Dfile="$(Build.Repository.LocalPath)/base-1.jar" \
+                    -DgroupId="com.revature" \
+                    -DartifactId="base" \
+                    -Dversion="1" \
+                    -Dpackaging=jar \
+                    -DgeneratePom=true \
+                    -e;   
+                  fi
+                    mvn package -f './${{ service.name }}/pom.xml'
+                name: BuildScript
+
+              # Sonar Cloud Analysis
+
+              - task: SonarCloudAnalyze@1
+
+              - task: SonarCloudPublish@1
+                inputs:
+                  pollingTimeoutSec: "300"
+
+              # Publish Artifacts to be used in Docker Stage
+
+              - task: PublishPipelineArtifact@1
+                inputs:
+                  targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
+                  artifact: "${{ service.name }}"
+                  publishLocation: "pipeline"
