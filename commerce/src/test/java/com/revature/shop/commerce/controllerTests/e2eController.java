@@ -25,8 +25,8 @@ public class e2eController {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItemDto cartItem = new StockItemDto("hshallal@icloud.com", "Rev It Up Hat", 10, 1, "Accessories", "A sweet hat to ACCELERATE your development!" );
-    static StockItemDto cartItem2 = new StockItemDto("hshallal@icloud.com", "Code Like A Boss T-Shirt", 100, 1, "Clothing", "Perfect for casual friday!" );
+    static StockItemDto cartItem = new StockItemDto("hshallal@icloud.com", "Rev It Up Hat", 10, 1, "Accessories", "A sweet hat to ACCELERATE your development!", null );
+    static StockItemDto cartItem2 = new StockItemDto("hshallal@icloud.com", "Code Like A Boss T-Shirt", 100, 1, "Clothing", "Perfect for casual friday!", null );
 
     //passes
     @Test
