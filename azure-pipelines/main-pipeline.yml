@@ -65,7 +65,7 @@ stages:
 
     
     # Static Analysis with SonarCloud. Pointing to Java Binaries and exluding the JDK
-    # Tar file that will be installed in the pipeline.
+    # Tar file that will be installed in the pipeline. This step scans all services.
 
     - task: SonarCloudPrepare@1
       inputs:
@@ -139,9 +139,11 @@ stages:
      # Install JDK 16
 
       - script: ./azure-pipelines/java-16-install.sh
-        name: Install_JDK_16
+        name: Download_JDK_16
+        displayName: Downloading JDK.
 
       - task: JavaToolInstaller@0
+        displayName: Installing JDK.
         inputs:
           versionSpec: '16'
           jdkArchitectureOption: 'x64'
