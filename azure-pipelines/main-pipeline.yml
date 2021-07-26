@@ -93,7 +93,6 @@ stages:
     # If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
    
     - powershell: |
-        set -e
         $updatedFiles = git diff HEAD HEAD~ --name-only
         $updatedFiles | ForEach-Object {
             Switch -Wildcard ($_ ) {
@@ -124,6 +123,7 @@ stages:
         echo 'Config will rebuild: $(ProduceVar.config)'
         echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
         echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
+    name: BuildList
 
   # This job ensures Base is built first, in case of dependencies.
   # Setting a variable with the output variable from the previous job.
