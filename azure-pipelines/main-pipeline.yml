@@ -63,6 +63,29 @@ stages:
     
     steps:
 
+    
+    # Static Analysis with SonarCloud. Pointing to Java Binaries and exluding the JDK
+    # Tar file that will be installed in the pipeline.
+
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: '$(sonarOrg)'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: '$(sonarProjectKey)'
+        cliProjectName: '$(sonarProjectName)'
+        cliSources: '.'
+        extraProperties: |
+            sonar.java.binaries=**/target/classes
+            sonar.exclusions=./jdk/**/*
+    
+    - task: SonarCloudAnalyze@1
+
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
+
     # This script will check the Repo for changes and store them in a variable updatedFiles.
     # The script will iterate over every object stored in updatedFiles to select paths with changes.
     # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
@@ -127,34 +150,11 @@ stages:
           jdkDestinationDirectory: './jdk'
           cleanDestinationDirectory: true
 
-      # Sonar Cloud Prep 
-
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: 'SonarCloud'
-          organization: '$(sonarOrg)'
-          scannerMode: 'CLI'
-          configMode: 'manual'
-          cliProjectKey: '$(sonarProjectKey)'
-          cliProjectName: '$(sonarProjectName)'
-          cliSources: '.'
-          extraProperties: |
-              sonar.java.binaries=**/target/classes
-              sonar.exclusions=./jdk/**/*
-
       # Install Base service.
 
       - script: 'mvn clean package -f ./base/pom.xml'
         displayName: Install Base
-
-      # Sonar Analysis
-
-      - task: SonarCloudAnalyze@1
-
-      - task: SonarCloudPublish@1
-        inputs:
-          pollingTimeoutSec: '300'
-            
+          
       - task: UniversalPackages@0
         displayName: Publish Base Artifact
         inputs:
@@ -184,7 +184,7 @@ stages:
          inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
          Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
-    # Jobs created dynamically will only run if they were marked True, previously.
+      # Jobs created dynamically will only run if they were marked True, previously.
 
       condition: eq(variables['${{ service.name }}'], 'True')
       steps:
@@ -222,8 +222,7 @@ stages:
       
       - bash: |
           if [ ${{ service.requiresBase }} = 'True' ]
-          then
-            
+          then   
             mvn install:install-file \
             -Dfile="$(Build.Repository.LocalPath)/base-1.jar" \
             -DgroupId="com.revature" \
@@ -231,11 +230,9 @@ stages:
             -Dversion="1" \
             -Dpackaging=jar \
             -DgeneratePom=true \
-            -e;
-            
+            -e;   
           fi
-            mvn package -f './${{ service.name }}/pom.xml'
-          
+            mvn package -f './${{ service.name }}/pom.xml'   
         name: BuildScript
 
       # Publish Artifacts to be used in Docker Stage
