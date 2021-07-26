@@ -123,7 +123,7 @@ stages:
         echo 'Config will rebuild: $(ProduceVar.config)'
         echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
         echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
-    name: BuildList
+      name: BuildList
 
   # This job ensures Base is built first, in case of dependencies.
   # Setting a variable with the output variable from the previous job.
