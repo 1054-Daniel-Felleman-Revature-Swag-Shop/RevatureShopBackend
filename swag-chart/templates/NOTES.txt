@@ -1,0 +1,31 @@
+This helm chart requires the cluster on which it is installed
+to have an Nginx based Ingress controller.
+
+All cloud providers have a different way of installing this.
+
+A guide for Azure AKS can be found here: https://docs.microsoft.com/en-us/azure/aks/ingress-basic
+A guide for AWS EKS can be found here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-Sample-Workloads-nginx.html
+
+----------------------------------------------------------
+
+Features of this chart include:
+Set the images and tags for each deployment:
+-- helm install release-name swag-chart --set accounts.image=my-image --set commerce.tag=my-tag
+-- helm install release-name swag-chart --set inventory.image=another-image-name
+
+Set Resource limits and requirements for individual pods:
+-- helm install release-name swag-chart --set accounts.memoryLimit=500Mi --set  eureka.cpuRequest=500M
+
+Allows deployment via NGINX Ingress as well as via Spring-Gateway-Service:
+-- helm install release-name swag-chart --set ingress.useIngress=false ((This will expose the gateway via the Ingress IP))
+NOTE: By default Ingress is used.
+
+Set Domain name (provided a domain has an A record which points to ingress' IP):
+-- helm install release-name swag-chart --set ingress.useHost=true ingress.host=my-domain.com
+NOTE: By default this chart does not use a host name, and only exposes itself via the Ingress Controller's IP.
+
+------------------------------------------------------------
+
+You can check out the chart's default values at swag-chart/values.yaml
+
+You can uninstall this chart with the following command: helm uninstall [release-name-which-you-installed-with]

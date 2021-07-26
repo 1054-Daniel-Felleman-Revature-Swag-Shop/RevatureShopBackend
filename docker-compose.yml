@@ -1,0 +1,79 @@
+version: "2.1"
+services:
+  eureka:
+    build: eureka-server
+    ports:
+    - "9000:9000"
+
+  gateway:
+    build: Spring-Cloud-Gateway
+    ports:
+    - "9001:9001"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+    depends_on:
+    - eureka
+
+  config:
+    build: config
+    ports:
+    - "10000:8888"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:9000/eureka
+    healthcheck:
+      test: "curl -f http://config:8888/configs/eureka || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+    - eureka
+
+  account:
+    restart: always
+    build: accounts
+    ports:
+    - "8000:8000"
+    environment:
+      email.host: gmail.com
+      email.port: 8080
+      email.username: some_name
+      email.Password: some_pass
+      spring.config.import: configserver:http://config:8888
+      eureka.client.service-url.defaultZone: http://eureka:9000/eureka
+    depends_on:
+      config:
+        condition: service_healthy
+
+  commerce:
+    restart: always
+    build: commerce
+    ports:
+    - "8200:8200"
+    environment:
+      email.host: gmail.com
+      email.port: 8080
+      email.username: some_name
+      email.Password: some_pass
+      spring.config.import: configserver:http://config:8888
+      eureka.client.service-url.defaultZone: http://eureka:9000/eureka
+    depends_on:
+      config:
+        condition: service_healthy
+        
+  inventory:
+    restart: always 
+    build: inventory
+    ports:
+    - "8100:8100"
+    environment:
+      email.host: gmail.com
+      email.port: 8080
+      email.username: some_name
+      email.Password: some_pass
+      aws.accessKeyId: some_key
+      aws.secretAccessKey: some_access_key
+      spring.config.import: configserver:http://config:8888
+      eureka.client.service-url.defaultZone: http://eureka:9000/eureka
+    depends_on:
+      config:
+        condition: service_healthy

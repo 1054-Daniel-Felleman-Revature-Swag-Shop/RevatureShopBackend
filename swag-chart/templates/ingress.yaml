@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+spec:
+  rules: {{ "" -}}
+  {{ if .Values.ingress.useHost }}
+  - host: {{ .Values.ingress.host }}
+    http: {{ "" -}}
+  {{ else }}
+  - http: {{ "" -}}
+  {{ end }}
+      {{ if .Values.ingress.useIngress }}
+      paths:
+      - pathType: Prefix
+        path: {{ .Values.inventory.baseURL }}
+        backend:
+          service:
+            name: {{ .Values.inventory.serviceName }}
+            port:
+              number: {{ .Values.inventory.containerPort }}
+      - pathType: Prefix
+        path: {{ .Values.commerce.baseURL }}
+        backend:
+          service:
+            name: {{ .Values.commerce.serviceName }}
+            port:
+              number: {{ .Values.commerce.containerPort }}
+      - pathType: Prefix
+        path: {{ .Values.accounts.baseURL }}
+        backend:
+          service:
+            name: {{ .Values.accounts.serviceName }}
+            port:
+              number: {{ .Values.accounts.containerPort }}
+      - pathType: Prefix
+        path: {{ .Values.frontend.baseURL }}
+        backend:
+          service:
+            name: {{ .Values.frontend.serviceName }}
+            port:
+              number: {{ .Values.frontend.containerPort }}
+      {{ else }}
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: {{ .Values.gateway.serviceName }}
+            port:
+              number: {{ .Values.gateway.containerPort }}
+      {{ end }}  
