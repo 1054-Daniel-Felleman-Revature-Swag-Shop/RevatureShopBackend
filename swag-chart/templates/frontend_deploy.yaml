@@ -3,15 +3,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .deploymentName }}
+  labels:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ .app }}
+      app: {{ $.Values.app }}
+      role: {{ .role }}
   template:
     metadata:
       labels:
-        app: {{ .app }}
+        app: {{ $.Values.app }}
+        role: {{ .role }}
     spec:
       containers:
       - name: {{ .deploymentName }}

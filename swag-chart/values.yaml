@@ -1,5 +1,6 @@
+app: swag-app
+
 accounts:
-  app: swag-shop
   baseURL: /api/account/
   deploymentName: accounts
   serviceName: accounts-service
@@ -14,7 +15,6 @@ accounts:
   containerPort: 8000
 
 frontend:
-  app: swag-shop
   baseURL: /
   deploymentName: frontend
   serviceName: frontend-service
@@ -23,13 +23,12 @@ frontend:
   tag: latest
   memoryRequest: 128Mi
   cpuRequest: 250m
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryLimit: 128Mi
+  cpuLimit: 250m
   replicas: 1
   containerPort: 80
 
 inventory:
-  app: swag-shop
   baseURL: /api/inventory/
   deploymentName: inventory
   serviceName: inventory-service
@@ -44,7 +43,6 @@ inventory:
   containerPort: 8100
 
 commerce:
-  app: swag-shop
   baseURL: /commerce/
   deploymentName: commerce
   serviceName: commerce-service
@@ -53,13 +51,12 @@ commerce:
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
-  memoryLimit: 512Mi
-  cpuLimit: 1000m
+  memoryLimit: 256Mi
+  cpuLimit: 500m
   replicas: 1
   containerPort: 8200
 
 config:
-  app: swag-shop
   deploymentName: config
   serviceName: config-service
   role: config-app
@@ -73,7 +70,6 @@ config:
   containerPort: 8888
 
 eureka:
-  app: swag-shop
   deploymentName: eureka
   serviceName: eureka-service
   role: eureka-app
@@ -87,7 +83,6 @@ eureka:
   containerPort: 9000
 
 gateway:
-  app: swag-shop
   deploymentName: gateway
   serviceName: gateway-service
   role: gateway-app

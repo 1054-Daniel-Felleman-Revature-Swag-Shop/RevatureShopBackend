@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: {{ .serviceName }}
   labels:
-    app: {{ .app }}
+    app: {{ $.Values.app }}
     role: {{ .role }}
 spec:
   selector:
-    app: {{ .app }}
+    app: {{ $.Values.app }}
     role: {{ .role }}
   ports:
   - port: {{ .containerPort }}

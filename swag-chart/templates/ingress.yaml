@@ -10,6 +10,7 @@ spec:
   {{ else }}
   - http: {{ "" -}}
   {{ end }}
+      {{ if .Values.ingress.useIngress }}
       paths:
       - pathType: Prefix
         path: {{ .Values.inventory.baseURL }}
@@ -39,3 +40,13 @@ spec:
             name: {{ .Values.frontend.serviceName }}
             port:
               number: {{ .Values.frontend.containerPort }}
+      {{ else }}
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: {{ .Values.gateway.serviceName }}
+            port:
+              number: {{ .Values.gateway.containerPort }}
+      {{ end }}  
