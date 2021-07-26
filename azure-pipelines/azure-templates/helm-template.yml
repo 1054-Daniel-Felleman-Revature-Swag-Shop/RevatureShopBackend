@@ -17,25 +17,26 @@ parameters:
   - name: 'chartName'
     type: string
 
-    - task: HelmDeploy@0
-      displayName: Package Helm Chart
-      inputs:
-        command: 'package'
-        chartPath: './${{ parameters.chartName }}/'
-        destination: './helm/'
-    
-    - task: HelmDeploy@0
-      inputs:
-      displayName: Helm Deploy to AKS
-        connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceConnection: ${{ parameters.aksConnection }}
-        command: 'upgrade'
-        arguments: '--install --atomic --reuse-values --dry-run'
-        releaseName: ${{ parameters.releaseName }}
-        namespace: ${{ parameters.nameSpace }}
-        chartType: 'FilePath'
-        chartPath: './helm/'
-        overrideValues: |
-          ${{ parameters.activeSvc }}.image=${{ parameters.containerName}}/${{ parameters.imageName }}
-          ${{ parameters.activeSvc }}.tag=${{ parameters.tag }}
-        valueFile: './swag-chart/values.yaml'
+steps:
+  - task: HelmDeploy@0
+    displayName: Package Helm Chart
+    inputs:
+      command: 'package'
+      chartPath: './${{ parameters.chartName }}/'
+      destination: './helm/'
+  
+  - task: HelmDeploy@0
+    inputs:
+    displayName: Helm Deploy to AKS
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: ${{ parameters.aksConnection }}
+      command: 'upgrade'
+      arguments: '--install --atomic --reuse-values --dry-run'
+      releaseName: ${{ parameters.releaseName }}
+      namespace: ${{ parameters.nameSpace }}
+      chartType: 'FilePath'
+      chartPath: './helm/'
+      overrideValues: |
+        ${{ parameters.activeSvc }}.image=${{ parameters.containerName}}/${{ parameters.imageName }}
+        ${{ parameters.activeSvc }}.tag=${{ parameters.tag }}
+      valueFile: './swag-chart/values.yaml'

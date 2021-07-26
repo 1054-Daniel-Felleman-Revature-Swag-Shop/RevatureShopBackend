@@ -10,17 +10,18 @@ parameters:
   - name: 'repository'
     type: string
 
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: ${{ parameters.artifact }}
-        itemPattern: '**.jar'
-        targetPath: ${{ parameters.targetPath }}
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      artifactName: ${{ parameters.artifact }}
+      itemPattern: '**.jar'
+      targetPath: ${{ parameters.targetPath }}
 
-    - task: Docker@2
-      inputs:
-        containerRegistry: ${{ parameters.repository }}
-        repository: ${{ parameters.repository }}
-        command: 'buildAndPush'
-        Dockerfile: ${{ parameters.Dockerfile }}
-        tags: ${{ parameters.tag }}
+  - task: Docker@2
+    inputs:
+      containerRegistry: ${{ parameters.repository }}
+      repository: ${{ parameters.repository }}
+      command: 'buildAndPush'
+      Dockerfile: ${{ parameters.Dockerfile }}
+      tags: ${{ parameters.tag }}
