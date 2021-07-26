@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.models;
+package com.revature.shop.commerce.model;
 
 import javax.persistence.*;
 import java.util.HashMap;

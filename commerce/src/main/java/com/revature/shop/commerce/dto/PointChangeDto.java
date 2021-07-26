@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.dtos;
+package com.revature.shop.commerce.dto;
 
 import java.time.LocalDate;
 

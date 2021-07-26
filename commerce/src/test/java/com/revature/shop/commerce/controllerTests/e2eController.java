@@ -1,7 +1,7 @@
 package com.revature.shop.commerce.controllerTests;
 
-import com.revature.shop.commerce.dtos.*;
-import com.revature.shop.commerce.models.*;
+import com.revature.shop.commerce.dto.*;
+import com.revature.shop.commerce.model.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

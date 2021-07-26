@@ -1,9 +1,8 @@
-package com.revature.shop.commerce.repositories;
+package com.revature.shop.commerce.repository;
 
+import com.revature.shop.commerce.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.revature.shop.commerce.models.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, String> {
