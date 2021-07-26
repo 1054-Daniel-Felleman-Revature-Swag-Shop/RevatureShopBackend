@@ -126,10 +126,35 @@ stages:
               jdkDestinationDirectory: "./jdk"
               cleanDestinationDirectory: true
 
+          # Sonar Cloud Prep
+
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: "SonarCloud"
+              organization: "$(sonarOrg)"
+              scannerMode: "CLI"
+              configMode: "manual"
+              cliProjectKey: "$(sonarProjectKey)${{ service.name }}"
+              cliProjectName: "${{ service.name }}"
+              cliSources: "."
+              extraProperties: |
+                sonar.java.binaries=**/target/classes
+                sonar.exclusions=/jdk/**/*
+
           # Install Base service.
 
           - script: "mvn clean package -f ./base/pom.xml"
             displayName: Install Base
+          
+          # SonarCloud Analysis
+
+          - task: SonarCloudAnalyze@1
+
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: "300"
+          
+          # Publishing base artifact to feed.
 
           - task: UniversalPackages@0
             displayName: Publish Base Artifact
@@ -206,7 +231,7 @@ stages:
                   cliSources: "."
                   extraProperties: |
                     sonar.java.binaries=**/target/classes
-                    sonar.exclusions=./jdk/**/*
+                    sonar.exclusions=/jdk/**/*
 
               # Package Individual Service to create artifacts from.
 
@@ -225,7 +250,7 @@ stages:
                     mvn package -f './${{ service.name }}/pom.xml'
                 name: BuildScript
 
-                # Sonar Cloud Analysis
+              # Sonar Cloud Analysis
 
               - task: SonarCloudAnalyze@1
 
