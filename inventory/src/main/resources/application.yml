@@ -4,6 +4,9 @@ server:
 spring:
   datasource:
     url: jdbc:h2:mem:inventory
+    driverClassName: org.h2.Driver
+    password: password
+    username: sa
   application:
     name: inventoryMS
   profiles:
@@ -16,3 +19,41 @@ spring:
   servlet:
     multipart:
       max-file-size: 8000000
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: '*'
+  metrics:
+    enabled: true
+
+management:
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+
+aws:
+  accessKeyId: ${RSS_AWS_ACCESS_KEY_ID:none}
+  secretAccessKey: ${RSS_AWS_SECRET_ACCESS_KEY:none}
+
+email:
+  host: ${RSS_EMAIL_HOST:localhost}
+  port: ${RSS_EMAIL_PORT:25}
+  username: ${RSS_EMAIL_USERNAME:user}
+  Password: ${RSS_EMAIL_PASSWORD:password}

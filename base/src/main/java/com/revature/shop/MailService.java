@@ -13,10 +13,10 @@ public class MailService {
     private final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
     @Autowired
-    public MailService(@Value("${email.host}") String host,
-                       @Value("${email.port}") int port,
-                       @Value("${email.username}") String username,
-                       @Value("${email.password}") String password) {
+    public MailService(@Value("${email.host: localhost}") String host,
+                       @Value("${email.port: 25}") int port,
+                       @Value("${email.username: username}") String username,
+                       @Value("${email.password: password}") String password) {
         mailSender.setHost(host);
         mailSender.setPort(port);
 
