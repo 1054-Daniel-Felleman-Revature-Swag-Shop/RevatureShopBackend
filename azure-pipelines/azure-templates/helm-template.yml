@@ -26,8 +26,8 @@ steps:
       destination: './helm/'
   
   - task: HelmDeploy@0
-    inputs:
     displayName: Helm Deploy to AKS
+    inputs:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: ${{ parameters.aksConnection }}
       command: 'upgrade'
