@@ -225,6 +225,7 @@ stages:
     jobs:
       - job: SonarScan
         steps:
+          - bash: ls ./base/
           - task: SonarCloudPrepare@1
             inputs:
               SonarCloud: "SonarCloud"
@@ -235,7 +236,7 @@ stages:
               cliProjectName: "$(sonarProjectName)"
               cliSources: "."
               extraProperties: |
-                sonar.java.binaries=**/target/classes/
+                sonar.java.binaries=**/target/
                 sonar.exclusions=./jdk/**/*
 
           - task: SonarCloudAnalyze@1
