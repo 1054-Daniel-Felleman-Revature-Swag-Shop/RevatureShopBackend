@@ -205,7 +205,7 @@ stages:
                   cliProjectName: "${{ service.name }}"
                   cliSources: "."
                   extraProperties: |
-                    sonar.java.binaries=**/target/
+                    sonar.java.binaries=**/target/classes
                     sonar.exclusions=./jdk/**/*
 
               # Package Individual Service to create artifacts from.
