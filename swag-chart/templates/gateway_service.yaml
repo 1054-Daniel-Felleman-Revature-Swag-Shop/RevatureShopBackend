@@ -1,0 +1,18 @@
+{{ if not .Values.ingress.useIngress }}
+{{- with .Values.gateway}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .serviceName }}
+  labels:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
+spec:
+  selector:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
+  ports:
+  - port: {{ .containerPort }}
+    targetPort: {{ .containerPort }}
+{{ end }}
+{{ end }}
