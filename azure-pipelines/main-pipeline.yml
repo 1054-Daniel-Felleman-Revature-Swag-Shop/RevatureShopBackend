@@ -287,13 +287,13 @@ stages:
               
               # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
-              - template: './azure-templates/helm-template.yml'
-                parameters:
-                  containerName: 'may24DevOpsContainers.azurecr.io'
-                  imageName:  ${{ service.name }}
-                  tag: latest
-                  activeSvc:  ${{ service.name }}
-                  aksConnection: 'k8s-team3-config-$(deployTarget)'
-                  releaseName: '$(deployTarget)-release'
-                  nameSpace: 'team3'
-                  chartName: 'swag-chart'
+              # - template: './azure-templates/helm-template.yml'
+              #   parameters:
+              #     containerName: 'may24DevOpsContainers.azurecr.io'
+              #     imageName:  ${{ service.name }}
+              #     tag: latest
+              #     activeSvc:  ${{ service.name }}
+              #     aksConnection: 'k8s-team3-config-$(deployTarget)'
+              #     releaseName: '$(deployTarget)-release'
+              #     nameSpace: 'team3'
+              #     chartName: 'swag-chart'
