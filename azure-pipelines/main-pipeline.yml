@@ -223,6 +223,7 @@ stages:
             # Static Analysis with SonarCloud. In extra properties, we're pointing to Java Binaries and excluding the JDK
               # tar file that will be installed in the pipeline. This step scans all services.
       - job: Analysis
+        dependsOn: '*Build'
         steps:
           - task: SonarCloudPrepare@1
             inputs:
