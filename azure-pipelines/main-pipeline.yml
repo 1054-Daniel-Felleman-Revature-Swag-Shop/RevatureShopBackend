@@ -77,7 +77,7 @@ stages:
         cliProjectName: '$(sonarProjectName)'
         cliSources: '.'
         extraProperties: |
-            sonar.java.binaries=**/target/classes
+            sonar.java.binaries=**/src
             sonar.exclusions=./jdk/**/*
     
     - task: SonarCloudAnalyze@1
