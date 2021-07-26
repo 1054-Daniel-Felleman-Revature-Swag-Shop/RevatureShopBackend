@@ -1,0 +1,16 @@
+{{- with .Values.frontend }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .serviceName }}
+  labels:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
+spec:
+  selector:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
+  ports:
+  - port: {{ .containerPort }}
+    targetPort: {{ .containerPort }}
+{{ end }}
