@@ -7,7 +7,6 @@ trigger:
       - main
       - staging
       - development
-      - hotfix_sonar_analysis_inclusions
 
 pr:
   branches:
