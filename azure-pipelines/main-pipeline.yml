@@ -57,12 +57,10 @@ parameters:
 
 stages:
   - stage: Check
-    displayName: Check Service Changes, Test and Build
+    displayName: Check Service Changes and Build
     jobs:
       - job: CheckChanges
         steps:
-        
-
           # This script will check the Repo for changes and store them in a variable updatedFiles.
           # The script will iterate over every object stored in updatedFiles to select paths with changes.
           # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
@@ -145,8 +143,8 @@ stages:
               versionOption: "minor"
               packagePublishDescription: "Base dependency for services"
 
-  # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
-  # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
+      # Here we're looping through the objects in our parameters. This serves as a way to name jobs (which require unique names)
+      # that are created as part of the loop. The job checks if a service is to be built, or skips the job.
 
       - ${{ each service in parameters.serviceConditions }}:
           - job: ${{ service.jobName }}
@@ -220,10 +218,12 @@ stages:
                   targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
                   artifact: "${{ service.name }}"
                   publishLocation: "pipeline"
-            # Static Analysis with SonarCloud. In extra properties, we're pointing to Java Binaries and excluding the JDK
-              # tar file that will be installed in the pipeline. This step scans all services.
-      - job: Analysis
-        dependsOn: '*Build'
+
+  - stage: Analyze
+    dependsOn: Check
+    displayName: Static Analysis
+    jobs:
+      - job: SonarScan
         steps:
           - task: SonarCloudPrepare@1
             inputs:
