@@ -139,7 +139,7 @@ stages:
               cliProjectName: 'base'
               cliSources: 'base'
               extraProperties: |
-                sonar.java.binaries=**/target/classes
+                sonar.java.binaries=base/target/**/*
                 sonar.exclusions=/jdk/**/*
 
           # Install Base service.
@@ -231,7 +231,7 @@ stages:
                   cliProjectName: '${{ service.name }}'
                   cliSources: '${{ service.name }}'
                   extraProperties: |
-                    sonar.java.binaries=**/target/classes    
+                    sonar.java.binaries=${{ service.name }}/target/**/*
                     sonar.exclusions=/jdk/**/*
 
               # Package Individual Service to create artifacts from.
