@@ -93,6 +93,7 @@ stages:
     # If Base is to be rebuilt, it will then set those services for which it is a dependency to build as well.   
    
     - powershell: |
+        set -e
         $updatedFiles = git diff HEAD HEAD~ --name-only
         $updatedFiles | ForEach-Object {
             Switch -Wildcard ($_ ) {
