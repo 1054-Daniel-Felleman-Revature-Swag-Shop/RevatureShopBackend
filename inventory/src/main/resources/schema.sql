@@ -5,6 +5,6 @@ CREATE TABLE inventory(
     item_name varchar(255),
     item_price int,
     quantity int,
-    category varchar,
-    description varchar
+    category varchar(1023),
+    description varchar(1023)
 );
