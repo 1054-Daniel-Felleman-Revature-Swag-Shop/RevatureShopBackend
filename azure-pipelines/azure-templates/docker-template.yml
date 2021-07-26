@@ -16,7 +16,7 @@ parameters:
   - job: BuildPushAzure
     displayName: ${{ parameters.displayName }}
     steps:
-    
+       
     - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'

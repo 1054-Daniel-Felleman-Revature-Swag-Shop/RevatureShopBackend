@@ -134,8 +134,8 @@ stages:
               organization: "$(sonarOrg)"
               scannerMode: "CLI"
               configMode: "manual"
-              cliProjectKey: "$(sonarProjectKey)${{ service.name }}"
-              cliProjectName: "${{ service.name }}"
+              cliProjectKey: "$(sonarProjectKey)base"
+              cliProjectName: "base"
               cliSources: "."
               extraProperties: |
                 sonar.java.binaries=**/target/classes

@@ -8,7 +8,6 @@ parameters:
 
 jobs:
   - job: DiscordMessage
-
     steps: 
     - task: ado-discord-webhook@1
       inputs:
@@ -27,5 +26,4 @@ jobs:
           ```
           Image: "$(service)-$(Build.SourceVersion)"
           Pushed to Azure Container Registry
-          Pushed to Docker Hub Repository
           ```
