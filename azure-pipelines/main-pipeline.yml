@@ -187,12 +187,12 @@ stages:
 
             # Determining Deployment Environment
 
-            ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-              deployTarget: dev
-            ${{ if eq(variables['Build.SourceBranchName'], 'staging) }}:
-              deployTarget: staging
-            ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
-              deployTarget: prod
+              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+                deployTarget: dev
+              ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
+                deployTarget: staging
+              ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+                deployTarget: prod
 
             # Jobs created dynamically will only run if they were marked True, previously.
 
