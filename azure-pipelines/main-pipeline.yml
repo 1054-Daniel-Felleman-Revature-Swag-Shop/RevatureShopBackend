@@ -22,7 +22,7 @@ variables:
   - name: sonarOrg
     value: "1054-daniel-felleman-revature-swag-shop"
   - name: sonarProjectKey
-    value: "1054-Daniel-Felleman-Revature-Swag-Shop_"
+    value: "1054-daniel-felleman-revature-swag-shop_"
 
 parameters:
   - name: serviceConditions
@@ -226,7 +226,7 @@ stages:
                 name: BuildScript
 
                 # Sonar Cloud Analysis
-                
+
               - task: SonarCloudAnalyze@1
 
               - task: SonarCloudPublish@1
