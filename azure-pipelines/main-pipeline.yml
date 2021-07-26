@@ -130,13 +130,13 @@ stages:
 
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: "SonarCloud"
-              organization: "$(sonarOrg)"
-              scannerMode: "CLI"
-              configMode: "manual"
-              cliProjectKey: "$(sonarKeyPrefix)base"
-              cliProjectName: "base"
-              cliSources: "."
+              SonarCloud: 'SonarCloud'
+              organization: '$(sonarOrg)'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: '$(sonarKeyPrefix)base'
+              cliProjectName: 'base'
+              cliSources: 'base'
               extraProperties: |
                 sonar.java.binaries=**/target/classes
                 sonar.exclusions=/jdk/**/*
@@ -222,15 +222,15 @@ stages:
 
               - task: SonarCloudPrepare@1
                 inputs:
-                  SonarCloud: "SonarCloud"
-                  organization: "$(sonarOrg)"
-                  scannerMode: "CLI"
-                  configMode: "manual"
-                  cliProjectKey: "$(sonarKeyPrefix)${{ service.name }}"
-                  cliProjectName: "${{ service.name }}"
-                  cliSources: "."
+                  SonarCloud: 'SonarCloud'
+                  organization: '$(sonarOrg)'
+                  scannerMode: 'CLI'
+                  configMode: 'manual'
+                  cliProjectKey: '$(sonarKeyPrefix)${{ service.name }}'
+                  cliProjectName: '${{ service.name }}'
+                  cliSources: '${{ service.name }}'
                   extraProperties: |
-                    sonar.java.binaries=**/target/classes
+                    sonar.java.binaries=**/target/classes    
                     sonar.exclusions=/jdk/**/*
 
               # Package Individual Service to create artifacts from.
