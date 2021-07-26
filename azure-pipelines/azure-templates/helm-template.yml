@@ -17,7 +17,6 @@ parameters:
   - name: 'chartName'
     type: string
 
-    steps:
     - task: HelmDeploy@0
       displayName: Package Helm Chart
       inputs:
