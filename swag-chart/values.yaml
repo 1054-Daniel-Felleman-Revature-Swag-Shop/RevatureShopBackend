@@ -69,7 +69,7 @@ config:
   replicas: 1
   containerPort: 8888
 
-eureka:
+eureka-server:
   deploymentName: eureka
   serviceName: eureka-service
   role: eureka-app
@@ -82,7 +82,7 @@ eureka:
   replicas: 1
   containerPort: 9000
 
-gateway:
+Spring-Cloud-Gateway:
   deploymentName: gateway
   serviceName: gateway-service
   role: gateway-app

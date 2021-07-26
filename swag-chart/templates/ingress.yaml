@@ -46,7 +46,7 @@ spec:
         path: /
         backend:
           service:
-            name: {{ .Values.gateway.serviceName }}
+            name: {{ .Values.SpringCloudGateway.serviceName }}
             port:
-              number: {{ .Values.gateway.containerPort }}
+              number: {{ .Values.SpringCloudGateway.containerPort }}
       {{ end }}  

@@ -1,22 +1,16 @@
 parameters:
-  - name: 'displayName'
-    type: string
   - name: 'targetPath'
     type: string
   - name: 'artifact'
     type: string
-  - name: 'tags'
+  - name: 'tag'
     type: string
   - name: 'Dockerfile'
     type: string
   - name: 'repository'
     type: string
 
-  jobs:
-  - job: BuildPushAzure
-    displayName: ${{ parameters.displayName }}
     steps:
-       
     - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
@@ -27,7 +21,7 @@ parameters:
     - task: Docker@2
       inputs:
         containerRegistry: ${{ parameters.repository }}
-        repository: $(service)
+        repository: ${{ parameters.repository }}
         command: 'buildAndPush'
         Dockerfile: ${{ parameters.Dockerfile }}
-        tags: ${{ parameters.tags }}
+        tags: ${{ parameters.tag }}

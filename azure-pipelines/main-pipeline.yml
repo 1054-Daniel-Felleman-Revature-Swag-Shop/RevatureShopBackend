@@ -23,7 +23,7 @@ variables:
     value: "1054-daniel-felleman-revature-swag-shop"
   - name: sonarKeyPrefix
     value: "1054-daniel-felleman-revature-swag-shop_"
-
+    
 parameters:
   - name: serviceConditions
     type: object
@@ -185,6 +185,15 @@ stages:
               inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
               Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
 
+            # Determining Deployment Environment
+
+            ${{ if eq(variables['Build.SourceBranchName'], 'development') }}: 
+              deployTarget: dev
+            ${{ if eq(variables['Build.SourceBranchName'], 'staging) }}: 
+              deployTarget: staging
+            ${{ if eq(variables['Build.SourceBranchName'], 'main') }}: 
+              deployTarget: prod
+
             # Jobs created dynamically will only run if they were marked True, previously.
 
             condition: eq(variables['${{ service.name }}'], 'True')
@@ -265,3 +274,26 @@ stages:
                   targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
                   artifact: "${{ service.name }}"
                   publishLocation: "pipeline"
+              
+              # Docker Image is created and pushed to ACR.
+
+              - template: './azure-templates/docker-template.yml'
+                parameters:
+                  targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
+                  artifact: ${{ service.name }}
+                  tag: latest
+                  Dockerfile: ./{{ service.name }}/Dockerfile
+                  repository: 'acr-team3'
+              
+              # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+
+              - template: './azure-templates/helm-template.yml'
+                parameters:
+                  containerName: 'may24DevOpsContainers.azurecr.io'
+                  imageName:  ${{ service.name }}
+                  tag: latest
+                  activeSvc:  ${{ service.name }}
+                  aksConnection: 'k8s-team3-config-$(deployTarget)'
+                  releaseName: '$(deployTarget)-release'
+                  nameSpace: 'team3'
+                  chartName: 'swag-chart'
