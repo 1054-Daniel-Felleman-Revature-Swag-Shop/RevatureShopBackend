@@ -26,7 +26,11 @@ public class StockItem
     
     private String size;
 
-    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size) {
+    public StockItem() {
+		super();
+	}
+
+	public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
