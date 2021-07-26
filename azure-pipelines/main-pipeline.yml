@@ -22,9 +22,7 @@ variables:
   - name: sonarOrg
     value: "1054-daniel-felleman-revature-swag-shop"
   - name: sonarProjectKey
-    value: "1054-Daniel-Felleman-Revature-Swag-Shop_RevatureShopBackend"
-  - name: sonarProjectName
-    value: "RevatureShopBackend"
+    value: "1054-Daniel-Felleman-Revature-Swag-Shop_"
 
 parameters:
   - name: serviceConditions
@@ -61,6 +59,7 @@ stages:
     jobs:
       - job: CheckChanges
         steps:
+
           # This script will check the Repo for changes and store them in a variable updatedFiles.
           # The script will iterate over every object stored in updatedFiles to select paths with changes.
           # Pipeline variable will be updated from 'false' to 'True' if a change was made in that path.
@@ -194,6 +193,21 @@ stages:
                   vstsFeedPackage: $(artifactPackage)
                   vstsPackageVersion: "*"
 
+              # Sonar Cloud Setup
+
+              - task: SonarCloudPrepare@1
+                inputs:
+                  SonarCloud: "SonarCloud"
+                  organization: "$(sonarOrg)"
+                  scannerMode: "CLI"
+                  configMode: "manual"
+                  cliProjectKey: "$(sonarProjectKey)${{ service.name }}"
+                  cliProjectName: "${{ service.name }}"
+                  cliSources: "."
+                  extraProperties: |
+                    sonar.java.binaries=**/target/
+                    sonar.exclusions=./jdk/**/*
+
               # Package Individual Service to create artifacts from.
 
               - bash: |
@@ -211,6 +225,14 @@ stages:
                     mvn package -f './${{ service.name }}/pom.xml'
                 name: BuildScript
 
+                # Sonar Cloud Analysis
+                
+              - task: SonarCloudAnalyze@1
+
+              - task: SonarCloudPublish@1
+                inputs:
+                  pollingTimeoutSec: "300"
+
               # Publish Artifacts to be used in Docker Stage
 
               - task: PublishPipelineArtifact@1
@@ -218,29 +240,3 @@ stages:
                   targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
                   artifact: "${{ service.name }}"
                   publishLocation: "pipeline"
-
-  - stage: Analyze
-    dependsOn: Check
-    displayName: Static Analysis
-    jobs:
-      - job: SonarScan
-        steps:
-          - bash: ls ./base/
-          - task: SonarCloudPrepare@1
-            inputs:
-              SonarCloud: "SonarCloud"
-              organization: "$(sonarOrg)"
-              scannerMode: "CLI"
-              configMode: "manual"
-              cliProjectKey: "$(sonarProjectKey)"
-              cliProjectName: "$(sonarProjectName)"
-              cliSources: "."
-              extraProperties: |
-                sonar.java.binaries=**/target/
-                sonar.exclusions=./jdk/**/*
-
-          - task: SonarCloudAnalyze@1
-
-          - task: SonarCloudPublish@1
-            inputs:
-              pollingTimeoutSec: "300"
