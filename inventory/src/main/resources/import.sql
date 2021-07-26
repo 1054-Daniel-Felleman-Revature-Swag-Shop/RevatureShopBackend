@@ -1,11 +1,9 @@
--- CREATE TABLE inventory(
---     id serial primary key,
---     item_name varchar(255),
---     item_price int,
---     quantity int,
---     category varchar,
---     description varchar
--- );
+--CREATE TABLE inventory(
+--id int primary key,
+--item_name varchar(255),
+--item_price int,
+--quantity int
+--);
 -- select id, item_name, item_price, quantity, category, description from inventory
 -- // for h2database sorting purpose
 
@@ -37,6 +35,6 @@ INSERT INTO inventory (item_name, item_price, quantity, category, description) V
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Warm-Up Pants', 90, 200, 'Women''s Pants', 'Its time to burn those calories, baby!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Programmer Mug', 40, 400, 'Mugs', 'Once you drink from this coffee mug, you will be able to continue coding for 10 straight hours, NONSTOP!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Sweet Dreams Mug', 100, 20, 'Mugs', 'Legend has it that if you drink beer from this mug, you will get knocked out cold for 7 days. 7 DAYS!');
-INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Get To Da Choppa Lunchbox', 200, 20, 'Misc', 'RUNNNN! GO!!! GET TO DA CHAPPA!!!');
+INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Get To Da Choppa Lunchbox', 200, 20, 'Misc', 'RUNNNN! GO!!! GET TO DO CHAPPA!!!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Revature REV Watch', 600, 50, 'Misc', 'The authentic REV watch from Revature. Designed to look cool and hip.');
 

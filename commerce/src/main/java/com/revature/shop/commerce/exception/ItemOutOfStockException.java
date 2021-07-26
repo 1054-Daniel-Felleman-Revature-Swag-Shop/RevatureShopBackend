@@ -1,4 +1,4 @@
-package com.revature.shop.commerce.exceptions;
+package com.revature.shop.commerce.exception;
 
 public class ItemOutOfStockException extends Exception {
 

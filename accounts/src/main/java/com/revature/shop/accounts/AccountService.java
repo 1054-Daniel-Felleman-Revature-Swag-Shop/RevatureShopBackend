@@ -1,17 +1,11 @@
-package com.revature.shop.accounts.services;
+package com.revature.shop.accounts;
 
-//import com.revature.accounts.MailService;
+import com.revature.shop.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
-
-import com.revature.shop.MailService;
-import com.revature.shop.accounts.models.Account;
-import com.revature.shop.accounts.models.PointHistory;
-import com.revature.shop.accounts.repositories.AccountRepository;
-import com.revature.shop.accounts.repositories.PointRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +40,7 @@ public class AccountService {
 
     @Transactional
     //@HystrixCommand(fallbackMethod = "downService")
-    public boolean modPoints(String user, PointHistory change) {
+    public boolean modPoints(String user, PointChange change) {
         Account account = repo.findByEmail(user);
         change.setAccount(account);
         if (account == null) {
