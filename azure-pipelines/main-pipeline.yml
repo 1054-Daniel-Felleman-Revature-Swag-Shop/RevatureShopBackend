@@ -274,7 +274,6 @@ stages:
 
               - template: "./azure-templates/docker-template.yml"
                 parameters:
-                  targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   repository: ${{ service.name }}
                   tag: "$(Build.BuildNumber)"
                   Dockerfile: ./${{ service.name }}/Dockerfile
@@ -284,7 +283,6 @@ stages:
 
               - template: "./azure-templates/docker-template.yml"
                 parameters:
-                  targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   repository: ${{ service.name }}
                   tag: "latest"
                   Dockerfile: ./${{ service.name }}/Dockerfile
