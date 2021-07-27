@@ -1,13 +1,5 @@
 
 parameters:
-  - name: 'containerName'
-    type: string
-  - name: 'imageName'
-    type: string
-  - name: 'tag'
-    type: string
-  - name: 'activeSvc'
-    type: string
   - name: 'aksConnection'
     type: string
   - name: 'releaseName'
@@ -35,5 +27,5 @@ steps:
       releaseName: ${{ parameters.releaseName }}
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'
-      chartPath: './helm/'
+      chartPath: './swag-chart/'
       valueFile: './swag-chart/values.yaml'
