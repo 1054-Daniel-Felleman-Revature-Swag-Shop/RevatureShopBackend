@@ -292,10 +292,7 @@ stages:
 
         # Determining Deployment Environment based on branch of CI. If not main, staging, or development, ideally this would be test.
         # For testing purposes the default is dev. To be updated before implementing.
-
-      
-            
-
+        
         # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
         - task: KubernetesManifest@0
