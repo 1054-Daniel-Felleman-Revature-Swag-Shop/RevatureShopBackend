@@ -12,5 +12,9 @@ spec:
       name: http
       protocol: HTTP
     hosts:
+    {{ if .Values.ingress.useHost }}
+    - {{ quote .Values.ingress.host }}
+    {{ else }}
     - "*"
+    {{ end }}
 {{ end }}

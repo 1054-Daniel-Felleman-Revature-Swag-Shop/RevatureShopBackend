@@ -7,7 +7,11 @@ spec:
   gateways:
   - swag-gateway
   hosts:
+  {{ if .Values.ingress.useHost }}
+  - {{ quote .Values.ingress.host }}
+  {{ else }}
   - "*"
+  {{ end }}
   http:
   - name: "backend-general-route"
     match:
