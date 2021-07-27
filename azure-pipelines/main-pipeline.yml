@@ -288,12 +288,12 @@ stages:
 
     variables:
       deployTarget: 'none'
-      ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-        deployTarget: 'dev'
-      ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
-        deployTarget: 'staging'
-      ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
-        deployTarget: 'prod'
+    ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+      deployTarget: 'dev'
+    ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
+      deployTarget: 'staging'
+    ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+      deployTarget: 'prod'
 
     jobs:  
       - job: HelmDeploy
