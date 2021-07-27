@@ -22,6 +22,10 @@ spec:
       containers:
       - name: {{ .deploymentName }}
         image: {{ .image }}:{{ .tag }}
+        {{ if $.Values.usePullSecrets }}
+        imagePullSecrets:
+        - name: {{ $.Values.pullSecret }}
+        {{ end }}
         env:
         - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
           valueFrom:
