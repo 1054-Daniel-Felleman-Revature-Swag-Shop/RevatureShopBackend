@@ -10,15 +10,6 @@ parameters:
   - name: 'repository'
     type: string
 
-steps:
-  - task: DownloadPipelineArtifact@2
-    displayName: Download Service Artifact
-    inputs:
-      buildType: 'current'
-      artifactName: ${{ parameters.artifact }}
-      itemPattern: '**.jar'
-      targetPath: ${{ parameters.targetPath }}
-
   - task: Docker@2
     displayName: Create/Push Docker Image
     inputs:
