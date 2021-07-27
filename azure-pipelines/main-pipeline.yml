@@ -288,6 +288,23 @@ stages:
       - job: HelmDeploy
         steps:
 
+        - task: KubernetesManifest@0
+          inputs:
+            action: 'createSecret'
+            kubernetesServiceConnection: 'k8s-team3-config-dev'
+            namespace: 'team3'
+            secretType: 'dockerRegistry'
+            secretName: 'dev3pull'
+            dockerRegistryEndpoint: 'acr-team3'
+        - task: KubernetesManifest@0
+          inputs:
+            action: 'createSecret'
+            kubernetesServiceConnection: 'k8s-team3-config-staging'
+            namespace: 'team3'
+            secretType: 'dockerRegistry'
+            secretName: 'staging3pull'
+            dockerRegistryEndpoint: 'acr-team3'
+
         #Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
         - template: './azure-templates/helm-template.yml'
