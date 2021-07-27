@@ -190,11 +190,17 @@ stages:
 
             condition: eq(variables['${{ service.name }}'], 'True')
             steps:
-              # install JDK 16
+
+              # Download JDK 16
 
               - script: ./azure-pipelines/java-16-install.sh
                 name: Install_JDK_16
+                displayName: Download JDK 16 from Oracle
+
+              # Install JDK 16
+
               - task: JavaToolInstaller@0
+                displayName: Install JDK 16 on Agent
                 inputs:
                   versionSpec: "16"
                   jdkArchitectureOption: "x64"
@@ -222,6 +228,7 @@ stages:
               # Sonar Cloud Setup
 
               - task: SonarCloudPrepare@1
+                displayName: Prepare Sonar Scan
                 inputs:
                   SonarCloud: 'SonarCloud'
                   organization: '$(sonarOrg)'
@@ -254,10 +261,12 @@ stages:
               # Sonar Cloud Analysis
 
               - task: SonarCloudAnalyze@1
+                displayName: Analyze
 
               - task: SonarCloudPublish@1
                 inputs:
                   pollingTimeoutSec: "300"
+                displayName: Publish Sonar Results
              
               # Docker Image is created and pushed to ACR.
 
@@ -288,7 +297,10 @@ stages:
       - job: HelmDeploy
         steps:
 
+        # Creating Pull secrets for Helm/K8S to access the images and use on the cluster.
+
         - task: KubernetesManifest@0
+          displayName: Create Pull Secret Dev
           inputs:
             action: 'createSecret'
             kubernetesServiceConnection: 'k8s-team3-config-dev'
@@ -296,7 +308,9 @@ stages:
             secretType: 'dockerRegistry'
             secretName: 'dev3pull'
             dockerRegistryEndpoint: 'acr-team3'
+
         - task: KubernetesManifest@0
+          displayName: Create Pull Secret Staging
           inputs:
             action: 'createSecret'
             kubernetesServiceConnection: 'k8s-team3-config-staging'
@@ -305,14 +319,10 @@ stages:
             secretName: 'staging3pull'
             dockerRegistryEndpoint: 'acr-team3'
 
-        #Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+        # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
         - template: './azure-templates/helm-template.yml'
           parameters:
-            containerName: 'may24DevOpsContainers.azurecr.io'
-            imageName:  ${{ service.name }}
-            tag: '$(Build.BuildNumber)'
-            activeSvc:  ${{ service.name }}
             aksConnection: 'k8s-team3-config-$(deployTarget)'
             releaseName: '$(deployTarget)-release'
             nameSpace: 'team3'
