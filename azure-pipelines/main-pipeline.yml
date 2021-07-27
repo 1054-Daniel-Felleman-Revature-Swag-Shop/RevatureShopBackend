@@ -282,10 +282,12 @@ stages:
 
   - stage: Deploy
     displayName: Deploy to AKS Cluster
+    dependsOn: Check
 
     # Determining Deployment Environment
 
     variables:
+      deployTarget: none
       ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
         deployTarget: dev
       ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
@@ -295,6 +297,7 @@ stages:
 
     jobs:  
       - job: HelmDeploy
+        condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
         steps:
 
         # Creating Pull secrets for Helm/K8S to access the images and use on the cluster.
