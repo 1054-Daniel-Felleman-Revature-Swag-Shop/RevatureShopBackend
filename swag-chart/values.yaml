@@ -69,7 +69,7 @@ config:
   replicas: 1
   containerPort: 8888
 
-eureka-server:
+eureka:
   deploymentName: eureka
   serviceName: eureka-service
   role: eureka-app
@@ -82,7 +82,7 @@ eureka-server:
   replicas: 1
   containerPort: 9000
 
-Spring-Cloud-Gateway:
+gateway:
   deploymentName: gateway
   serviceName: gateway-service
   role: gateway-app
@@ -119,4 +119,5 @@ ingress:
   name: swag-ingress
   host: swag-shop.ml
   useHost: false
-  useIngress: true
+  useIngress: true #if false, Istio will be used
+  useJavaGateway: false 

@@ -1,0 +1,20 @@
+{{ if not .Values.ingress.useIngress}}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: swag-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    {{ if .Values.ingress.useHost }}
+    - {{ quote .Values.ingress.host }}
+    {{ else }}
+    - "*"
+    {{ end }}
+{{ end }}

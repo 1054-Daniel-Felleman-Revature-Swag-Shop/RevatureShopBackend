@@ -1,5 +1,5 @@
-{{ if not .Values.ingress.useIngress }}
-{{- with .Values.SpringCloudGateway }}
+{{ if .Values.ingress.useJavaGateway }}
+{{- with .Values.gateway }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
