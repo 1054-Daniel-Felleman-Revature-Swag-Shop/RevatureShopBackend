@@ -27,7 +27,7 @@ public class AccountService {
     private String emailTemplate;
 
     @Autowired
-    public AccountService(AccountRepository repo, PointRepository pointsRepo, MailService mailService, TaskExecutor taskExecutor) {
+    public AccountService(AccountRepository repo, PointRepository pointsRepo, MailService mailService, TaskExecutor taskExecutor) throws IOException {
         this.repo = repo;
         this.pointsRepo = pointsRepo;
         this.mailService = mailService;
@@ -35,12 +35,7 @@ public class AccountService {
 
         if (mailService != null) {
             InputStream stream = getClass().getClassLoader().getResourceAsStream("points_email.html");
-
-            try {
-                emailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            emailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
         }
     }
 
