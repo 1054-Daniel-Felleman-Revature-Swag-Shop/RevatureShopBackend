@@ -186,15 +186,6 @@ stages:
               inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
               gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.gateway'] ]
 
-            # Determining Deployment Environment
-
-              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-                deployTarget: dev
-              ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
-                deployTarget: staging
-              ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
-                deployTarget: prod
-
             # Jobs created dynamically will only run if they were marked True, previously.
 
             condition: eq(variables['${{ service.name }}'], 'True')
@@ -277,16 +268,35 @@ stages:
                   tag: '$(Build.BuildNumber)'
                   Dockerfile: ./${{ service.name }}/Dockerfile
                   containerRegistry: 'acr-team3'
-              
-              # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
-              # - template: './azure-templates/helm-template.yml'
-              #   parameters:
-              #     containerName: 'may24DevOpsContainers.azurecr.io'
-              #     imageName:  ${{ service.name }}
-              #     tag: latest
-              #     activeSvc:  ${{ service.name }}
-              #     aksConnection: 'k8s-team3-config-$(deployTarget)'
-              #     releaseName: '$(deployTarget)-release'
-              #     nameSpace: 'team3'
-              #     chartName: 'swag-chart'
+   # Deployment Stage. Using images pushed to the Azure Container Registry, and a helm Chart.
+
+  - stage: Deploy
+    displayName: Deploy to AKS Cluster
+
+    # Determining Deployment Environment
+
+    variables:
+      ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+        deployTarget: dev
+      ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
+        deployTarget: staging
+      ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+        deployTarget: prod
+
+    jobs:  
+      - job: HelmDeploy
+        steps:
+
+        #Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+
+        - template: './azure-templates/helm-template.yml'
+          parameters:
+            containerName: 'may24DevOpsContainers.azurecr.io'
+            imageName:  ${{ service.name }}
+            tag: '$(Build.BuildNumber)'
+            activeSvc:  ${{ service.name }}
+            aksConnection: 'k8s-team3-config-$(deployTarget)'
+            releaseName: '$(deployTarget)-release'
+            nameSpace: 'team3'
+            chartName: 'swag-chart'
