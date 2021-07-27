@@ -283,7 +283,7 @@ stages:
                   targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   artifact: ${{ service.name }}
                   tag: latest
-                  Dockerfile: ./{{ service.name }}/Dockerfile
+                  Dockerfile: ./${{ service.name }}/Dockerfile
                   repository: 'acr-team3'
               
               # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
