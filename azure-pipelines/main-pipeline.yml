@@ -40,16 +40,16 @@ parameters:
         name: "config"
         requiresBase: false
         jobName: "ConfigBuild"
-      - eureka-server:
-        name: "eureka-server"
+      - eureka:
+        name: "eureka"
         requiresBase: false
         jobName: "EurekaBuild"
       - inventory:
         name: "inventory"
         requiresBase: true
         jobName: "InventoryBuild"
-      - Spring-Cloud-Gateway:
-        name: "Spring-Cloud-Gateway"
+      - gateway:
+        name: "gateway"
         requiresBase: false
         jobName: "SpringBuild"
 
@@ -79,9 +79,9 @@ stages:
                       }
                       'commerce/*' { Write-Output '##vso[task.setvariable variable=commerce;isOutput=true]True' }
                       'config/*' { Write-Output '##vso[task.setvariable variable=config;isOutput=true]True' }
-                      'eureka-server/*' { Write-Output '##vso[task.setvariable variable=eureka-server;isOutput=true]True' }
+                      'eureka/*' { Write-Output '##vso[task.setvariable variable=eureka;isOutput=true]True' }
                       'inventory/*' { Write-Output '##vso[task.setvariable variable=inventory;isOutput=true]True' }
-                      'Spring-Cloud-Gateway/*' { Write-Output '##vso[task.setvariable variable=Spring-Cloud-Gateway;isOutput=true]True' }
+                      'gateway/*' { Write-Output '##vso[task.setvariable variable=gateway;isOutput=true]True' }
                   }
                 }
             name: ProduceVar
@@ -95,8 +95,8 @@ stages:
               echo 'Commerce will rebuild: $(ProduceVar.commerce)'
               echo 'Inventory will rebuild: $(ProduceVar.inventory)'
               echo 'Config will rebuild: $(ProduceVar.config)'
-              echo 'Eureka Server will rebuild: $(ProduceVar.eureka-server)'
-              echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.Spring-Cloud-Gateway)'
+              echo 'Eureka Server will rebuild: $(ProduceVar.eureka)'
+              echo 'Spring Cloud Gateway will rebuild: $(ProduceVar.gateway)'
             name: BuildList
 
       # This job ensures Base is built first, in case of dependencies.
@@ -181,9 +181,9 @@ stages:
               base: $[ dependencies.CheckChanges.outputs['ProduceVar.base'] ]
               commerce: $[ dependencies.CheckChanges.outputs['ProduceVar.commerce'] ]
               config: $[ dependencies.CheckChanges.outputs['ProduceVar.config'] ]
-              eureka-server: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka-server'] ]
+              eureka: $[ dependencies.CheckChanges.outputs['ProduceVar.eureka'] ]
               inventory: $[ dependencies.CheckChanges.outputs['ProduceVar.inventory'] ]
-              Spring-Cloud-Gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.Spring-Cloud-Gateway'] ]
+              gateway: $[ dependencies.CheckChanges.outputs['ProduceVar.gateway'] ]
 
             # Jobs created dynamically will only run if they were marked True, previously.
 
