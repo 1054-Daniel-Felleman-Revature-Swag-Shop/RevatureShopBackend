@@ -14,7 +14,6 @@ import java.util.List;
 @Transactional
 public interface InventoryRepository extends JpaRepository<StockItem, Integer>
 {
-//    public void addInventory(int id);
     public StockItem findByItemName(String name);
 
     @Modifying
@@ -27,7 +26,6 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
 
     public List<StockItem> findByCategory(String category);
 
-//    public List<StockItem> findAllByOrderByItemIdAsc();
     public List<StockItem> findByQuantityGreaterThan(Integer quantity);
     public List<StockItem> findByQuantityEquals(Integer quantity);
 

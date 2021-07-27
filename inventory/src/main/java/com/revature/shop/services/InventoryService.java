@@ -62,7 +62,7 @@ public class InventoryService {
         return iRep.findByQuantityEquals(0);
     }
 
-    public int addToStock(StockItem sItem, MultipartFile itemImage) {
+    public int addToStock(StockItem sItem) {
         System.out.println("ADD TO STOCK start");
 
         if (iRep.existsById(sItem.getId())) {
@@ -70,7 +70,6 @@ public class InventoryService {
         }
 
         iRep.save((sItem));
-        System.out.println("New item with id: " + sItem.getId() + " created.");
         return sItem.getId();
     }
 
