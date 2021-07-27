@@ -1,0 +1,33 @@
+{{- with .Values.frontend }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .deploymentName }}
+  labels:
+    app: {{ $.Values.app }}
+    role: {{ .role }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ $.Values.app }}
+      role: {{ .role }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.app }}
+        role: {{ .role }}
+    spec:
+      containers:
+      - name: {{ .deploymentName }}
+        image: {{ .image }}:{{ .tag }}
+        resources:
+          requests:
+            memory: {{ quote .memoryRequest }}
+            cpu: {{ quote .cpuRequest }}
+          limits:
+            memory: {{quote .memoryLimit }}
+            cpu: {{ quote .cpuLimit }}
+        ports:
+        - containerPort: {{ .containerPort }}
+{{ end }}

@@ -1,0 +1,122 @@
+app: swag-app
+
+accounts:
+  baseURL: /api/account/
+  deploymentName: accounts
+  serviceName: accounts-service
+  role: accounts-app
+  image: aypas/accounts
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
+  replicas: 1
+  containerPort: 8000
+
+frontend:
+  baseURL: /
+  deploymentName: frontend
+  serviceName: frontend-service
+  role: frontend-app
+  image: aypas/swag-frontend
+  tag: latest
+  memoryRequest: 128Mi
+  cpuRequest: 250m
+  memoryLimit: 128Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 80
+
+inventory:
+  baseURL: /api/inventory/
+  deploymentName: inventory
+  serviceName: inventory-service
+  role: inventory-app
+  image: aypas/inventory
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
+  replicas: 1
+  containerPort: 8100
+
+commerce:
+  baseURL: /commerce/
+  deploymentName: commerce
+  serviceName: commerce-service
+  role: commerce-app
+  image: aypas/commerce
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 256Mi
+  cpuLimit: 500m
+  replicas: 1
+  containerPort: 8200
+
+config:
+  deploymentName: config
+  serviceName: config-service
+  role: config-app
+  image: aypas/config
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
+  replicas: 1
+  containerPort: 8888
+
+eureka:
+  deploymentName: eureka
+  serviceName: eureka-service
+  role: eureka-app
+  image: aypas/eureka-server
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
+  replicas: 1
+  containerPort: 9000
+
+gateway:
+  deploymentName: gateway
+  serviceName: gateway-service
+  role: gateway-app
+  image: aypas/spring-cloud-gateway
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 1000m
+  replicas: 1
+  containerPort: 9001
+
+envVars:
+  emailHost:
+    key: email.host
+    value: gmail.com
+  emailPort:
+    key: email.port
+    value: 8080
+  emailUsername:
+    key: email.username
+    value: some_name
+  emailPassword:
+    key: email.Password
+    value: somePass
+  awsAccessID:
+    key: aws.accessKeyId
+    value: some_access_key_id
+  awsSecret:
+    key: aws.secretAccessKey
+    value: some_access_key
+
+ingress:
+  name: swag-ingress
+  host: swag-shop.ml
+  useHost: false
+  useIngress: true
