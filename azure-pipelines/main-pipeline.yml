@@ -287,13 +287,13 @@ stages:
     # Determining Deployment Environment
 
     variables:
-      deployTarget: none
+      deployTarget: 'none'
       ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-        deployTarget: dev
+        deployTarget: 'dev'
       ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
-        deployTarget: staging
+        deployTarget: 'staging'
       ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
-        deployTarget: prod
+        deployTarget: 'prod'
 
     jobs:  
       - job: HelmDeploy
