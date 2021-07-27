@@ -24,7 +24,7 @@ steps:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: ${{ parameters.aksConnection }}
       command: 'upgrade'
-      arguments: '--install --atomic --reuse-values'
+      arguments: '--install --atomic --reuse-values --dry-run'
       releaseName: ${{ parameters.releaseName }}
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'

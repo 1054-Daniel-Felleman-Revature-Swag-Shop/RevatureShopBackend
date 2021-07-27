@@ -270,13 +270,23 @@ stages:
                   pollingTimeoutSec: "300"
                 displayName: Publish Sonar Results
 
-              # Docker Image is created and pushed to ACR.
+              # Docker Image is created and pushed to ACR with build specific tag.
 
               - template: "./azure-templates/docker-template.yml"
                 parameters:
                   targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   repository: ${{ service.name }}
                   tag: "$(Build.BuildNumber)"
+                  Dockerfile: ./${{ service.name }}/Dockerfile
+                  containerRegistry: "acr-team3"
+              
+              # Docker Image is created and pushed to ACR with latest tag.
+
+              - template: "./azure-templates/docker-template.yml"
+                parameters:
+                  targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
+                  repository: ${{ service.name }}
+                  tag: "latest"
                   Dockerfile: ./${{ service.name }}/Dockerfile
                   containerRegistry: "acr-team3"
 
