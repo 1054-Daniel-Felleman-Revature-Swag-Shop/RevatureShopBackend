@@ -23,8 +23,8 @@
         <module>accounts</module>
         <module>commerce</module>
         <module>inventory</module>
-        <module>eureka-server</module>
-        <module>Spring-Cloud-Gateway</module>
+        <module>eureka</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
