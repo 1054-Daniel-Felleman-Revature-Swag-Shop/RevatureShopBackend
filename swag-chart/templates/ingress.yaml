@@ -1,3 +1,4 @@
+{{ if .Values.ingress.useIngress }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -10,7 +11,7 @@ spec:
   {{ else }}
   - http: {{ "" -}}
   {{ end }}
-      {{ if .Values.ingress.useIngress }}
+      {{ if not .Values.ingress.useJavaGateway }}
       paths:
       - pathType: Prefix
         path: {{ .Values.inventory.baseURL }}
@@ -46,7 +47,8 @@ spec:
         path: /
         backend:
           service:
-            name: {{ .Values.SpringCloudGateway.serviceName }}
+            name: {{ .Values.gateway.serviceName }}
             port:
-              number: {{ .Values.SpringCloudGateway.containerPort }}
-      {{ end }}  
+              number: {{ .Values.gateway.containerPort }}
+      {{ end }}
+{{ end }}

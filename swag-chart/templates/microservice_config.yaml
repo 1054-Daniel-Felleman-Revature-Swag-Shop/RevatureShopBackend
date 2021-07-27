@@ -4,10 +4,9 @@ metadata:
   name: env-vars
 data:
   # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE is neccesary for gateway config.
-  {{- with .Values.eurekaserver }}
-  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://{{ .serviceName }}:{{ .containerPort }}/eureka
-  eureka.client.service-url.defaultZone: http://{{ .serviceName }}:{{ .containerPort }}/eureka
-  {{ end }}
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+  eureka.client.service-url.defaultZone: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+
   
   spring.config.import: configserver:http://{{ .Values.config.serviceName }}:{{ .Values.config.containerPort }}
 

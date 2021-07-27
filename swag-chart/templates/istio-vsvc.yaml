@@ -1,0 +1,33 @@
+{{ if not .Values.ingress.useIngress}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: backend-route
+spec:
+  gateways:
+  - swag-gateway
+  hosts:
+  - "*"
+  http:
+  - name: "backend-general-route"
+    match:
+    - uri:
+        prefix: {{ .Values.commerce.baseURL }}
+    route:
+    - destination:
+        host: {{ .Values.commerce.serviceName }}
+  - name: inventory
+    match:
+    - uri:
+        prefix: {{ .Values.inventory.baseURL }}
+    route:
+    - destination:
+        host: {{ .Values.inventory.serviceName }}
+  - name: accounts
+    match:
+    - uri:
+        prefix: {{ .Values.accounts.baseURL }}
+    route:
+    - destination:
+        host: {{ .Values.accounts.serviceName }}
+{{ end }}
