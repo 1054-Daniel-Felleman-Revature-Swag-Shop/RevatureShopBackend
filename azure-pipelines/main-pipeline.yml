@@ -306,25 +306,27 @@ stages:
             fi
           name: target
           displayName: Determine Deployment Environment
+          
+        - script: echo $(target.deploy)
             
 
-        # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
+        # # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
-        - task: KubernetesManifest@0
-          displayName: Create Pull Secret Dev
-          inputs:
-            action: 'createSecret'
-            kubernetesServiceConnection: '$(target.deployCluster)'
-            namespace: 'team3'
-            secretType: 'dockerRegistry'
-            secretName: 'team3pullsecret'
-            dockerRegistryEndpoint: 'acr-team3'
+        # - task: KubernetesManifest@0
+        #   displayName: Create Pull Secret Dev
+        #   inputs:
+        #     action: 'createSecret'
+        #     kubernetesServiceConnection: '$(target.deployCluster)'
+        #     namespace: 'team3'
+        #     secretType: 'dockerRegistry'
+        #     secretName: 'team3pullsecret'
+        #     dockerRegistryEndpoint: 'acr-team3'
 
-        # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+        # # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
-        - template: './azure-templates/helm-template.yml'
-          parameters:
-            aksConnection: '$(target.deployCluster)'
-            releaseName: '$(releaseNumber)'
-            nameSpace: 'team3'
-            chartName: 'swag-chart'
+        # - template: './azure-templates/helm-template.yml'
+        #   parameters:
+        #     aksConnection: '$(target.deployCluster)'
+        #     releaseName: '$(releaseNumber)'
+        #     nameSpace: 'team3'
+        #     chartName: 'swag-chart'
