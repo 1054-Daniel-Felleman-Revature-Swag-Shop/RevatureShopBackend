@@ -2,7 +2,7 @@
 parameters:
   - name: 'aksConnection'
     type: string
-    default: dev
+    default: 'k8s-team3-config-dev'
   - name: 'releaseName'
     type: string
   - name: 'nameSpace'
