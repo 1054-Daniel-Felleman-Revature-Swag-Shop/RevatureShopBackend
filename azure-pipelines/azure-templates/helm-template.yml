@@ -2,6 +2,7 @@
 parameters:
   - name: 'aksConnection'
     type: string
+    default: dev
   - name: 'releaseName'
     type: string
   - name: 'nameSpace'
