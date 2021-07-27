@@ -119,4 +119,5 @@ ingress:
   name: swag-ingress
   host: swag-shop.ml
   useHost: false
-  useIngress: true
+  useIngress: true #if false, Istio will be used
+  useJavaGateway: false 
