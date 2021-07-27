@@ -284,6 +284,8 @@ stages:
     displayName: Deploy to AKS Cluster
     dependsOn: Check
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+    variables:
+      releaseNumber: $[counter('swag-release.1.', 100)]
     jobs:  
       - job: HelmDeploy
         steps:
@@ -294,13 +296,13 @@ stages:
         - bash: |
             if [ $(Build.SourceBranchName) = 'main'];
             then
-               echo '##vso[task.setvariable variable=deployTarget;isOutput=true]prod'
+               echo '##vso[task.setvariable variable=deployCluster;isOutput=true]prod'
             elif [ $(Build.SourceBranchName) = 'staging'];
-              echo '##vso[task.setvariable variable=deployTarget;isOutput=true]staging'
+              echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-staging'
             elif [ $(Build.SourceBranchName) = 'development'];
-              echo '##vso[task.setvariable variable=deployTarget;isOutput=true]dev'
+              echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-dev'
             else
-              echo '##vso[task.setvariable variable=deployTarget;isOutput=true]dev'
+              echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-dev'
             fi
           name: target
           displayName: Determine Deployment Environment
@@ -312,27 +314,17 @@ stages:
           displayName: Create Pull Secret Dev
           inputs:
             action: 'createSecret'
-            kubernetesServiceConnection: 'k8s-team3-config-dev'
+            kubernetesServiceConnection: '$(target.deployCluster)'
             namespace: 'team3'
             secretType: 'dockerRegistry'
-            secretName: 'dev3pull'
-            dockerRegistryEndpoint: 'acr-team3'
-
-        - task: KubernetesManifest@0
-          displayName: Create Pull Secret Staging
-          inputs:
-            action: 'createSecret'
-            kubernetesServiceConnection: 'k8s-team3-config-staging'
-            namespace: 'team3'
-            secretType: 'dockerRegistry'
-            secretName: 'staging3pull'
+            secretName: 'team3pullsecret'
             dockerRegistryEndpoint: 'acr-team3'
 
         # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
         - template: './azure-templates/helm-template.yml'
           parameters:
-            aksConnection: 'k8s-team3-config-$(target.deployTarget)'
-            releaseName: '$(deployTarget)-release'
+            aksConnection: '$(target.deployCluster)'
+            releaseName: '$(releaseNumber)'
             nameSpace: 'team3'
             chartName: 'swag-chart'
