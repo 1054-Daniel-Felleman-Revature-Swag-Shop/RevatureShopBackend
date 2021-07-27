@@ -1,4 +1,6 @@
 app: swag-app
+usePullSecrets: false
+pullSecret: team3pullsecret
 
 accounts:
   baseURL: /api/account/
@@ -13,8 +15,6 @@ accounts:
   cpuLimit: 1000m
   replicas: 1
   containerPort: 8000
-
-
 
 inventory:
   baseURL: /api/inventory/

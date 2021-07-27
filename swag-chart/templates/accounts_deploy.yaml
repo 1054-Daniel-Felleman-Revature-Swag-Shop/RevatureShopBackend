@@ -21,6 +21,10 @@ spec:
       containers:
       - name: {{ .deploymentName }}
         image: {{ .image }}:{{ .tag }}
+        {{ if $.Values.usePullSecrets }}
+        imagePullSecrets:
+        - name: {{ $.Values.pullSecret }}
+        {{ end }}
         envFrom:
         - configMapRef:
             name: env-vars
