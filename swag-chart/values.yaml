@@ -7,7 +7,7 @@ accounts:
   deploymentName: accounts
   serviceName: accounts-service
   role: accounts-app
-  image: aypas/accounts
+  image: may24devopscontainers.azurecr.io/accounts
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
@@ -21,7 +21,7 @@ inventory:
   deploymentName: inventory
   serviceName: inventory-service
   role: inventory-app
-  image: aypas/inventory
+  image: may24devopscontainers.azurecr.io/inventory
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
@@ -35,7 +35,7 @@ commerce:
   deploymentName: commerce
   serviceName: commerce-service
   role: commerce-app
-  image: aypas/commerce
+  image: may24devopscontainers.azurecr.io/commerce
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
@@ -48,7 +48,7 @@ config:
   deploymentName: config
   serviceName: config-service
   role: config-app
-  image: aypas/config
+  image: may24devopscontainers.azurecr.io/config
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
@@ -61,7 +61,7 @@ eureka:
   deploymentName: eureka
   serviceName: eureka-service
   role: eureka-app
-  image: aypas/eureka-server
+  image: may24devopscontainers.azurecr.io/eureka
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
@@ -74,7 +74,7 @@ gateway:
   deploymentName: gateway
   serviceName: gateway-service
   role: gateway-app
-  image: aypas/spring-cloud-gateway
+  image: may24devopscontainers.azurecr.io/gateway
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
