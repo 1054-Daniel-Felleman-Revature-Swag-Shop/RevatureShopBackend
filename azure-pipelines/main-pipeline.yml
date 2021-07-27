@@ -298,8 +298,10 @@ stages:
             then
                echo '##vso[task.setvariable variable=deployCluster;isOutput=true]prod'
             elif [ $(Build.SourceBranchName) = 'staging'];
+            then
               echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-staging'
             elif [ $(Build.SourceBranchName) = 'development'];
+            then
               echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-dev'
             else
               echo '##vso[task.setvariable variable=deployCluster;isOutput=true]k8s-team3-config-dev'
