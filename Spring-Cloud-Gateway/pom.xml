@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.revature</groupId>
-    <artifactId>Spring-Cloud-Gateway</artifactId>
+    <artifactId>gateway</artifactId>
     <version>1</version>
-    <name>Spring-Cloud-Gateway</name>
+    <name>gateway</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>16</java.version>
