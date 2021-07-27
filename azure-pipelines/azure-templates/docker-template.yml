@@ -1,8 +1,6 @@
 parameters:
   - name: 'targetPath'
     type: string
-  - name: 'artifact'
-    type: string
   - name: 'tag'
     type: string
   - name: 'Dockerfile'
