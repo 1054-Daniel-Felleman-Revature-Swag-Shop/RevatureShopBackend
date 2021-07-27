@@ -18,13 +18,14 @@ pr:
       - feature_*
 
 # Parameters and Variables to help with naming and calling variables, as well as providing a group of objects to loop over in later jobs.
+
 variables:
   - group: artifactGroup
   - name: sonarOrg
     value: "1054-daniel-felleman-revature-swag-shop"
   - name: sonarKeyPrefix
     value: "1054-daniel-felleman-revature-swag-shop_"
-    
+
 parameters:
   - name: serviceConditions
     type: object
@@ -111,6 +112,7 @@ stages:
         condition: eq(variables['base'], 'True')
 
         steps:
+
           # Install JDK 16
 
           - script: ./azure-pipelines/java-16-install.sh
@@ -131,13 +133,13 @@ stages:
 
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: 'SonarCloud'
-              organization: '$(sonarOrg)'
-              scannerMode: 'CLI'
-              configMode: 'manual'
-              cliProjectKey: '$(sonarKeyPrefix)base'
-              cliProjectName: 'base'
-              cliSources: 'base'
+              SonarCloud: "SonarCloud"
+              organization: "$(sonarOrg)"
+              scannerMode: "CLI"
+              configMode: "manual"
+              cliProjectKey: "$(sonarKeyPrefix)base"
+              cliProjectName: "base"
+              cliSources: "base"
               extraProperties: |
                 sonar.java.binaries=base/target/**/*
                 sonar.exclusions=/jdk/**/*
@@ -146,7 +148,7 @@ stages:
 
           - script: "mvn clean package -f ./base/pom.xml"
             displayName: Install Base
-          
+
           # SonarCloud Analysis
 
           - task: SonarCloudAnalyze@1
@@ -154,7 +156,7 @@ stages:
           - task: SonarCloudPublish@1
             inputs:
               pollingTimeoutSec: "300"
-          
+
           # Publishing base artifact to feed.
 
           - task: UniversalPackages@0
@@ -230,13 +232,13 @@ stages:
               - task: SonarCloudPrepare@1
                 displayName: Prepare Sonar Scan
                 inputs:
-                  SonarCloud: 'SonarCloud'
-                  organization: '$(sonarOrg)'
-                  scannerMode: 'CLI'
-                  configMode: 'manual'
-                  cliProjectKey: '$(sonarKeyPrefix)${{ service.name }}'
-                  cliProjectName: '${{ service.name }}'
-                  cliSources: '${{ service.name }}'
+                  SonarCloud: "SonarCloud"
+                  organization: "$(sonarOrg)"
+                  scannerMode: "CLI"
+                  configMode: "manual"
+                  cliProjectKey: "$(sonarKeyPrefix)${{ service.name }}"
+                  cliProjectName: "${{ service.name }}"
+                  cliSources: "${{ service.name }}"
                   extraProperties: |
                     sonar.java.binaries=${{ service.name }}/target/**/*
                     sonar.exclusions=/jdk/**/*
@@ -267,18 +269,19 @@ stages:
                 inputs:
                   pollingTimeoutSec: "300"
                 displayName: Publish Sonar Results
-             
+
               # Docker Image is created and pushed to ACR.
 
-              - template: './azure-templates/docker-template.yml'
+              - template: "./azure-templates/docker-template.yml"
                 parameters:
                   targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   repository: ${{ service.name }}
-                  tag: '$(Build.BuildNumber)'
+                  tag: "$(Build.BuildNumber)"
                   Dockerfile: ./${{ service.name }}/Dockerfile
-                  containerRegistry: 'acr-team3'
+                  containerRegistry: "acr-team3"
 
-   # Deployment Stage. Using images pushed to the Azure Container Registry, and a helm Chart.
+
+  # Deployment Stage. Using images pushed to the Azure Container Registry, and a helm Chart.
 
   - stage: Deploy
     displayName: Deploy to AKS Cluster
@@ -286,41 +289,40 @@ stages:
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
     variables:
       releaseNumber: $[counter('swag-release.1.', 100)]
-    jobs:  
+    jobs:
       - job: HelmDeploy
         steps:
 
-        # Determining Deployment Environment based on branch of CI. If not main, staging, or development, ideally this would be test.
-        # For testing purposes the default is dev. To be updated before implementing.
-        
-        # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
+          # Determining Deployment Environment based on branch of CI. If not main, staging, or development, ideally this would be test.
+          # For testing purposes the default is dev. To be updated before implementing.
 
-        - task: KubernetesManifest@0
-          displayName: Create Pull Secret Dev
-          inputs:
-            action: 'createSecret'
-            ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-              kubernetesServiceConnection: 'k8s-team3-config-dev'
-            ${{ if ne(variables['Build.SourceBranchName'], 'staging') }}:
-              kubernetesServiceConnection: 'k8s-team3-config-staging'
-            ${{ if ne(variables['Build.SourceBranchName'], 'feature_cd') }}:
-              kubernetesServiceConnection: 'k8s-team3-config-dev'
-            namespace: 'team3'
-            secretType: 'dockerRegistry'
-            secretName: 'team3pullsecret'
-            dockerRegistryEndpoint: 'acr-team3'
+          # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
-        # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+          - task: KubernetesManifest@0
+            displayName: Create Pull Secret Dev
+            inputs:
+              action: "createSecret"
+              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+                kubernetesServiceConnection: "k8s-team3-config-dev"
+              ${{ if ne(variables['Build.SourceBranchName'], 'staging') }}:
+                kubernetesServiceConnection: "k8s-team3-config-staging"
+              ${{ if ne(variables['Build.SourceBranchName'], 'feature_cd') }}:
+                kubernetesServiceConnection: "k8s-team3-config-dev"
+              namespace: "team3"
+              secretType: "dockerRegistry"
+              secretName: "team3pullsecret"
+              dockerRegistryEndpoint: "acr-team3"
 
-        - template: './azure-templates/helm-template.yml'
-          parameters:
-            ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-              aksConnection: 'k8s-team3-config-dev'
-            ${{ if ne(variables['Build.SourceBranchName'], 'staging') }}:
-              aksConnection: 'k8s-team3-config-staging'
-            ${{ if ne(variables['Build.SourceBranchName'], 'feature_cd') }}:
-              aksConnection: 'k8s-team3-config-dev'
-            
-            releaseName: '$(releaseNumber)'
-            nameSpace: 'team3'
-            chartName: 'swag-chart'
+          # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
+
+          - template: "./azure-templates/helm-template.yml"
+            parameters:
+              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+                aksConnection: "k8s-team3-config-dev"
+              ${{ if ne(variables['Build.SourceBranchName'], 'staging') }}:
+                aksConnection: "k8s-team3-config-staging"
+              ${{ if ne(variables['Build.SourceBranchName'], 'feature_cd') }}:
+                aksConnection: "k8s-team3-config-dev"
+              releaseName: "$(releaseNumber)"
+              nameSpace: "team3"
+              chartName: "swag-chart"
