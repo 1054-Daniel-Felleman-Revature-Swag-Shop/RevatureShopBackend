@@ -267,24 +267,16 @@ stages:
               - task: SonarCloudPublish@1
                 inputs:
                   pollingTimeoutSec: "300"
-
-              # Publish Artifacts to be used in Docker Stage
-
-              - task: PublishPipelineArtifact@1
-                inputs:
-                  targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
-                  artifact: "${{ service.name }}"
-                  publishLocation: "pipeline"
-              
+             
               # Docker Image is created and pushed to ACR.
 
               - template: './azure-templates/docker-template.yml'
                 parameters:
                   targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
-                  artifact: ${{ service.name }}
-                  tag: latest
+                  repository: ${{ service.name }}
+                  tag: '$(Build.BuildNumber)'
                   Dockerfile: ./${{ service.name }}/Dockerfile
-                  repository: 'acr-team3'
+                  containerRegistry: 'acr-team3'
               
               # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
