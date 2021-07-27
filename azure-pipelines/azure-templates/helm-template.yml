@@ -27,5 +27,5 @@ steps:
       releaseName: ${{ parameters.releaseName }}
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'
-      chartPath: './helm/'
+      chartPath: './swag-chart/'
       valueFile: './swag-chart/values.yaml'
