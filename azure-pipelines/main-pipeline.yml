@@ -318,7 +318,7 @@ stages:
           displayName: Create Pull Secret Dev
           inputs:
             action: 'createSecret'
-            kubernetesServiceConnection: '$(target.deployCluster)'
+            kubernetesServiceConnection: $(target.deployCluster)
             namespace: 'team3'
             secretType: 'dockerRegistry'
             secretName: 'team3pullsecret'
@@ -328,7 +328,7 @@ stages:
 
         - template: './azure-templates/helm-template.yml'
           parameters:
-            aksConnection: '$(target.deployCluster)'
+            aksConnection: $(target.deployCluster)
             releaseName: '$(releaseNumber)'
             nameSpace: 'team3'
             chartName: 'swag-chart'
