@@ -1,6 +1,6 @@
 app: swag-app
 usePullSecrets: false
-pullSecret: replaceThis
+pullSecret: team3pullsecret
 
 accounts:
   baseURL: /api/account/
