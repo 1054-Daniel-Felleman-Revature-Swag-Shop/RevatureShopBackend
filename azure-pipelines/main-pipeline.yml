@@ -280,7 +280,7 @@ stages:
 
               - template: './azure-templates/docker-template.yml'
                 parameters:
-                  targetPath: "$(Build.Repository.LocalPath)/${{ service.name }}/target/${{ service.name }}-1.jar"
+                  targetPath: "/${{ service.name }}/target/${{ service.name }}-1.jar"
                   artifact: ${{ service.name }}
                   tag: latest
                   Dockerfile: ./{{ service.name }}/Dockerfile
