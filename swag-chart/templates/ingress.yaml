@@ -34,13 +34,6 @@ spec:
             name: {{ .Values.accounts.serviceName }}
             port:
               number: {{ .Values.accounts.containerPort }}
-      - pathType: Prefix
-        path: {{ .Values.frontend.baseURL }}
-        backend:
-          service:
-            name: {{ .Values.frontend.serviceName }}
-            port:
-              number: {{ .Values.frontend.containerPort }}
       {{ else }}
       paths:
       - pathType: Prefix

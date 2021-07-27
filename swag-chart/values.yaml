@@ -14,19 +14,7 @@ accounts:
   replicas: 1
   containerPort: 8000
 
-frontend:
-  baseURL: /
-  deploymentName: frontend
-  serviceName: frontend-service
-  role: frontend-app
-  image: aypas/swag-frontend
-  tag: latest
-  memoryRequest: 128Mi
-  cpuRequest: 250m
-  memoryLimit: 128Mi
-  cpuLimit: 250m
-  replicas: 1
-  containerPort: 80
+
 
 inventory:
   baseURL: /api/inventory/
