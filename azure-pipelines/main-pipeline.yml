@@ -309,7 +309,7 @@ stages:
           name: target
           displayName: Determine Deployment Environment
           
-        - script: echo $(target.deploy)
+        - script: echo $(target.deployCluster)
             
 
         # # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
