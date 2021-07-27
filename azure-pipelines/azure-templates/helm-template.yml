@@ -36,7 +36,4 @@ steps:
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'
       chartPath: './helm/'
-      overrideValues: |
-        ${{ parameters.activeSvc }}.image=${{ parameters.containerName}}/${{ parameters.imageName }}
-        ${{ parameters.activeSvc }}.tag=${{ parameters.tag }}
       valueFile: './swag-chart/values.yaml'
