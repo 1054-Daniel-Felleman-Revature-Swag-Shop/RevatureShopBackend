@@ -7,7 +7,6 @@ trigger:
       - main
       - staging
       - development
-      - feature_*
 
 pr:
   branches:
@@ -293,8 +292,9 @@ stages:
       - job: HelmDeploy
         steps:
 
-          # Determining Deployment Environment based on branch of CI. If not main, staging, or development, ideally this would be test.
-          # For testing purposes the default is dev. To be updated before implementing.
+          # In the next steps, we're dynamically determining Deployment Environment based on branch of CI. 
+          # If not main, staging, or development, ideally this would be test.
+          # For testing purposes the default is dev. To be updated when a production and testing environment are available..
 
           # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
