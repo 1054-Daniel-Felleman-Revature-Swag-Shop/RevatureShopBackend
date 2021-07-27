@@ -1,6 +1,14 @@
 package com.revature.shop.accounts;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -10,12 +18,6 @@ import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.accounts.services.AccountService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public class AccountServiceTest {
     @Mock
     private AccountRepository repo;
@@ -23,7 +25,7 @@ public class AccountServiceTest {
     private PointRepository pointsRepo;
 
     @Test
-    public void testPoints() {
+    public void testPoints() throws IOException {
         repo = mock(AccountRepository.class);
         pointsRepo = mock(PointRepository.class);
 
