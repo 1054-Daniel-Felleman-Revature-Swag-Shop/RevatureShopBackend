@@ -1,6 +1,4 @@
 parameters:
-  - name: 'targetPath'
-    type: string
   - name: 'tag'
     type: string
   - name: 'Dockerfile'
