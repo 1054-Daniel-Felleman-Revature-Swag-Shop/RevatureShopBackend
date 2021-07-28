@@ -295,8 +295,8 @@ stages:
     dependsOn: Check
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
     jobs:
-      - deployment: HelmDeploy
-        displayName: Deploy to AKS
+      - deployment: DevDeploy
+        displayName: Deploy to AKS Dev Environment
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
         environment: dev
         strategy:
@@ -332,7 +332,7 @@ stages:
                   chartName: "swag-chart"
                   overrides: 'ingress.host=test.api.swag-chart.ml'
 
-      - deployment: HelmDeploy
+      - deployment: StagingDeploy
         displayName: Deploy to AKS Staging
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
         environment: staging
