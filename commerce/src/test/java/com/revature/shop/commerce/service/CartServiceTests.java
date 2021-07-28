@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -31,11 +32,15 @@ public class CartServiceTests {
 
     @Mock
     CartRepository cartRepository;
+    
+    private final static String testCup = "test-cup";
+    private final static String testShirt = "test-t-shirt";
+    private final static String testName = "abdulmoeedak";
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null, null);
-    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null, null);
+    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null, null, 0);
+    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null, null, 0);
 
     @BeforeClass
     public static void addTestItem () {
@@ -66,7 +71,7 @@ public class CartServiceTests {
         when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
         cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals("test-cup") && stDto.getCartQuantity() == 2));
+        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals(testCup) && stDto.getCartQuantity() == 2));
         stockItem.setQuantity(0);
         restTemplate.put("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity", stockItem);
         Exception exception = assertThrows(ItemOutOfStockException.class, () -> mockedCartService.updateCart(stockItemDto));

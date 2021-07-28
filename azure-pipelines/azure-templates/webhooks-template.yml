@@ -1,0 +1,26 @@
+parameters:
+  - name: 'projectName'
+    value: string
+  - name: 'channelID'
+    value: string
+  - name: 'webhookKey'
+    value: string
+
+jobs:
+  - job: DiscordMessage
+    steps: 
+    - task: ado-discord-webhook@1
+      inputs:
+        channelId: '${{ parameters.channelID }}'
+        webhookKey: '${{ parameters.webhookKey }}'
+        name: '${{ parameters.ProjectName }}'
+        messageType: 'content'
+        content: |
+          **Team III - Project III**: $(Build.SourceVersionMessage)
+          ```
+          Build Number: $(Build.BuildNumber)
+          Build Branch: $(Build.SourceBranch)
+          Build Reason: $(Build.Reason)
+          ```
+          **Result**: $(Agent.JobStatus)
+          ```

@@ -26,17 +26,20 @@ public class StockItem
     
     private String size;
 
+    private Double discount;
+
     public StockItem() {
 		super();
 	}
 
-	public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size) {
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size, double discount) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
         this.category = Objects.requireNonNullElse(category, "Misc");
         this.description = Objects.requireNonNullElse(description, "No description provided.");
         this.size = Objects.requireNonNullElse(size, "No size");
+        this.discount = Math.max(discount, 0);
     }
 
     public int getId(){
@@ -55,16 +58,8 @@ public class StockItem
         return itemPrice;
     }
 
-    public void setItemPrice(int price) {
-        this.itemPrice = Math.max(price, 0);
-    }
-
     public String getItemName() {
         return itemName;
-    }
-
-    public void setItemName(String item_name) {
-        this.itemName = item_name;
     }
     
     public String getSize() {
@@ -73,12 +68,26 @@ public class StockItem
 
 	public void setSize(String size) {
 		this.size = size;
+    }
+
+//	public void setId(int id) {
+//		this.id = id;
+//	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
-	@Override
-	public String toString() {
-		return "StockItem [id=" + id + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", quantity=" + quantity
-				+ ", category=" + category + ", description=" + description + ", size=" + size + "]";
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = Math.max(itemPrice, 0);
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = Math.max(discount, 0);
 	}
 
     public String getDescription() {
@@ -97,4 +106,64 @@ public class StockItem
         this.category = Objects.requireNonNullElse(category, "Misc");
     }
 
+	@Override
+	public String toString() {
+		return "StockItem [id=" + id + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", quantity=" + quantity
+				+ ", category=" + category + ", description=" + description + ", size=" + size + ", discount=" + discount + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(discount);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + id;
+		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
+		result = prime * result + itemPrice;
+		result = prime * result + quantity;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StockItem other = (StockItem) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (Double.doubleToLongBits(discount) != Double.doubleToLongBits(other.discount))
+			return false;
+		if (id != other.id)
+			return false;
+		if (itemName == null) {
+			if (other.itemName != null)
+				return false;
+		} else if (!itemName.equals(other.itemName))
+			return false;
+		if (itemPrice != other.itemPrice)
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		return true;
+	}
+
+    
+    
+    
 }

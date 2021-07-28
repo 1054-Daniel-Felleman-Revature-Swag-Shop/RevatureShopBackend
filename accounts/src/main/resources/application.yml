@@ -10,9 +10,12 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
-    hibernate:      ddl-auto: create
+    hibernate:
+      ddl-auto: create
   h2:
-    console:      enabled: true      settings:
+    console:
+      enabled: true
+      settings:
         web-allow-others: true
   application:
     name: accountsMS

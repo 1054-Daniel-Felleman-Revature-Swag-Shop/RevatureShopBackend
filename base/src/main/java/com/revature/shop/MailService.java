@@ -25,7 +25,6 @@ public class MailService {
 
         mailSender.setUsername(username);
         mailSender.setPassword(password);
-        System.out.println(host + port + username + password);
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");

@@ -1,7 +1,4 @@
-FROM openjdk:8
-EXPOSE 8080
-COPY . /app
-WORKDIR /app
-ADD target/inventory-1.jar inventory.jar
-ENTRYPOINT ["java", "-jar", "/inventory.jar"]
-CMD java -jar inventory.jar
+FROM openjdk:16
+EXPOSE 8100
+ADD /target/inventory-1.jar inventory.jar
+ENTRYPOINT ["java", "-jar", "inventory.jar"]
