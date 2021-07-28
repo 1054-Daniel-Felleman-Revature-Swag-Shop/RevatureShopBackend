@@ -302,7 +302,9 @@ stages:
           runOnce:
             deploy:
               steps:
-  
+              
+              - checkout: self
+              
               # In the next steps, we're dynamically determining Deployment Environment based on branch of CI. 
               # If not main, staging, or development, ideally this would be test.
               # For testing purposes the default is dev. To be updated when a production and testing environment are available..
