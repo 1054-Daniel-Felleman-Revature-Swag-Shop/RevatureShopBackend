@@ -1,4 +1,4 @@
-{{ if not .Values.ingress.useIngress }}
+{{ if .Values.ingress.useJavaGateway }}
 {{- with .Values.gateway }}
 apiVersion: apps/v1
 kind: Deployment
@@ -37,5 +37,9 @@ spec:
             cpu: {{ quote .cpuLimit }}
         ports:
         - containerPort: {{ .containerPort }}
+      {{ if $.Values.usePullSecrets }}
+      imagePullSecrets:
+      - name: {{ $.Values.pullSecret }}
+      {{ end }}
 {{ end }}
 {{ end }}
