@@ -24,6 +24,3 @@ jobs:
           ```
           **Result**: $(Agent.JobStatus)
           ```
-          Image: "$(service)-$(Build.SourceVersion)"
-          Pushed to Azure Container Registry
-          ```

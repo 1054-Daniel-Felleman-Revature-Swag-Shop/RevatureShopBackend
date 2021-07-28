@@ -62,9 +62,8 @@ public class InventoryController
     @PutMapping(value = "/stockitem/new", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
     {
-        System.out.println(item);
-        //System.out.println("itemImage: "+itemImage);
-        Integer idOfNewItem = inventoryService.addToStock(item, null);
+        
+        Integer idOfNewItem = inventoryService.addToStock(item);
 
         return new ResponseEntity<>(idOfNewItem, HttpStatus.CREATED);
     }
@@ -81,7 +80,7 @@ public class InventoryController
     @PutMapping(value = "/stockitem/update/addimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<?> uploadItemImage(@RequestParam("id") String itemIdAsString, @RequestParam("image") MultipartFile imageFile) {
 
-        System.out.println("HELLO uploadItemImage(): id = "+itemIdAsString);
+        
 
         boolean uploadWorked = inventoryService.uploadImageForItemWithId(Integer.parseInt(itemIdAsString), imageFile);
 
@@ -97,6 +96,14 @@ public class InventoryController
     @DeleteMapping("/delete/item/name")
     public void deleteItemByName (@RequestParam String itemName) {
         inventoryService.deleteItemByName(itemName);
+    }
+    
+    //update the item's discount amount
+    @PutMapping("/stockitem/update/discount")
+    public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
+    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getItemName(), item.getDiscount());
+
+        return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }
 
 }
