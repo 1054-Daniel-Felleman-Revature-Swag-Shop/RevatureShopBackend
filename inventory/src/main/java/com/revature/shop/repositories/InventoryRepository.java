@@ -32,4 +32,6 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
     public List<StockItem> findByQuantityEquals(Integer quantity);
 
     void deleteByItemName(String itemName);
+
+	public StockItem findByItemNameAndSize(String itemName, String size);
 }

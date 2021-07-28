@@ -20,7 +20,7 @@ public class e2eInventoryTesting
         URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri, List.class);
         System.out.println(stockItemsList.getBody());
-        assertTrue(stockItemsList.getBody().size() == 30);
+        assertTrue(stockItemsList.getBody().size() == 64);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class e2eInventoryTesting
         URI uri2 = URI.create("http://localhost:9001/inventoryms/api/inventory/view");
         ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uri2, List.class);
         System.out.println(stockItemsList.getBody().size());
-        assertEquals(31, stockItemsList.getBody().size());
+        assertEquals(65, stockItemsList.getBody().size());
     }
 
     @Test

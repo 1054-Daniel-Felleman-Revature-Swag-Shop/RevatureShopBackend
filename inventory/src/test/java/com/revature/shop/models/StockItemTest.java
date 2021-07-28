@@ -49,5 +49,14 @@ class StockItemTest {
         sItem.setQuantity(-100);
         assertEquals(sItem.getQuantity(), 0);
     }
+    
+    @Test
+    public void testSetSize() {
+    	sItem = new StockItem("Shirt", 20, 100, null, null, "Small");
+    	assertEquals(sItem.getSize(), "Small");
+    	
+    	sItem.setSize("Large");
+    	assertEquals(sItem.getSize(), "Large");
+    }
 
 }

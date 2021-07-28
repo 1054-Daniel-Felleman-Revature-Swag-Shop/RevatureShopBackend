@@ -5,6 +5,7 @@ import java.util.Objects;
 public class StockItemDto {
 
     private String myshopper;
+    private int id;
     private String itemName;
     private int itemPrice;
     private int cartQuantity;
@@ -15,14 +16,23 @@ public class StockItemDto {
     public StockItemDto() {
     }
 
-    public StockItemDto(String myshopper, String itemName, int itemPrice, int cartQuantity, String category, String description, String size) {
+    public StockItemDto(String myshopper, int id, String itemName, int itemPrice, int cartQuantity, String category, String description, String size) {
         this.myshopper = myshopper;
+        this.id = Math.max(id, 1);
         this.itemName = Objects.requireNonNullElse(itemName, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.cartQuantity = Math.max(cartQuantity, 0);
         this.category = Objects.requireNonNullElse(category, "Misc");
         this.description = Objects.requireNonNullElse(description, "No description provided.");
         this.size = Objects.requireNonNullElse(size, "No size");
+    }
+    
+    public int getId() {
+    	return id;
+    }
+    
+    public void setId(int id) {
+    	this.id = id;
     }
 
     public String getSize() {

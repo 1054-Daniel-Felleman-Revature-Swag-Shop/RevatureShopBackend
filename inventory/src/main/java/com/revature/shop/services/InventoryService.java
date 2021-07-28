@@ -98,4 +98,12 @@ public class InventoryService {
         }
         return true;
     }
+
+	public StockItem getItemByNameAndSize(String itemName, String size) {
+		return iRep.findByItemNameAndSize(itemName, size);
+	}
+
+	public StockItem getItemById(int id) {
+		return iRep.findById(id).get();
+	}
 }

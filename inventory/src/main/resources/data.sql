@@ -13,7 +13,7 @@
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Rev It Up Hat', 10, 700, 'Misc', 'A sweet hat to ACCELERATE your development!', null);
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Programmer Socks', 1000, 10, 'Misc', 'Scientifically proven to make you a better programmer.');
-INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Revature: Party Game', 175, 95, 'Misc', 'Simple board game to test your tech skills');
+INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Party Game', 175, 95, 'Misc', 'Simple board game to test your tech skills');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Anime Collection Blu-Ray', 50, 300, 'Movies', 'Only old-school anime fans will understand.');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Action-Packed Collection DVD', 45, 250, 'Movies', 'Hardcore movies full of nonstop actions and suspenses.');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('SQL T-Shirt', 20, 125, 'Women''s Shirt', 'Embrace the database by wearing THIS t-shirt.', 'Small');
@@ -26,7 +26,7 @@ INSERT INTO inventory (item_name, item_price, quantity, category, description, s
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Karate T-Shirt', 50, 120, 'Unisex Shirt', 'Do you have a black-belt, white-belt, or any belt at home? If you do, then buy this shirt.', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Fast Food Android T-Shirt', 15, 50, 'Men''s Shirt', 'See? Not all androids are bloodthirsty killing machines. Some of them can even serve fast food when their master has a craving for a Big Mac.', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Meme T-Shirt', 30, 75, 'Unisex Shirt', 'The Force is strong with this t-shirt.', 'Small');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution t-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Small');
+INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution T-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Moon Landing T-Shirt', 20, 130, 'Unisex Shirt', 'One step for man...', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech T-Shirt', 40, 100, 'Unisex Shirt', 'Flying cars are real, people! I am telling you.', 'Small');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech II T-Shirt', 50, 200, 'Unisex Shirt', 'Cyborg rider FTW!!!', 'Small');
@@ -40,7 +40,7 @@ INSERT INTO inventory (item_name, item_price, quantity, category, description) V
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Sweet Dreams Mug', 100, 20, 'Mugs', 'Legend has it that if you drink beer from this mug, you will get knocked out cold for 7 days. 7 DAYS!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Get To Da Choppa Lunchbox', 200, 20, 'Misc', 'RUNNNN! GO!!! GET TO DA CHAPPA!!!');
 INSERT INTO inventory (item_name, item_price, quantity, category, description) VALUES ('Revature REV Watch', 600, 50, 'Misc', 'The authentic REV watch from Revature. Designed to look cool and hip.');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Medium');
+INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 800, 'Unisex Shirt', 'Perfect for casual friday!', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('SQL T-Shirt', 20, 125, 'Women''s Shirt', 'Embrace the database by wearing THIS t-shirt.', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Will Write Code For Food T-Shirt', 35, 100, 'Men''s Shirt', 'Seriously! Are you that desperate?', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Arrays T-Shirt', 15, 50, 'Men''s Shirt', 'Black T-Shirt with jokes on it.', 'Medium');
@@ -51,13 +51,13 @@ INSERT INTO inventory (item_name, item_price, quantity, category, description, s
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Karate T-Shirt', 50, 120, 'Unisex Shirt', 'Do you have a black-belt, white-belt, or any belt at home? If you do, then buy this shirt.', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Fast Food Android T-Shirt', 15, 50, 'Men''s Shirt', 'See? Not all androids are bloodthirsty killing machines. Some of them can even serve fast food when their master has a craving for a Big Mac.', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Meme T-Shirt', 30, 75, 'Unisex Shirt', 'The Force is strong with this t-shirt.', 'Medium');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution t-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Medium');
+INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution T-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Moon Landing T-Shirt', 20, 130, 'Unisex Shirt', 'One step for man...', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech T-Shirt', 40, 100, 'Unisex Shirt', 'Flying cars are real, people! I am telling you.', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech II T-Shirt', 50, 200, 'Unisex Shirt', 'Cyborg rider FTW!!!', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Angry Developer T-Shirt', 35, 70, 'Unisex Shirt', 'It is not working! WHY!!!', 'Medium');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Cute Robot T-Shirt', 25, 300, 'Unisex Shirt', 'Do you have kids? Do your kids like cute robots? If yes, why not do them a favor and wear this t-shirt. You will not regret it.', 'Medium');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 1000, 'Unisex Shirt', 'Perfect for casual friday!', 'Large');
+INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Code Like A Boss T-Shirt', 100, 400, 'Unisex Shirt', 'Perfect for casual friday!', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('SQL T-Shirt', 20, 125, 'Women''s Shirt', 'Embrace the database by wearing THIS t-shirt.', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Will Write Code For Food T-Shirt', 35, 100, 'Men''s Shirt', 'Seriously! Are you that desperate?', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Arrays T-Shirt', 15, 50, 'Men''s Shirt', 'Black T-Shirt with jokes on it.', 'Large');
@@ -68,7 +68,7 @@ INSERT INTO inventory (item_name, item_price, quantity, category, description, s
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Karate T-Shirt', 50, 120, 'Unisex Shirt', 'Do you have a black-belt, white-belt, or any belt at home? If you do, then buy this shirt.', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Fast Food Android T-Shirt', 15, 50, 'Men''s Shirt', 'See? Not all androids are bloodthirsty killing machines. Some of them can even serve fast food when their master has a craving for a Big Mac.', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Meme T-Shirt', 30, 75, 'Unisex Shirt', 'The Force is strong with this t-shirt.', 'Large');
-INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution t-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Large');
+INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Evolution T-Shirt', 35, 180, 'Unisex Shirt', 'Shhh... Don''t worry my child. Soon you will evolve into T-1000 just like the rest of us.', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Moon Landing T-Shirt', 20, 130, 'Unisex Shirt', 'One step for man...', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech T-Shirt', 40, 100, 'Unisex Shirt', 'Flying cars are real, people! I am telling you.', 'Large');
 INSERT INTO inventory (item_name, item_price, quantity, category, description, size) VALUES ('Super Tech II T-Shirt', 50, 200, 'Unisex Shirt', 'Cyborg rider FTW!!!', 'Large');
