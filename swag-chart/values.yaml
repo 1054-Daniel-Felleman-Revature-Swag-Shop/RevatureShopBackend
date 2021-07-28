@@ -1,5 +1,5 @@
 app: swag-app
-usePullSecrets: false
+usePullSecrets: true
 pullSecret: team3pullsecret
 
 accounts:
