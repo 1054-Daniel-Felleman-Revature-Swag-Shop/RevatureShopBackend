@@ -331,7 +331,7 @@ stages:
                 aksConnection: "k8s-team3-config-staging"
               ${{ if eq(variables['Build.SourceBranchName'], 'feature_cd') }}:
                 aksConnection: "k8s-team3-config-dev"
-              releaseName: "$(releaseNumber)"
+              releaseName: "test-deploy"
               nameSpace: "team3"
               chartName: "swag-chart"
               overrides: 'ingress.host=test.api.swag-chart.ml'
