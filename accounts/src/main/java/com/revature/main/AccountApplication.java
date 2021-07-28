@@ -22,7 +22,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com.revature.shop.accounts.models")
 public class AccountApplication {
 	public static void main(String[] args) {
-		System.out.println("ACCOUNT APPLICATION RUNNING!!!!");
 		SpringApplication.run(AccountApplication.class, args);
 	}
 }
