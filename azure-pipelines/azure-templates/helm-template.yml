@@ -13,12 +13,6 @@ parameters:
     type: 'string'
 
 steps:
-  - task: HelmDeploy@0
-    displayName: Package Helm Chart
-    inputs:
-      command: 'package'
-      chartPath: './${{ parameters.chartName }}/'
-      destination: './helm/'
   
   - task: HelmDeploy@0
     displayName: Helm Deploy to AKS

@@ -294,45 +294,48 @@ stages:
     displayName: Deploy to AKS Cluster
     dependsOn: Check
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
-    variables:
-      releaseNumber: $[counter('swag-release.1.', 100)]
     jobs:
-      - job: HelmDeploy
-        steps:
+      - deployment: HelmDeploy
+        displayName: Deploy to AKS
+        environment: 'swagDev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+  
+              # In the next steps, we're dynamically determining Deployment Environment based on branch of CI. 
+              # If not main, staging, or development, ideally this would be test.
+              # For testing purposes the default is dev. To be updated when a production and testing environment are available..
 
-          # In the next steps, we're dynamically determining Deployment Environment based on branch of CI. 
-          # If not main, staging, or development, ideally this would be test.
-          # For testing purposes the default is dev. To be updated when a production and testing environment are available..
+              # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
-          # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
+              - task: KubernetesManifest@0
+                displayName: Create Pull Secret Dev
+                inputs:
+                  action: "createSecret"
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/development') }}:
+                    kubernetesServiceConnection: "k8s-team3-config-dev"
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/staging') }}:
+                    kubernetesServiceConnection: "k8s-team3-config-staging"
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature_cd') }}:
+                    kubernetesServiceConnection: "k8s-team3-config-dev"
+                  namespace: "team3"
+                  secretType: "dockerRegistry"
+                  secretName: "team3pullsecret"
+                  dockerRegistryEndpoint: "acr-team3"
 
-          - task: KubernetesManifest@0
-            displayName: Create Pull Secret Dev
-            inputs:
-              action: "createSecret"
-              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-                kubernetesServiceConnection: "k8s-team3-config-dev"
-              ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
-                kubernetesServiceConnection: "k8s-team3-config-staging"
-              ${{ if eq(variables['Build.SourceBranchName'], 'feature_cd') }}:
-                kubernetesServiceConnection: "k8s-team3-config-dev"
-              namespace: "team3"
-              secretType: "dockerRegistry"
-              secretName: "team3pullsecret"
-              dockerRegistryEndpoint: "acr-team3"
+              # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
 
-          # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
-
-          - template: "./azure-templates/helm-template.yml"
-            parameters:
-              ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
-                aksConnection: "k8s-team3-config-dev"
-              ${{ if eq(variables['Build.SourceBranchName'], 'staging') }}:
-                aksConnection: "k8s-team3-config-staging"
-              ${{ if eq(variables['Build.SourceBranchName'], 'feature_cd') }}:
-                aksConnection: "k8s-team3-config-dev"
-              releaseName: "swag-deploy"
-              nameSpace: "team3"
-              chartName: "swag-chart"
-              overrides: 'ingress.host=test.api.swag-chart.ml'
+              - template: "./azure-templates/helm-template.yml"
+                parameters:
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/development') }}:
+                    aksConnection: "k8s-team3-config-dev"
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/staging') }}:
+                    aksConnection: "k8s-team3-config-staging"
+                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature_cd') }}:
+                    aksConnection: "k8s-team3-config-dev"
+                  releaseName: "swag-deploy-backend"
+                  nameSpace: "team3"
+                  chartName: "swag-chart"
+                  overrides: 'ingress.host=test.api.swag-chart.ml'
 
