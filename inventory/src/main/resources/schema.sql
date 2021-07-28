@@ -7,5 +7,6 @@ CREATE TABLE inventory(
     quantity int,
     category varchar2(1023),
     description varchar2(1023),
+    size varchar2(1023),
     discount numeric(3, 2)
 );

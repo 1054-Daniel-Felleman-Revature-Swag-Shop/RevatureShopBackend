@@ -17,17 +17,17 @@ public class Cart {
 
     @Column(name = "stock_item")
     @ElementCollection
-    private Map<String, Integer> stockItemMap;
+    private Map<Integer, Integer> stockItemMap;
 
     public Cart() {
     }
 
-    public Cart(String myShopper, Map<String, Integer> stockItemMap) {
+    public Cart(String myShopper, Map<Integer, Integer> stockItemMap) {
         this.myShopper = myShopper;
         this.stockItemMap = stockItemMap;
     }
 
-    public Cart(int cartId, String myShopper, Map<String, Integer> stockItemMap) {
+    public Cart(int cartId, String myShopper, Map<Integer, Integer> stockItemMap) {
         this.cartId = cartId;
         this.myShopper = myShopper;
         this.stockItemMap = stockItemMap;
@@ -46,11 +46,11 @@ public class Cart {
         this.myShopper = myShopper;
     }
 
-    public Map<String, Integer> getStockItemMap() {
+    public Map<Integer, Integer> getStockItemMap() {
         return stockItemMap;
     }
 
-    public void setStockItemMap(Map<String, Integer> stockItemMap) {
+    public void setStockItemMap(Map<Integer, Integer> stockItemMap) {
         this.stockItemMap = stockItemMap;
     }
 }

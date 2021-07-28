@@ -24,67 +24,62 @@ public class StockItem
 
     private String description;
     
+    private String size;
+
     private Double discount;
 
-    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, double discount) {
+    public StockItem() {
+		super();
+	}
+
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, String size, double discount) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
         this.category = Objects.requireNonNullElse(category, "Misc");
         this.description = Objects.requireNonNullElse(description, "No description provided.");
+        this.size = Objects.requireNonNullElse(size, "No size");
         this.discount = Math.max(discount, 0);
     }
 
-    public StockItem() {
-
+    public int getId(){
+        return this.id;
     }
 
-	public int getId() {
-		return id;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = Math.max(quantity, 0);
+    }
+
+    public int getItemPrice() {
+        return itemPrice;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+    
+    public String getSize() {
+		return size;
 	}
+
+	public void setSize(String size) {
+		this.size = size;
+    }
 
 //	public void setId(int id) {
 //		this.id = id;
 //	}
 
-	public String getItemName() {
-		return itemName;
-	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
-	public int getItemPrice() {
-		return itemPrice;
-	}
-
 	public void setItemPrice(int itemPrice) {
 		this.itemPrice = Math.max(itemPrice, 0);
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = Math.max(quantity, 0);
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public double getDiscount() {
@@ -95,10 +90,26 @@ public class StockItem
 		this.discount = Math.max(discount, 0);
 	}
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = Objects.requireNonNullElse(description, "No description provided.");
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = Objects.requireNonNullElse(category, "Misc");
+    }
+
 	@Override
 	public String toString() {
 		return "StockItem [id=" + id + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", quantity=" + quantity
-				+ ", category=" + category + ", description=" + description + ", discount=" + discount + "]";
+				+ ", category=" + category + ", description=" + description + ", size=" + size + ", discount=" + discount + "]";
 	}
 
 	@Override

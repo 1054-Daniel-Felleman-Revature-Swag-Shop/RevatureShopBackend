@@ -20,7 +20,7 @@ public class e2eInventoryTesting {
 	public void viewItemsE2E() {
 
 		ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uriView, List.class);
-		assertTrue(stockItemsList.getBody().size() == 30);
+		assertTrue(stockItemsList.getBody().size() == 64);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -44,19 +44,18 @@ public class e2eInventoryTesting {
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void addItemE2E() {
-		StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.", 0);
+		StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.", null, 0);
 		URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/new");
 		restTemplate.put(uri, item);
 
 		ResponseEntity<List> stockItemsList = restTemplate.getForEntity(uriView, List.class);
-		assertEquals(31, stockItemsList.getBody().size());
+		assertEquals(65, stockItemsList.getBody().size());
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void updateQuantitiesE2E() {
-		StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!",
-				0);
+		StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!", null, 0);
 		URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity");
 		restTemplate.put(uri, item);
 
