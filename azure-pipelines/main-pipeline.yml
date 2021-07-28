@@ -335,6 +335,6 @@ stages:
               nameSpace: "team3"
               chartName: "swag-chart"
               overrides: |
-                  'usePullSecrets=true'
-                  'ingress.host=test.api.swag-chart.ml'
+                  usePullSecrets=true
+                  ingress.host=test.api.swag-chart.ml
 
