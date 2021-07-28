@@ -297,17 +297,18 @@ stages:
     jobs:
       - deployment: HelmDeploy
         displayName: Deploy to AKS
-        environment: staging
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
+        environment: dev
         strategy:
           runOnce:
             deploy:
               steps:
+
+            # Helm deploys to a cluster, dependant on branch. development = dev, staging = staging (main = production)
               
+              # Download Repo
+
               - checkout: self
-              
-              # In the next steps, we're dynamically determining Deployment Environment based on branch of CI. 
-              # If not main, staging, or development, ideally this would be test.
-              # For testing purposes the default is dev. To be updated when a production and testing environment are available..
 
               # Creating Image Pull secrets for Helm/K8S to access the images and use on the cluster.
 
@@ -315,12 +316,7 @@ stages:
                 displayName: Create Pull Secret Dev
                 inputs:
                   action: "createSecret"
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/development') }}:
-                    kubernetesServiceConnection: "k8s-team3-config-dev"
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/staging') }}:
-                    kubernetesServiceConnection: "k8s-team3-config-staging"
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature_cd') }}:
-                    kubernetesServiceConnection: "k8s-team3-config-dev"
+                  kubernetesServiceConnection: "k8s-team3-config-dev"
                   namespace: "team3"
                   secretType: "dockerRegistry"
                   secretName: "team3pullsecret"
@@ -330,14 +326,37 @@ stages:
 
               - template: "./azure-templates/helm-template.yml"
                 parameters:
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/development') }}:
-                    aksConnection: "k8s-team3-config-dev"
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/staging') }}:
-                    aksConnection: "k8s-team3-config-staging"
-                  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/feature_cd') }}:
-                    aksConnection: "k8s-team3-config-dev"
+                  aksConnection: "k8s-team3-config-dev"
                   releaseName: "swag-deploy-backend"
                   nameSpace: "team3"
                   chartName: "swag-chart"
                   overrides: 'ingress.host=test.api.swag-chart.ml'
 
+      - deployment: HelmDeploy
+        displayName: Deploy to AKS Staging
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/staging')
+        environment: staging
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+
+              - checkout: self
+
+              - task: KubernetesManifest@0
+                displayName: Create Pull Secret Dev
+                inputs:
+                  action: "createSecret"
+                  kubernetesServiceConnection: "k8s-team3-config-staging"
+                  namespace: "team3"
+                  secretType: "dockerRegistry"
+                  secretName: "team3pullsecret"
+                  dockerRegistryEndpoint: "acr-team3"
+
+              - template: "./azure-templates/helm-template.yml"
+                parameters:
+                  aksConnection: "k8s-team3-config-staging"
+                  releaseName: "swag-deploy-backend"
+                  nameSpace: "team3"
+                  chartName: "swag-chart"
+                  overrides: 'ingress.host=test.api.swag-chart.ml'
