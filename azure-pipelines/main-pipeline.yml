@@ -288,7 +288,6 @@ stages:
                   Dockerfile: ./${{ service.name }}/Dockerfile
                   containerRegistry: "acr-team3"
 
-
   # Deployment Stage. Using images pushed to the Azure Container Registry, and a helm Chart.
 
   - stage: Deploy
@@ -335,4 +334,7 @@ stages:
               releaseName: "$(releaseNumber)"
               nameSpace: "team3"
               chartName: "swag-chart"
-              overrides: "usePullSecrets=true"
+              overrides: |
+                  'usePullSecrets=true'
+                  'ingress.host=test.api.swag-chart.ml'
+
