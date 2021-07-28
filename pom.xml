@@ -23,13 +23,13 @@
         <module>accounts</module>
         <module>commerce</module>
         <module>inventory</module>
-        <module>eureka-server</module>
-        <module>Spring-Cloud-Gateway</module>
+        <module>eureka</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
         <java.version>16</java.version>
-        <spring-cloud.version>2020.0.3-SNAPSHOT</spring-cloud.version>
+        <spring-cloud.version>2020.0.3</spring-cloud.version>
     </properties>
 
     <dependencies>
@@ -106,6 +106,13 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aop</artifactId>
+		    <version>5.3.9</version>
+		</dependency>
 
         <dependency>
             <groupId>software.amazon.awssdk</groupId>

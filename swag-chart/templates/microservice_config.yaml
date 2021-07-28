@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-vars
+data:
+  # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE is neccesary for gateway config.
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+  eureka.client.service-url.defaultZone: http://{{ .Values.eureka.serviceName }}:{{ .Values.eureka.containerPort }}/eureka
+
+  
+  spring.config.import: configserver:http://{{ .Values.config.serviceName }}:{{ .Values.config.containerPort }}
+
+  {{- with .Values.envVars }}
+  {{ .emailHost.key | nindent 2 }}: {{ quote .emailHost.value }}
+  {{ .emailPort.key | nindent 2 }}: {{ quote .emailPort.value }}
+  {{ .emailUsername.key | nindent 2 }}: {{ quote .emailUsername.value }}
+  {{ .emailPassword.key | nindent 2 }}: {{ quote .emailPassword.value }}
+  {{ .awsAccessID.key | nindent 2 }}: {{ quote .awsAccessID.value}}
+  {{ .awsSecret.key | nindent 2 }}: {{ quote .awsSecret.value }}
+  {{ end }}

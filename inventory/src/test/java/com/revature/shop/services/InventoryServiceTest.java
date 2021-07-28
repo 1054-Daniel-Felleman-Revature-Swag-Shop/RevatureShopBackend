@@ -2,6 +2,7 @@ package com.revature.shop.services;
 
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
+
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,9 +21,9 @@ class InventoryServiceTest {
 
     InventoryService iServ = new InventoryService(iRep);
 
-    StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat");
-    StockItem s2 = new StockItem("Shirt", 1000, 100, "Clothing", "A cool shirt");
-    StockItem s3 = new StockItem("Socks", 10, 10000, "Clothing", "Some nice socks");
+    StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat", 0);
+    StockItem s2 = new StockItem("Shirt", 1000, 100, "Clothing", "A cool shirt", 0);
+    StockItem s3 = new StockItem("Socks", 10, 10000, "Clothing", "Some nice socks", 0);
 
     List<StockItem> sList = new ArrayList<StockItem>();
 
@@ -36,19 +37,5 @@ class InventoryServiceTest {
         Mockito.when(iRep.findByQuantityEquals(0)).thenReturn(sList);
         Mockito.when(iRep.findByQuantityGreaterThan(0)).thenReturn(sList);
     }
-
-//
-//    @Test
-//    public void testGetAll(){
-//        assertEquals(iServ.getAllStock(), sList);
-//    }
-//
-//    @Test
-//    public void testGetInStock(){
-//        assertEquals(iServ.getInStock(), sList);
-//    }
-//
-//    @Test
-//    public void testGetOutOfStock() {assertEquals(iServ.getOutOfStock(), sList);}
 
 }

@@ -1,12 +1,11 @@
 package com.revature.shop.commerce.service;
 
-import com.revature.shop.commerce.dto.CartDto;
-import com.revature.shop.commerce.dto.StockItemDto;
-import com.revature.shop.commerce.exception.ItemNotInCartException;
-import com.revature.shop.commerce.exception.ItemOutOfStockException;
-
-import com.revature.shop.commerce.model.Cart;
-import com.revature.shop.commerce.repository.CartRepository;
+import com.revature.shop.commerce.dtos.CartDto;
+import com.revature.shop.commerce.dtos.StockItemDto;
+import com.revature.shop.commerce.exceptions.ItemNotInCartException;
+import com.revature.shop.commerce.exceptions.ItemOutOfStockException;
+import com.revature.shop.commerce.models.Cart;
+import com.revature.shop.commerce.repositories.CartRepository;
 import com.revature.shop.models.StockItem;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -19,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -32,11 +32,15 @@ public class CartServiceTests {
 
     @Mock
     CartRepository cartRepository;
+    
+    private final static String testCup = "test-cup";
+    private final static String testShirt = "test-t-shirt";
+    private final static String testName = "abdulmoeedak";
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null);
-    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null);
+    static StockItem stockItem = new StockItem(testCup, 10, 10, null, null, 0);
+    static StockItem stockItem2 = new StockItem(testShirt, 15, 20, null, null, 0);
 
     @BeforeClass
     public static void addTestItem () {
@@ -52,22 +56,20 @@ public class CartServiceTests {
 
     @Test
     public void updateCart() throws ItemOutOfStockException {
-        Cart cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
-            put("test-t-shirt",1);
-        }});
-        when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
-        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-cup", 10, 1, null, null);
+    	Map<String, Integer> map = new HashMap<String, Integer>();
+    	map.put(testShirt, 1);
+        Cart cart = new Cart(1, testName, map);
+        when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
+        StockItemDto stockItemDto = new StockItemDto(testName, testCup, 10, 1, null, null);
 
         CartDto cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
-            put("test-t-shirt",1);
-            put("test-cup",1);
-        }});
-        when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
+        map.put(testCup, 1);
+        cart = new Cart(1, testName, map);
+        when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals("test-cup") && stDto.getCartQuantity() == 2));
+        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals(testCup) && stDto.getCartQuantity() == 2));
         stockItem.setQuantity(0);
         restTemplate.put("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity", stockItem);
         Exception exception = assertThrows(ItemOutOfStockException.class, () -> mockedCartService.updateCart(stockItemDto));
@@ -76,26 +78,22 @@ public class CartServiceTests {
 
     @Test
     public void removeItemFromCart () throws ItemNotInCartException {
-        Cart cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
-            put("test-t-shirt",1);
-            put("test-cup",1);
-        }});
-        StockItemDto stockItemDto = new StockItemDto("abdulmoeedak", "test-t-shirt", 10, 1, null, null);
-        when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
+    	Map<String, Integer> map = new HashMap<String, Integer>();
+    	map.put(testShirt,1);
+        map.put(testCup,1);
+        Cart cart = new Cart(1, testName, map);
+        StockItemDto stockItemDto = new StockItemDto(testName, testShirt, 10, 1, null, null);
+        when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         CartDto cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(1, cartDto.getStockItemDtoList().size());
-        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
-            put("test-t-shirt",2);
-            put("test-cup",1);
-        }});
-        when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
+        cart = new Cart(1, testName, map);
+        when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals("test-t-shirt") && stDto.getCartQuantity() == 1));
-        cart = new Cart(1, "abdulmoeedak", new HashMap<String, Integer>(){{
-            put("test-cup",1);
-        }});
-        when(cartRepository.findOneByMyShopper("abdulmoeedak")).thenReturn(cart);
+        assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals(testShirt) && stDto.getCartQuantity() == 1));
+        map.remove(testShirt);
+        cart = new Cart(1, testName, map);
+        when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         Exception exception = assertThrows(ItemNotInCartException.class, () -> mockedCartService.removeItemFromCart(stockItemDto));
         assertTrue(exception.getMessage().equals("Item not present in cart"));
     }

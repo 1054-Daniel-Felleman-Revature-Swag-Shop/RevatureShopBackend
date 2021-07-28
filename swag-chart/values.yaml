@@ -1,0 +1,111 @@
+app: swag-app
+usePullSecrets: true
+pullSecret: team3pullsecret
+
+accounts:
+  baseURL: /api/account/
+  deploymentName: accounts
+  serviceName: accounts-service
+  role: accounts-app
+  image: may24devopscontainers.azurecr.io/accounts
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 8000
+
+inventory:
+  baseURL: /api/inventory/
+  deploymentName: inventory
+  serviceName: inventory-service
+  role: inventory-app
+  image: may24devopscontainers.azurecr.io/inventory
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 8100
+
+commerce:
+  baseURL: /commerce/
+  deploymentName: commerce
+  serviceName: commerce-service
+  role: commerce-app
+  image: may24devopscontainers.azurecr.io/commerce
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 8200
+
+config:
+  deploymentName: config
+  serviceName: config-service
+  role: config-app
+  image: may24devopscontainers.azurecr.io/config
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 8888
+
+eureka:
+  deploymentName: eureka
+  serviceName: eureka-service
+  role: eureka-app
+  image: may24devopscontainers.azurecr.io/eureka
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 9000
+
+gateway:
+  deploymentName: gateway
+  serviceName: gateway-service
+  role: gateway-app
+  image: may24devopscontainers.azurecr.io/gateway
+  tag: latest
+  memoryRequest: 256Mi
+  cpuRequest: 200m
+  memoryLimit: 512Mi
+  cpuLimit: 250m
+  replicas: 1
+  containerPort: 9001
+
+envVars:
+  emailHost:
+    key: email.host
+    value: gmail.com
+  emailPort:
+    key: email.port
+    value: 8080
+  emailUsername:
+    key: email.username
+    value: some_name
+  emailPassword:
+    key: email.Password
+    value: somePass
+  awsAccessID:
+    key: aws.accessKeyId
+    value: some_access_key_id
+  awsSecret:
+    key: aws.secretAccessKey
+    value: some_access_key
+
+ingress:
+  name: swag-ingress
+  host: api.swag-shop.ml
+  useHost: true
+  useIngress: false #if false, Istio will be used
+  useJavaGateway: false 

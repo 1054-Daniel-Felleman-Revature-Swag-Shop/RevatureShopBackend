@@ -2,8 +2,12 @@ package com.revature.shop.services;
 
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -17,9 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+
 @Service
+@PropertySource("classpath:aws.properties")
 public class InventoryService {
     private final InventoryRepository iRep;
+    
+    private final Logger logger = LogManager.getLogger();
 
     private final S3Client s3;
 
@@ -54,7 +62,7 @@ public class InventoryService {
         return iRep.findByQuantityEquals(0);
     }
 
-    public int addToStock(StockItem sItem, MultipartFile itemImage) {
+    public int addToStock(StockItem sItem) {
         System.out.println("ADD TO STOCK start");
 
         if (iRep.existsById(sItem.getId())) {
@@ -62,7 +70,6 @@ public class InventoryService {
         }
 
         iRep.save((sItem));
-        System.out.println("New item with id: " + sItem.getId() + " created.");
         return sItem.getId();
     }
 
@@ -90,9 +97,18 @@ public class InventoryService {
 
             s3.putObject(PutObjectRequest.builder().bucket("revature-swag-shop-images").key(itemId).build(), RequestBody.fromInputStream(input, input.available()));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
             return false;
         }
         return true;
+    }
+    
+    public boolean updateItemDiscount(String name, Double discount) {
+    	if (iRep.findByItemName(name) != null) {
+            iRep.updateDiscount(name, discount);
+            return true;
+        }
+
+        return false;
     }
 }

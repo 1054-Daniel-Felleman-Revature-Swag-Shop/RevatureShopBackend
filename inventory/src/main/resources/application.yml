@@ -7,6 +7,16 @@ spring:
     driverClassName: org.h2.Driver
     password: password
     username: sa
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
   application:
     name: inventoryMS
   profiles:
@@ -14,16 +24,16 @@ spring:
   cloud:
     config:
       name: shop
+      enabled: true
+      uri: ${RSS_CONFIG_URI:http://localhost:8888}
+#      uri: http://localhost:8888
+      label: main
   config:
-    import: configserver:http://localhost:8888
+#    import: configserver:http://localhost:8888
+    import: configserver:${RSS_CONFIG_URI:http://localhost:8888}
   servlet:
     multipart:
       max-file-size: 8000000
-  h2:
-    console:
-      enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
 
 hystrix:
   dashboard:
@@ -45,15 +55,8 @@ management:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:9000/eureka/
-
-aws:
-  accessKeyId: ${RSS_AWS_ACCESS_KEY_ID:none}
-  secretAccessKey: ${RSS_AWS_SECRET_ACCESS_KEY:none}
-
-email:
-  host: ${RSS_EMAIL_HOST:localhost}
-  port: ${RSS_EMAIL_PORT:25}
-  username: ${RSS_EMAIL_USERNAME:user}
-  Password: ${RSS_EMAIL_PASSWORD:password}
+      

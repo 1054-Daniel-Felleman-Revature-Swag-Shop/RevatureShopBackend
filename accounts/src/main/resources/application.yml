@@ -7,20 +7,25 @@ spring:
     driverClassName: org.h2.Driver
     password: password
     username: sa
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
   application:
     name: accountsMS
   profiles:
     active: email
-  cloud:
-    config:
-      name: shop
-  config:
-    import: configserver:http://localhost:8888
-  h2:
-    console:
-      enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+#  cloud:
+#    config:
+#      name: shop
+#  config:
+#    import: configserver:http://localhost:8888
 
 hystrix:
   dashboard:
@@ -42,5 +47,7 @@ management:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:9000/eureka/
