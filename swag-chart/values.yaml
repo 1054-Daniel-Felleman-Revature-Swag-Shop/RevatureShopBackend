@@ -12,7 +12,7 @@ accounts:
   memoryRequest: 256Mi
   cpuRequest: 500m
   memoryLimit: 512Mi
-  cpuLimit: 1000m
+  cpuLimit: 687m
   replicas: 1
   containerPort: 8000
 
@@ -26,7 +26,7 @@ inventory:
   memoryRequest: 256Mi
   cpuRequest: 500m
   memoryLimit: 512Mi
-  cpuLimit: 1000m
+  cpuLimit: 687m
   replicas: 1
   containerPort: 8100
 
@@ -39,8 +39,8 @@ commerce:
   tag: latest
   memoryRequest: 256Mi
   cpuRequest: 500m
-  memoryLimit: 256Mi
-  cpuLimit: 500m
+  memoryLimit: 512Mi
+  cpuLimit: 687m
   replicas: 1
   containerPort: 8200
 
@@ -53,7 +53,7 @@ config:
   memoryRequest: 256Mi
   cpuRequest: 500m
   memoryLimit: 512Mi
-  cpuLimit: 1000m
+  cpuLimit: 687m
   replicas: 1
   containerPort: 8888
 
@@ -66,7 +66,7 @@ eureka:
   memoryRequest: 256Mi
   cpuRequest: 500m
   memoryLimit: 512Mi
-  cpuLimit: 1000m
+  cpuLimit: 687m
   replicas: 1
   containerPort: 9000
 
@@ -79,7 +79,7 @@ gateway:
   memoryRequest: 256Mi
   cpuRequest: 500m
   memoryLimit: 512Mi
-  cpuLimit: 1000m
+  cpuLimit: 687m
   replicas: 1
   containerPort: 9001
 
