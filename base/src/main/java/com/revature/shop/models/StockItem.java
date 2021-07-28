@@ -25,14 +25,17 @@ public class StockItem
     private String description;
     
     private Double discount;
+    
+    private boolean isFeatured;
 
-    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, double discount) {
+    public StockItem(String item_name, int itemPrice, int quantity, String category, String description, double discount, boolean isFeatured) {
         this.itemName = Objects.requireNonNullElse(item_name, "Revature Swag");
         this.itemPrice = Math.max(itemPrice, 0);
         this.quantity = Math.max(quantity, 0);
         this.category = Objects.requireNonNullElse(category, "Misc");
         this.description = Objects.requireNonNullElse(description, "No description provided.");
         this.discount = Math.max(discount, 0);
+        this.isFeatured = Objects.requireNonNullElse(isFeatured, false);
     }
 
     public StockItem() {
@@ -94,11 +97,23 @@ public class StockItem
 	public void setDiscount(double discount) {
 		this.discount = Math.max(discount, 0);
 	}
+	
+
+	public boolean isFeatured() {
+		return isFeatured;
+	}
+
+	public void setFeatured(boolean isFeatured) {
+		this.isFeatured = isFeatured;
+	}
+
+	
 
 	@Override
 	public String toString() {
 		return "StockItem [id=" + id + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", quantity=" + quantity
-				+ ", category=" + category + ", description=" + description + ", discount=" + discount + "]";
+				+ ", category=" + category + ", description=" + description + ", discount=" + discount + ", isFeatured="
+				+ isFeatured + "]";
 	}
 
 	@Override
@@ -107,10 +122,9 @@ public class StockItem
 		int result = 1;
 		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(discount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((discount == null) ? 0 : discount.hashCode());
 		result = prime * result + id;
+		result = prime * result + (isFeatured ? 1231 : 1237);
 		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
 		result = prime * result + itemPrice;
 		result = prime * result + quantity;
@@ -136,9 +150,14 @@ public class StockItem
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (Double.doubleToLongBits(discount) != Double.doubleToLongBits(other.discount))
+		if (discount == null) {
+			if (other.discount != null)
+				return false;
+		} else if (!discount.equals(other.discount))
 			return false;
 		if (id != other.id)
+			return false;
+		if (isFeatured != other.isFeatured)
 			return false;
 		if (itemName == null) {
 			if (other.itemName != null)
@@ -151,6 +170,8 @@ public class StockItem
 			return false;
 		return true;
 	}
+
+	
 
     
     
