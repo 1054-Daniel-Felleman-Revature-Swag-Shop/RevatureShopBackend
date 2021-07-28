@@ -21,10 +21,6 @@ spec:
       containers:
       - name: {{ .deploymentName }}
         image: {{ .image }}:{{ .tag }}
-        {{ if $.Values.usePullSecrets }}
-        imagePullSecrets:
-        - name: {{ $.Values.pullSecret }}
-        {{ end }}
         resources:
           requests:
             memory: {{ quote .memoryRequest }}
@@ -34,5 +30,9 @@ spec:
             cpu: {{ quote .cpuLimit }}
         ports:
         - containerPort: {{ .containerPort }}
+      {{ if $.Values.usePullSecret }}
+      imagePullSecrets:
+      - name: {{ $.Values.pullSecret }}
+      {{ end }}
 {{ end }}
 {{ end }}

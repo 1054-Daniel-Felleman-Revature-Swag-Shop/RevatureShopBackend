@@ -21,10 +21,6 @@ spec:
       containers:
       - name: {{ .role }}
         image: {{ .image }}:{{ .tag }}
-        {{ if $.Values.usePullSecrets }}
-        imagePullSecrets:
-        - name: {{ $.Values.pullSecret }}
-        {{ end }}
         envFrom:
         - configMapRef:
             name: env-vars
@@ -37,4 +33,8 @@ spec:
             cpu: {{ quote .cpuLimit }}
         ports:
         - containerPort: {{ .containerPort }}
+      {{ if $.Values.usePullSecret }}
+      imagePullSecrets:
+      - name: {{ $.Values.pullSecret }}
+      {{ end }}
 {{ end }}
