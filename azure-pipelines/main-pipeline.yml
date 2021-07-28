@@ -335,3 +335,4 @@ stages:
               releaseName: "$(releaseNumber)"
               nameSpace: "team3"
               chartName: "swag-chart"
+              overrides: "--set usePullSecrets=true"
