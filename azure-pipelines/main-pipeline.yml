@@ -297,7 +297,7 @@ stages:
     jobs:
       - deployment: HelmDeploy
         displayName: Deploy to AKS
-        environment: 'swagDev'
+        environment: staging
         strategy:
           runOnce:
             deploy:
