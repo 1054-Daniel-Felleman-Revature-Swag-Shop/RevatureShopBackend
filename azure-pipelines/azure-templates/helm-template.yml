@@ -1,41 +1,36 @@
 
 parameters:
-  - name: 'containerName'
-    type: string
-  - name: 'imageName'
-    type: string
-  - name: 'tag'
-    type: string
-  - name: 'activeSvc'
-    type: string
   - name: 'aksConnection'
     type: string
+    default: 'k8s-team3-config-dev'
   - name: 'releaseName'
     type: string
   - name: 'nameSpace'
     type: string
-
-  jobs:
-  - job: ApplyAndDeploy
-    displayName: Helm Deployment
-    steps:
-    - task: HelmDeploy@0
-      inputs:
-        command: 'package'
-        chartPath: './helm/testchart/'
-        destination: './helm/'
-    
-    - task: HelmDeploy@0
-      inputs:
-        connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceConnection: ${{ parameters.aksConnection }}
-        command: 'upgrade'
-        arguments: '--install --atomic --reuse-values --dry-run'
-        releaseName: ${{ parameters.releaseName }}
-        namespace: ${{ parameters.nameSpace }}
-        chartType: 'FilePath'
-        chartPath: './helm/'
-        overrideValues: |
-          ${{ parameters.activeSvc }}.deploy.image.name=${{ parameters.containerName}}/${{ parameters.imageName }}
-          ${{ parameters.activeSvc }}.deploy.image.tag=${{ parameters.tag }}
-        valueFile: './helm/values.yaml'
+  - name: 'chartName'
+    type: string
+  - name: 'overrides'
+    type: 'string'
+  - name: 'chartPath'
+    type: string
+  - name: 'valueFile'
+    type: string
+steps:
+  
+  # Arguments: By default, we're using a strategy that utilizes the automatic rollback feature of --atomic option, and the command upgrade --install.
+  # This will install if it doesn't exist, and upgrade if it doesn't, as well as rollback if failed.  You can add overrides to the command, i.e.:
+  # set.<element>=<value> directly in the pipeline. This can be used to change configurations in the chart on the fly.
+  
+  - task: HelmDeploy@0
+    displayName: Helm Deploy to AKS
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: ${{ parameters.aksConnection }}
+      command: 'upgrade'
+      arguments: '--install --atomic'
+      releaseName: ${{ parameters.releaseName }}
+      namespace: ${{ parameters.nameSpace }}
+      chartType: 'FilePath'
+      chartPath: ${{ parameters.chartPath }}
+      valueFile: ${{ parameters.valueFile}}
+      overrideValues: ${{ parameters.overrides }}

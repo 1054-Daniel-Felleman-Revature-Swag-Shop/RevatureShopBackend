@@ -36,4 +36,8 @@ spec:
             cpu: {{ quote .cpuLimit }}
         ports:
         - containerPort: {{ .containerPort }}
+      {{ if $.Values.usePullSecrets }}
+      imagePullSecrets:
+      - name: {{ $.Values.pullSecret }}
+      {{ end }}
 {{ end }}
