@@ -7,7 +7,6 @@ trigger:
       - main
       - staging
       - development
-      - feature_cd
 
 pr:
   branches:
@@ -293,7 +292,7 @@ stages:
   - stage: Deploy
     displayName: Deploy to AKS Cluster
     dependsOn: Check
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+    condition: and(succeeded(), notIn(variables['Build.Reason'], 'PullRequest'))
     jobs:
       - deployment: DevDeploy
         displayName: Deploy to AKS Dev Environment
@@ -331,6 +330,8 @@ stages:
                   nameSpace: "team3"
                   chartName: "swag-chart"
                   overrides: 'ingress.host=test.api.swag-chart.ml'
+                  chartPath: './swag-chart/'
+                  valueFile: './swag-chart/values.yaml'
 
       - deployment: StagingDeploy
         displayName: Deploy to AKS Staging
@@ -360,3 +361,5 @@ stages:
                   nameSpace: "team3"
                   chartName: "swag-chart"
                   overrides: 'ingress.host=test.api.swag-chart.ml'
+                  chartPath: './swag-chart/'
+                  valueFile: './swag-chart/values.yaml'

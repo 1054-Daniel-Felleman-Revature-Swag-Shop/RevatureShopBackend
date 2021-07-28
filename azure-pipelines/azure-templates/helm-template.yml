@@ -11,8 +11,15 @@ parameters:
     type: string
   - name: 'overrides'
     type: 'string'
-
+  - name: 'chartPath'
+    type: string
+  - name: 'valueFile'
+    type: string
 steps:
+  
+  # Arguments: By default, we're using a strategy that utilizes the automatic rollback feature of --atomic option, and the command upgrade --install.
+  # This will install if it doesn't exist, and upgrade if it doesn't, as well as rollback if failed.  You can add overrides to the command, i.e.:
+  # set.<element>=<value> directly in the pipeline. This can be used to change configurations in the chart on the fly.
   
   - task: HelmDeploy@0
     displayName: Helm Deploy to AKS
@@ -24,6 +31,6 @@ steps:
       releaseName: ${{ parameters.releaseName }}
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'
-      chartPath: './swag-chart/'
-      valueFile: './swag-chart/values.yaml'
+      chartPath: ${{ parameters.chartPath }}
+      valueFile: ${{ parameters.valueFile}}
       overrideValues: ${{ parameters.overrides }}
