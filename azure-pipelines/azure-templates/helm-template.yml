@@ -25,8 +25,8 @@ steps:
     inputs:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: ${{ parameters.aksConnection }}
-      command: 'install'
-      arguments: '--atomic'
+      command: 'upgrade'
+      arguments: '--install --atomic'
       releaseName: ${{ parameters.releaseName }}
       namespace: ${{ parameters.nameSpace }}
       chartType: 'FilePath'
