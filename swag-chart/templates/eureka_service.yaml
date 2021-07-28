@@ -1,4 +1,4 @@
-{{ if not .Values.ingress.useIngress }}
+{{ if .Values.ingress.useJavaGateway }}
 {{- with .Values.eureka }}
 apiVersion: v1
 kind: Service
