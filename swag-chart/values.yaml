@@ -10,9 +10,9 @@ accounts:
   image: may24devopscontainers.azurecr.io/accounts
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 8000
 
@@ -24,9 +24,9 @@ inventory:
   image: may24devopscontainers.azurecr.io/inventory
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 8100
 
@@ -38,9 +38,9 @@ commerce:
   image: may24devopscontainers.azurecr.io/commerce
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 8200
 
@@ -51,9 +51,9 @@ config:
   image: may24devopscontainers.azurecr.io/config
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 8888
 
@@ -64,9 +64,9 @@ eureka:
   image: may24devopscontainers.azurecr.io/eureka
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 9000
 
@@ -77,9 +77,9 @@ gateway:
   image: may24devopscontainers.azurecr.io/gateway
   tag: latest
   memoryRequest: 256Mi
-  cpuRequest: 500m
+  cpuRequest: 200m
   memoryLimit: 512Mi
-  cpuLimit: 687m
+  cpuLimit: 250m
   replicas: 1
   containerPort: 9001
 
