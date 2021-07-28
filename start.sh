@@ -2,7 +2,7 @@
 
 mkdir logs
 
-services=("eureka-server" "config" "Spring-Cloud-Gateway" "accounts" "inventory" "commerce")
+services=("eureka" "config" "gateway" "accounts" "inventory" "commerce")
 ports=(9000 8888 9001 8000 8100 8200)
 
 for ((i = 0; i < 6; i++)); do

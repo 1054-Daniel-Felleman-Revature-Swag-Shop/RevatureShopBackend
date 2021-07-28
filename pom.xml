@@ -18,7 +18,6 @@
     <description>Revature Shop</description>
 
     <modules>
-        <module>config</module>
         <module>base</module>
         <module>accounts</module>
         <module>commerce</module>

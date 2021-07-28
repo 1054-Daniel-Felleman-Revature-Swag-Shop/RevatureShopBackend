@@ -1,12 +1,12 @@
 version: "2.1"
 services:
   eureka:
-    build: eureka-server
+    build: eureka
     ports:
     - "9000:9000"
 
   gateway:
-    build: Spring-Cloud-Gateway
+    build: gateway
     ports:
     - "9001:9001"
     environment:
