@@ -6,13 +6,13 @@ CREATE TABLE accounts(
     email varchar(255),
     name varchar(255),
     role int,
-    points int
+    points numeric(10,2)
 );
 
 CREATE TABLE point_history(
     id serial primary key,
     fk_account int references accounts(id),
     cause varchar(1023),
-    change int,
+    change numeric(10,2),
     date date
 );
