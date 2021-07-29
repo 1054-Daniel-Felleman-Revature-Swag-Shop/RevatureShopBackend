@@ -19,6 +19,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,6 +46,17 @@ public class InventoryService {
     public List<StockItem> getAllStock() {
         return iRep.findAll();
     }
+    
+    public List<StockItem> getDiscounted() {
+       List<StockItem> allList = iRep.findAll();
+       List<StockItem> disList = new ArrayList<StockItem>();
+       for (StockItem s : allList) {
+    	   if(s.getDiscount() != 0) {
+    		   disList.add(s);
+    	   }
+       }
+       return disList;
+    }
 
     public List<String> getAllCategories() {
         return iRep.getDistinctCategories();
@@ -60,6 +72,9 @@ public class InventoryService {
 
     public List<StockItem> getOutOfStock() {
         return iRep.findByQuantityEquals(0);
+    }
+    public List<StockItem> getIsFeatured(boolean bool){
+    	return iRep.findByIsFeatured(bool);
     }
 
     public int addToStock(StockItem sItem) {
