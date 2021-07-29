@@ -25,8 +25,8 @@ public class e2eController {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItemDto cartItem = new StockItemDto("hshallal@icloud.com", "Rev It Up Hat", 10, 1, "Accessories", "A sweet hat to ACCELERATE your development!" );
-    static StockItemDto cartItem2 = new StockItemDto("hshallal@icloud.com", "Code Like A Boss T-Shirt", 100, 1, "Clothing", "Perfect for casual friday!" );
+    static StockItemDto cartItem = new StockItemDto("hshallal@icloud.com", 1, "Rev It Up Hat", 10, 1, "Accessories", "A sweet hat to ACCELERATE your development!", null );
+    static StockItemDto cartItem2 = new StockItemDto("hshallal@icloud.com", 2, "Code Like A Boss T-Shirt", 100, 1, "Clothing", "Perfect for casual friday!", "Small" );
 
     //passes
     @Test
@@ -41,7 +41,7 @@ public class e2eController {
     @Test
     public void b_savecartE2E(){
         //create resources to pass to controller method
-        Map<String, Integer> stockItemMap = new HashMap<String, Integer>();
+        Map<Integer, Integer> stockItemMap = new HashMap<Integer, Integer>();
         Cart toPersistCart = new Cart(1, "hshallal@icloud.com", stockItemMap);
 
         //Create your http request
@@ -104,7 +104,7 @@ public class e2eController {
         Integer purchaseAmount = restTemplate.exchange("http://localhost:9001/commercems/commerce/checkoutcart", HttpMethod.POST, entity, Integer.class).getBody();
 
         //Some equality tests in the returned object
-        Integer expected = (Integer) 120;
+        Integer expected = (Integer) 10;
         assertEquals(purchaseAmount, expected);
     }
 
@@ -138,7 +138,7 @@ public class e2eController {
         List<PurchaseHistory> myPurchaseHistory = restTemplate.exchange("http://localhost:9001/commercems/commerce/myOrderHistory/hshallal@icloud.com", HttpMethod.GET, entity0, List.class).getBody();
         System.out.println(myPurchaseHistory);
         //Perform sanity checks on the returned cart
-        assertEquals(myPurchaseHistory.size(), 2);
+        assertEquals(myPurchaseHistory.size(), 1);
     }
 }
 

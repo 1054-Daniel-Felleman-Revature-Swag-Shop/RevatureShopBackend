@@ -131,4 +131,13 @@ public class InventoryController
         return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/get/item/name/size")
+    public StockItem getItemByNameAndSize(@RequestParam String itemName, @RequestParam String size) {
+    	return inventoryService.getItemByNameAndSize(itemName, size);
+    }
+    
+    @GetMapping("/get/item/id")
+    public StockItem getItemById(@RequestParam int id) {
+    	return inventoryService.getItemById(id);
+    }
 }

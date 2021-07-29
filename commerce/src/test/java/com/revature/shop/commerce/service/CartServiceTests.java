@@ -39,8 +39,10 @@ public class CartServiceTests {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem(testCup, 10, 10, null, null, 0,false);
-    static StockItem stockItem2 = new StockItem(testShirt, 15, 20, null, null, 0,false);
+
+    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null, null, 0,false);
+    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null, null, 0,false);
+
 
     @BeforeClass
     public static void addTestItem () {
@@ -56,15 +58,15 @@ public class CartServiceTests {
 
     @Test
     public void updateCart() throws ItemOutOfStockException {
-    	Map<String, Integer> map = new HashMap<String, Integer>();
-    	map.put(testShirt, 1);
+    	Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    	map.put(1, 1);
         Cart cart = new Cart(1, testName, map);
         when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
-        StockItemDto stockItemDto = new StockItemDto(testName, testCup, 10, 1, null, null);
+        StockItemDto stockItemDto = new StockItemDto(testName, 2, testCup, 10, 1, null, null, null);
 
         CartDto cartDto = mockedCartService.updateCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
-        map.put(testCup, 1);
+        map.put(2, 1);
         cart = new Cart(1, testName, map);
         when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         cartDto = mockedCartService.updateCart(stockItemDto);
@@ -78,11 +80,11 @@ public class CartServiceTests {
 
     @Test
     public void removeItemFromCart () throws ItemNotInCartException {
-    	Map<String, Integer> map = new HashMap<String, Integer>();
-    	map.put(testShirt,1);
-        map.put(testCup,1);
+    	Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    	map.put(1,1);
+        map.put(2,1);
         Cart cart = new Cart(1, testName, map);
-        StockItemDto stockItemDto = new StockItemDto(testName, testShirt, 10, 1, null, null);
+        StockItemDto stockItemDto = new StockItemDto(testName, 1, testShirt, 10, 1, null, null, null);
         when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         CartDto cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(1, cartDto.getStockItemDtoList().size());
@@ -91,7 +93,7 @@ public class CartServiceTests {
         cartDto = mockedCartService.removeItemFromCart(stockItemDto);
         assertEquals(2, cartDto.getStockItemDtoList().size());
         assertTrue(cartDto.getStockItemDtoList().stream().anyMatch(stDto -> stDto.getItemName().equals(testShirt) && stDto.getCartQuantity() == 1));
-        map.remove(testShirt);
+        map.remove(1);
         cart = new Cart(1, testName, map);
         when(cartRepository.findOneByMyShopper(testName)).thenReturn(cart);
         Exception exception = assertThrows(ItemNotInCartException.class, () -> mockedCartService.removeItemFromCart(stockItemDto));

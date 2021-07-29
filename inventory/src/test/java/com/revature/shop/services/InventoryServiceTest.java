@@ -21,9 +21,11 @@ class InventoryServiceTest {
 
     InventoryService iServ = new InventoryService(iRep);
 
-    StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat", 0,false);
-    StockItem s2 = new StockItem("Shirt", 1000, 100, "Clothing", "A cool shirt", 0,false);
-    StockItem s3 = new StockItem("Socks", 10, 10000, "Clothing", "Some nice socks", 0,false);
+
+    StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat", null, 0,false);
+    StockItem s2 = new StockItem("Shirt", 1000, 100, "Clothing", "A cool shirt", null, 0,false);
+    StockItem s3 = new StockItem("Socks", 10, 10000, "Clothing", "Some nice socks", null, 0,false);
+
 
     List<StockItem> sList = new ArrayList<StockItem>();
 
