@@ -94,10 +94,10 @@ public class CartService {
     }
 
     @Transactional
-    public int checkoutCart(Cart cart) throws UnableToCheckoutException
+    public double checkoutCart(Cart cart) throws UnableToCheckoutException
     {
         // compute your purchase total points
-        int currentPurchaseTotal = 0;
+        double currentPurchaseTotal = 0;
         int numItems = 0;
         int totalItems = 0;
         String[] items = new String[cart.getStockItemMap().size()];
@@ -105,7 +105,7 @@ public class CartService {
 
             StockItem curStockItem = restTemplate.getForObject(getStockItemQuery + key, StockItem.class);
             if(curStockItem != null) {
-                int thisItemTotal = curStockItem.getItemPrice() * cart.getStockItemMap().get(key);
+                double thisItemTotal = curStockItem.getItemPrice() * (1 - curStockItem.getDiscount()) * cart.getStockItemMap().get(key);
                 totalItems += cart.getStockItemMap().get(key);
                 items[numItems] = curStockItem.getItemName() + " x "+cart.getStockItemMap().get(key)+", RevCoins:"+thisItemTotal;
                 numItems++;
@@ -113,7 +113,7 @@ public class CartService {
                 currentPurchaseTotal += thisItemTotal;
 
                 //persis a purchase history instance
-                PurchaseHistory purchaseHistory = new PurchaseHistory(cart.getMyShopper(), LocalDate.now().toString(), curStockItem.getItemName(), cart.getStockItemMap().get(key), curStockItem.getItemPrice(), thisItemTotal);
+                PurchaseHistory purchaseHistory = new PurchaseHistory(cart.getMyShopper(), LocalDate.now().toString(), curStockItem.getItemName(), cart.getStockItemMap().get(key), curStockItem.getItemPrice()* (1 - curStockItem.getDiscount()), thisItemTotal);
                 purchaseHistoryRepository.save(purchaseHistory);
             }
         }
