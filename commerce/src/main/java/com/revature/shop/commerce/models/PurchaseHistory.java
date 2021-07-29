@@ -22,23 +22,23 @@ public class PurchaseHistory {
     private Integer itemQuantity;
 
     @Column(name = "item_price")
-    private Integer itemPrice;
+    private Double itemPrice;
 
     @Column(name = "purchase_total")
-    private Integer purchaseTotal;
+    private Double purchaseTotal;
 
 
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(String myShopper, String purchaseDate, String itemName, Integer itemQuantity, Integer itemPrice, Integer purchaseTotal) {
+    public PurchaseHistory(String myShopper, String purchaseDate, String itemName, Integer itemQuantity, Double itemPrice, Double thisItemTotal) {
 
         this.myShopper = myShopper;
         this.purchaseDate = purchaseDate;
         this.itemName = itemName;
         this.itemQuantity = itemQuantity;
         this.itemPrice = itemPrice;
-        this.purchaseTotal = purchaseTotal;
+        this.purchaseTotal = thisItemTotal;
     }
 
     public int getPurchaseId() {
@@ -81,19 +81,19 @@ public class PurchaseHistory {
         this.itemQuantity = itemQuantity;
     }
 
-    public Integer getItemPrice() {
+    public Double getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(Integer itemPrice) {
+    public void setItemPrice(Double itemPrice) {
         this.itemPrice = itemPrice;
     }
 
-    public Integer getPurchaseAmount() {
+    public Double getPurchaseAmount() {
         return purchaseTotal;
     }
 
-    public void setPurchaseAmount(Integer purchaseTotal) {
+    public void setPurchaseAmount(Double purchaseTotal) {
         this.purchaseTotal = purchaseTotal;
     }
 

@@ -5,12 +5,12 @@ import java.time.LocalDate;
 public class PointChangeDto {
 
     private String cause;
-    private int change;
+    private double change;
     private LocalDate date;
 
-    public PointChangeDto(String cause, int change) {
+    public PointChangeDto(String cause, double currentPurchaseTotal) {
         this.cause = cause;
-        this.change = change;
+        this.change = currentPurchaseTotal;
         date = LocalDate.now();
     }
 
@@ -22,11 +22,11 @@ public class PointChangeDto {
         this.cause = cause;
     }
 
-    public int getChange() {
+    public double getChange() {
         return change;
     }
 
-    public void setChange(int change) {
+    public void setChange(double change) {
         this.change = change;
     }
 

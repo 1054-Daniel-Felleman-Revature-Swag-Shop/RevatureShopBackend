@@ -88,9 +88,9 @@ public class InventoryService {
         return sItem.getId();
     }
 
-    public boolean updateStockItemQuantity(String name, int quantity) {
-        if (iRep.findByItemName(name) != null) {
-            iRep.updateQuantity(name, quantity);
+    public boolean updateStockItemQuantity(int id, int quantity) {
+        if (iRep.findById(id) != null) {
+            iRep.updateQuantity(id, quantity);
             return true;
         }
 
@@ -126,9 +126,9 @@ public class InventoryService {
 		return iRep.findById(id).get();
 	}
     
-    public boolean updateItemDiscount(String name, Double discount) {
-    	if (iRep.findByItemName(name) != null) {
-            iRep.updateDiscount(name, discount);
+    public boolean updateItemDiscount(int id, Double discount) {
+    	if (iRep.findById(id) != null) {
+            iRep.updateDiscount(id, discount);
             return true;
         }
 

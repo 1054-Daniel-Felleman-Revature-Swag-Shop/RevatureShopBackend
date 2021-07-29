@@ -24,7 +24,7 @@ public class Account {
 
     private Role role;
 
-    private int points;
+    private double points;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<PointHistory> pointHistory;
@@ -53,12 +53,12 @@ public class Account {
         return this.id;
     }
 
-    public int getPoints() {
+    public double getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setPoints(double d) {
+        this.points = d;
     }
 
     public List<PointHistory> getPointHistory() {
