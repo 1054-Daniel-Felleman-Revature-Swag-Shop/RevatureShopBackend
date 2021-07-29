@@ -31,7 +31,7 @@ public class PurchaseHistory {
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(String myShopper, String purchaseDate, String itemName, Integer itemQuantity, Double itemPrice, double thisItemTotal) {
+    public PurchaseHistory(String myShopper, String purchaseDate, String itemName, Integer itemQuantity, Double itemPrice, Double thisItemTotal) {
 
         this.myShopper = myShopper;
         this.purchaseDate = purchaseDate;
