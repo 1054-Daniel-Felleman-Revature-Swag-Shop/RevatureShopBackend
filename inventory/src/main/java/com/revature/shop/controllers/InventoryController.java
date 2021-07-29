@@ -72,7 +72,7 @@ public class InventoryController
     @PutMapping("/stockitem/update/quantity")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
-        boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getItemName(), item.getQuantity());
+        boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getId(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
     }
@@ -101,7 +101,7 @@ public class InventoryController
     //update the item's discount amount
     @PutMapping("/stockitem/update/discount")
     public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
-    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getItemName(), item.getDiscount());
+    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getId(), item.getDiscount());
 
         return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }

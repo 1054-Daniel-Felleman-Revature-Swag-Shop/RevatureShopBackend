@@ -17,8 +17,8 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
     public StockItem findByItemName(String name);
 
     @Modifying
-    @Query("update StockItem item set item.quantity = :quantity where item.itemName = :name")
-    public void updateQuantity(@Param("name") String name, @Param("quantity") int quantity);
+    @Query("update StockItem item set item.quantity = :quantity where item.id = :id")
+    public void updateQuantity(@Param("id") int id, @Param("quantity") int quantity);
 
     @Modifying
     @Query("select distinct category from StockItem")
@@ -34,6 +34,6 @@ public interface InventoryRepository extends JpaRepository<StockItem, Integer>
 	public StockItem findByItemNameAndSize(String itemName, String size);
     
     @Modifying
-    @Query("update StockItem item set item.discount = :discount where item.itemName = :name")
-	public void updateDiscount(String name, Double discount);
+    @Query("update StockItem item set item.discount = :discount where item.id = :id")
+	public void updateDiscount(@Param("id") int id, @Param("discount") Double discount);
 }
