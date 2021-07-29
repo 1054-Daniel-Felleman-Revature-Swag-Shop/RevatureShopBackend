@@ -4,6 +4,8 @@ package com.revature.shop.controllers;
 import com.revature.shop.models.StockItem;
 import com.revature.shop.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.Web.Client;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
+@FeignClient
 public class InventoryController
 {
     private final InventoryService inventoryService;
@@ -24,6 +27,9 @@ public class InventoryController
         this.inventoryService = inventoryService;
     }
 
+    @Autowired
+    Client feign;
+    
     @GetMapping("/view")
     public ResponseEntity<?> getStockItems()
     {

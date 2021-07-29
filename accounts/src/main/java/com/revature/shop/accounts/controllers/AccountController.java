@@ -1,6 +1,7 @@
 package com.revature.shop.accounts.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/account")
+@FeignClient
 public class AccountController {
     private final AccountService service;
     private final AccountRepository repo;
