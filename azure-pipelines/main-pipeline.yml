@@ -37,14 +37,6 @@ parameters:
         name: "commerce"
         requiresBase: true
         jobName: "CommerceBuild"
-      - config:
-        name: "config"
-        requiresBase: false
-        jobName: "ConfigBuild"
-      - eureka:
-        name: "eureka"
-        requiresBase: false
-        jobName: "EurekaBuild"
       - inventory:
         name: "inventory"
         requiresBase: true
@@ -296,7 +288,7 @@ stages:
     jobs:
       - deployment: DevDeploy
         displayName: Deploy to AKS Dev Environment
-        condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/testing_images')
         environment: dev
         strategy:
           runOnce:
