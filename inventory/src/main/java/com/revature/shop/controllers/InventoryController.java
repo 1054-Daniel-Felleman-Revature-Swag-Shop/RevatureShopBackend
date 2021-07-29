@@ -53,6 +53,31 @@ public class InventoryController
 
         return new ResponseEntity<>(listOfCategories, HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping("/view/getfeatured")
+    public ResponseEntity<?> getFeatured(){
+    	
+    	List<StockItem> itemsList = inventoryService.getIsFeatured(true);
+        if(itemsList == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/view/onsale")
+    public ResponseEntity<?> getOnSale(){
+    	
+    	List<StockItem> itemsList = inventoryService.getDiscounted();
+        if(itemsList == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
+    }
+    
 
     @PostMapping("/view/itemsbycategory")
     public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category)
@@ -78,7 +103,7 @@ public class InventoryController
     @PutMapping("/stockitem/update/quantity")
     public ResponseEntity<?> restockItem(@RequestBody StockItem item)
     {
-        boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getItemName(), item.getQuantity());
+        boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getId(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
     }
@@ -107,7 +132,7 @@ public class InventoryController
     //update the item's discount amount
     @PutMapping("/stockitem/update/discount")
     public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
-    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getItemName(), item.getDiscount());
+    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getId(), item.getDiscount());
 
         return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }

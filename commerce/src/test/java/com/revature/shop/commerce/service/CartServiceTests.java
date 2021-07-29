@@ -39,8 +39,10 @@ public class CartServiceTests {
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    static StockItem stockItem = new StockItem("test-cup", 10, 10, null, null, null, 0);
-    static StockItem stockItem2 = new StockItem("test-t-shirt", 15, 20, null, null, null, 0);
+
+    static StockItem stockItem = new StockItem(testCup, 10, 10, null, null, null, 0,false);
+    static StockItem stockItem2 = new StockItem(testShirt, 15, 20, null, null, null, 0,false);
+
 
     @BeforeClass
     public static void addTestItem () {

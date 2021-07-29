@@ -19,6 +19,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,6 +46,17 @@ public class InventoryService {
     public List<StockItem> getAllStock() {
         return iRep.findAll();
     }
+    
+    public List<StockItem> getDiscounted() {
+       List<StockItem> allList = iRep.findAll();
+       List<StockItem> disList = new ArrayList<StockItem>();
+       for (StockItem s : allList) {
+    	   if(s.getDiscount() != 0) {
+    		   disList.add(s);
+    	   }
+       }
+       return disList;
+    }
 
     public List<String> getAllCategories() {
         return iRep.getDistinctCategories();
@@ -61,6 +73,9 @@ public class InventoryService {
     public List<StockItem> getOutOfStock() {
         return iRep.findByQuantityEquals(0);
     }
+    public List<StockItem> getIsFeatured(boolean bool){
+    	return iRep.findByIsFeatured(bool);
+    }
 
     public int addToStock(StockItem sItem) {
         System.out.println("ADD TO STOCK start");
@@ -73,9 +88,9 @@ public class InventoryService {
         return sItem.getId();
     }
 
-    public boolean updateStockItemQuantity(String name, int quantity) {
-        if (iRep.findByItemName(name) != null) {
-            iRep.updateQuantity(name, quantity);
+    public boolean updateStockItemQuantity(int id, int quantity) {
+        if (iRep.findById(id) != null) {
+            iRep.updateQuantity(id, quantity);
             return true;
         }
 
@@ -111,9 +126,9 @@ public class InventoryService {
 		return iRep.findById(id).get();
 	}
     
-    public boolean updateItemDiscount(String name, Double discount) {
-    	if (iRep.findByItemName(name) != null) {
-            iRep.updateDiscount(name, discount);
+    public boolean updateItemDiscount(int id, Double discount) {
+    	if (iRep.findById(id) != null) {
+            iRep.updateDiscount(id, discount);
             return true;
         }
 
