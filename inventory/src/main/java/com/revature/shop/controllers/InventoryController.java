@@ -26,9 +26,6 @@ public class InventoryController
     {
         this.inventoryService = inventoryService;
     }
-
-    @Autowired
-    Client feign;
     
     @GetMapping("/view")
     public ResponseEntity<?> getStockItems()
