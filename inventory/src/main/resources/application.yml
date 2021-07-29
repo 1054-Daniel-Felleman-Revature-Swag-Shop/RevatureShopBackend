@@ -28,6 +28,7 @@ spring:
 #      label: main
 #  config:
 #    import: configserver:${RSS_CONFIG_URI:http://localhost:8888}
+
   servlet:
     multipart:
       max-file-size: 8000000
