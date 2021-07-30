@@ -134,7 +134,7 @@ public class CartService {
                 currentPurchaseTotal += thisItemTotal;
 
                 //persist a purchase history instance
-                PurchaseHistory purchaseHistory = new PurchaseHistory(cart.getMyShopper(), LocalDate.now().toString(), curStockItem.getItemName(), cart.getStockItemMap().get(key), curStockItem.getItemPrice() * (1 - curStockItem.getDiscount()), thisItemTotal);
+                PurchaseHistory purchaseHistory = new PurchaseHistory(cart.getMyShopper(), LocalDate.now().toString(), curStockItem.getId(), curStockItem.getItemName(), cart.getStockItemMap().get(key), curStockItem.getItemPrice() * (1 - curStockItem.getDiscount()), thisItemTotal);
                 this.purchaseHistoryRepository.save(purchaseHistory);
             }
         }
