@@ -143,7 +143,8 @@ public class CartService {
         String pcMessage = String.format("Purchased %d item%s from the shop: %s", totalItems, totalItems > 1 ? "s" : "", Arrays.toString(items));
         
         return breaker.run(() -> {
-        	boolean success = this.restTemplate.postForObject(this.accountURI + cart.getMyShopper(), new PointChangeDto(pcMessage, -purchaseTotal), Boolean.class);
+        	System.out.println("Attempting to call URL " + this.accountURI + cart.getMyShopper() + " with pcd(" + pcMessage + ", " + -purchaseTotal + ")");
+        	Boolean success = this.restTemplate.postForObject(this.accountURI + cart.getMyShopper(), new PointChangeDto(pcMessage, -purchaseTotal), Boolean.class);
         	if (success) {
         		// set the map to an empty map, save cart
         		Map<Integer, Integer> emptyStockItemMap = new HashMap<Integer, Integer>();
