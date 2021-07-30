@@ -181,7 +181,7 @@ stages:
 
             # Jobs created dynamically will only run if they were marked True, previously.
 
-            condition: eq('True', 'True')
+            condition: eq(variables['${{ service.name }}'], 'True')
             steps:
 
               # Download JDK 16
