@@ -37,14 +37,6 @@ parameters:
         name: "commerce"
         requiresBase: true
         jobName: "CommerceBuild"
-      - config:
-        name: "config"
-        requiresBase: false
-        jobName: "ConfigBuild"
-      - eureka:
-        name: "eureka"
-        requiresBase: false
-        jobName: "EurekaBuild"
       - inventory:
         name: "inventory"
         requiresBase: true
