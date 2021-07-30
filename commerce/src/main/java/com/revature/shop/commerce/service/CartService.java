@@ -169,4 +169,11 @@ public class CartService {
     public List<PurchaseHistory> getShoppingHistory(String shopperEmail) {
         return this.purchaseHistoryRepository.findAllByMyShopper(shopperEmail);
     }
+    
+    public List<String> getMostPopular(){
+    	
+    	return purchaseHistoryRepository.findAndCountAllDistinct();
+    	
+    	
+    }
 }
