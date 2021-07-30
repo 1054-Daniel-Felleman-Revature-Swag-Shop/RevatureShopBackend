@@ -71,7 +71,7 @@ public class CartController {
 
     @GetMapping(value = "/myOrderHistory/{shopper}")
     public ResponseEntity<?> getMyOrderHistory(@PathVariable String shopper){
-        return new ResponseEntity<>(cartService.getShoppoingHistory(shopper), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cartService.getShoppingHistory(shopper), HttpStatus.ACCEPTED);
     }
     
     @GetMapping(value = "/allOrderHistory/mostPopular")

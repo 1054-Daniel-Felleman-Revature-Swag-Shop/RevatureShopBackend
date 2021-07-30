@@ -23,6 +23,11 @@
             <artifactId>base</artifactId>
             <version>1</version>
         </dependency>
+        
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.cloud</groupId> -->
+<!-- 			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId> -->
+<!-- 		</dependency> -->
     </dependencies>
 
     <build>
@@ -36,4 +41,8 @@
             </plugin>
         </plugins>
     </build>
+	<properties>
+		<java.version>16</java.version>
+		<spring-cloud.version>2020.0.3</spring-cloud.version>
+	</properties>
 </project>
