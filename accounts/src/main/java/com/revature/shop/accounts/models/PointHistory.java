@@ -23,12 +23,12 @@ public final class PointHistory {
     private Account account;
 
     private String cause;
-    private int change;
+    private double change;
     private LocalDate date;
 
     public PointHistory() {}
 
-    public PointHistory(String cause, int change) {
+    public PointHistory(String cause, double change) {
         this.cause = cause;
         this.change = change;
 
@@ -43,11 +43,11 @@ public final class PointHistory {
         this.cause = cause;
     }
 
-    public int getChange() {
+    public double getChange() {
         return change;
     }
 
-    public void setChange(int change) {
+    public void setChange(double change) {
         this.change = change;
     }
 

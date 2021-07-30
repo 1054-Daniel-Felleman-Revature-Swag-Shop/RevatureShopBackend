@@ -21,16 +21,15 @@ spring:
     name: inventoryMS
   profiles:
     active: email, aws
-#   cloud:
-#     config:
-#       name: shop
-#       enabled: true
-#       uri: ${RSS_CONFIG_URI:http://localhost:8888}
-# #      uri: http://localhost:8888
-#       label: main
-#   config:
-# #    import: configserver:http://localhost:8888
-#     import: configserver:${RSS_CONFIG_URI:http://localhost:8888}
+#  cloud:
+#    config:
+#      name: shop
+#      enabled: true
+#      uri: ${RSS_CONFIG_URI:http://localhost:8888}
+#      label: main
+#  config:
+#    import: configserver:${RSS_CONFIG_URI:http://localhost:8888}
+
   servlet:
     multipart:
       max-file-size: 8000000
