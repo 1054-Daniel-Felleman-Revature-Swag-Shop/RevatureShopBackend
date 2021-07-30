@@ -17,22 +17,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inventory")
 @FeignClient
-public class InventoryController
-{
+public class InventoryController {
     private final InventoryService inventoryService;
 
     @Autowired
-    public InventoryController(InventoryService inventoryService)
-    {
+    public InventoryController(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
     }
     
     @GetMapping("/view")
-    public ResponseEntity<?> getStockItems()
-    {
+    public ResponseEntity<?> getStockItems() {
         List<StockItem> itemsList = inventoryService.getAllStock();
-        if(itemsList == null)
-        {
+        if(itemsList == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -40,11 +36,9 @@ public class InventoryController
     }
 
     @GetMapping("/view/getallcategories")
-    public ResponseEntity<?> getAllCategories()
-    {
+    public ResponseEntity<?> getAllCategories() {
         List<String> listOfCategories = inventoryService.getAllCategories();
-        if(listOfCategories == null)
-        {
+        if(listOfCategories == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -52,11 +46,9 @@ public class InventoryController
     }
     
     @GetMapping("/view/getfeatured")
-    public ResponseEntity<?> getFeatured(){
-    	
+    public ResponseEntity<?> getFeatured() {
     	List<StockItem> itemsList = inventoryService.getIsFeatured(true);
-        if(itemsList == null)
-        {
+        if(itemsList == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -64,11 +56,9 @@ public class InventoryController
     }
     
     @GetMapping("/view/onsale")
-    public ResponseEntity<?> getOnSale(){
-    	
+    public ResponseEntity<?> getOnSale() {
     	List<StockItem> itemsList = inventoryService.getDiscounted();
-        if(itemsList == null)
-        {
+        if(itemsList == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -77,19 +67,16 @@ public class InventoryController
     
 
     @PostMapping("/view/itemsbycategory")
-    public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category)
-    {
+    public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category) {
         List<StockItem> itemsList = inventoryService.getStockByCategory(category);
-        if(category == null)
-        {
+        if(category == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value = "/stockitem/new", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> addNewItem(@RequestBody StockItem item)
-    {
+    public ResponseEntity<?> addNewItem(@RequestBody StockItem item) {
         
         Integer idOfNewItem = inventoryService.addToStock(item);
 
@@ -98,8 +85,7 @@ public class InventoryController
 
     //This says restock, but can be used to reduce quantity as well.
     @PutMapping("/stockitem/update/quantity")
-    public ResponseEntity<?> restockItem(@RequestBody StockItem item)
-    {
+    public ResponseEntity<?> restockItem(@RequestBody StockItem item) {
         boolean isChangedQuantity = inventoryService.updateStockItemQuantity(item.getId(), item.getQuantity());
 
         return new ResponseEntity<>(isChangedQuantity, HttpStatus.ACCEPTED);
@@ -107,13 +93,8 @@ public class InventoryController
 
     @PutMapping(value = "/stockitem/update/addimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<?> uploadItemImage(@RequestParam("id") String itemIdAsString, @RequestParam("image") MultipartFile imageFile) {
-
-        
-
         boolean uploadWorked = inventoryService.uploadImageForItemWithId(Integer.parseInt(itemIdAsString), imageFile);
-
         return new ResponseEntity<>(uploadWorked, HttpStatus.ACCEPTED);
-
     }
 
     @GetMapping("/get/item/name")
@@ -130,7 +111,6 @@ public class InventoryController
     @PutMapping("/stockitem/update/discount")
     public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
     	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getId(), item.getDiscount());
-
         return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }
 
