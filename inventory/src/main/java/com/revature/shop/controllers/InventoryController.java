@@ -65,6 +65,18 @@ public class InventoryController {
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
     
+    @GetMapping("/view/mostpopular")
+    public ResponseEntity<?> getMostPop(){
+    	
+    	List<StockItem> itemsList = inventoryService.getMostPopular();
+        if(itemsList == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
+    }
+    
 
     @PostMapping("/view/itemsbycategory")
     public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category) {
