@@ -44,7 +44,9 @@ public class e2eInventoryTesting {
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void addItemE2E() {
-		StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.", null, 0);
+
+		StockItem item = new StockItem("Revature Smart Watch", 70, 90, "Misc", "Made of platinum, nuff said.", null, 0,false);
+
 		URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/new");
 		restTemplate.put(uri, item);
 
@@ -55,7 +57,9 @@ public class e2eInventoryTesting {
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void updateQuantitiesE2E() {
-		StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!", null, 0);
+
+		StockItem item = new StockItem("Rev It Up Hat", 50, 3500, "Misc", "A sweet hat to ACCELERATE your development!", null, 0,false);
+
 		URI uri = URI.create("http://localhost:9001/inventoryms/api/inventory/stockitem/update/quantity");
 		restTemplate.put(uri, item);
 

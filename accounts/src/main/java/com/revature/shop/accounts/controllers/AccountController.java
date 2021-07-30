@@ -36,7 +36,8 @@ public class AccountController {
 
     @PostMapping("/points/{email}")
     public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
-        return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+    	boolean success = this.service.modPoints(email, change);
+    	return new ResponseEntity<>(success, success ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
