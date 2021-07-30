@@ -288,7 +288,7 @@ stages:
     jobs:
       - deployment: DevDeploy
         displayName: Deploy to AKS Dev Environment
-        condition: eq(variables['Build.SourceBranch'], 'refs/heads/testing_images')
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
         environment: dev
         strategy:
           runOnce:
