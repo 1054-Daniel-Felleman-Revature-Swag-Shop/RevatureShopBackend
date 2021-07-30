@@ -90,15 +90,10 @@ public class InventoryService {
     	String[] arr = mostPopString.getBody();
     	List<StockItem> finList = new ArrayList<StockItem>();
     	for(String s: arr) {
-    		String[] item = s.split(",",2);
-    		try {
-    			//System.out.println(iRep.findByItemName(item[0]));    		
-    			finList.add(iRep.findByItemName(item[0]));
-    		}
-    		catch(Exception ex){
-    			//System.out.println(iRep.findByItemNameAndSize(item[0],"Small"));
-    			finList.add(iRep.findByItemNameAndSize(item[0],"Small"));
-    		}
+    		String[] item = s.split(",", 3);
+    		
+    			finList.add(iRep.getById(Integer.parseInt(item[0])));
+    		
     	}
     	return finList;
     }

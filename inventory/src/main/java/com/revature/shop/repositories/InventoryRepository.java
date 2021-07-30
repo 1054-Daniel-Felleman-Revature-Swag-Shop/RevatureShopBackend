@@ -15,7 +15,7 @@ import java.util.List;
 public interface InventoryRepository extends JpaRepository<StockItem, Integer>
 {
     public StockItem findByItemName(String name);
-
+    public List<StockItem> findAllByItemName(String name);
     @Modifying
     @Query("update StockItem item set item.quantity = :quantity where item.id = :id")
     public void updateQuantity(@Param("id") int id, @Param("quantity") int quantity);
