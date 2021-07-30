@@ -1,14 +1,19 @@
 package com.revature.shop.services;
 
+//import com.revature.shop.commerce.dtos.PointChangeDto;
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -20,6 +25,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,6 +37,8 @@ public class InventoryService {
     private final Logger logger = LogManager.getLogger();
 
     private final S3Client s3;
+    
+    RestTemplate restTemplate = new RestTemplate();
 
     public InventoryService(InventoryRepository iRep) {
         this(iRep, "", "");
@@ -75,6 +83,24 @@ public class InventoryService {
     }
     public List<StockItem> getIsFeatured(boolean bool){
     	return iRep.findByIsFeatured(bool);
+    }
+    public List<StockItem> getMostPopular(){
+    	
+    	ResponseEntity<String[]> mostPopString = restTemplate.getForEntity("http://localhost:9001/commercems/commerce/allOrderHistory/mostPopular", String[].class );
+    	String[] arr = mostPopString.getBody();
+    	List<StockItem> finList = new ArrayList<StockItem>();
+    	for(String s: arr) {
+    		String[] item = s.split(",",2);
+    		try {
+    			//System.out.println(iRep.findByItemName(item[0]));    		
+    			finList.add(iRep.findByItemName(item[0]));
+    		}
+    		catch(Exception ex){
+    			//System.out.println(iRep.findByItemNameAndSize(item[0],"Small"));
+    			finList.add(iRep.findByItemNameAndSize(item[0],"Small"));
+    		}
+    	}
+    	return finList;
     }
 
     public int addToStock(StockItem sItem) {
