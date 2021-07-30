@@ -41,8 +41,8 @@ public class CartService {
             if (cart == null)
                 cart = new Cart(stockItemDto.getMyshopper(), new HashMap<>());
             if (cart.getStockItemMap().containsKey(stockItemDto.getId()))
-                cart.getStockItemMap().put(stockItemDto.getId(), cart.getStockItemMap().get(stockItemDto.getId()) + 1);
-            else cart.getStockItemMap().put(stockItemDto.getId(), 1);
+                cart.getStockItemMap().put(stockItemDto.getId(), cart.getStockItemMap().get(stockItemDto.getId()) + stockItemDto.getCartQuantity());
+            else cart.getStockItemMap().put(stockItemDto.getId(), stockItemDto.getCartQuantity());
 //            stockItem.setQuantity(stockItem.getQuantity() - 1);
 //            stockItemRepository.save(stockItem);
             cartRepository.save(cart);
