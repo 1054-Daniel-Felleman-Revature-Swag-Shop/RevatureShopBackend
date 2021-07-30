@@ -14,17 +14,21 @@ import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.accounts.services.AccountService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/account")
-@FeignClient
 public class AccountController {
     private final AccountService service;
     private final AccountRepository repo;
     private final PointRepository pr;
+    
+    private static final String ACCOUNT_SERVICE = "accountService";
 
     @Autowired
     public AccountController(AccountService service, AccountRepository repo, PointRepository pr) {
@@ -34,8 +38,12 @@ public class AccountController {
     }
 
     @PostMapping("/points/{email}")
+    @CircuitBreaker(name = ACCOUNT_SERVICE, fallbackMethod = "updatePointsFallback" )
     public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
         return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+    }
+    public String updatePointsFallback(Exception e) {
+    	return "Service is Unavailable Try Again Later";
     }
 
     @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -44,8 +52,12 @@ public class AccountController {
     }
 
     @GetMapping("/all")
+    @CircuitBreaker(name = ACCOUNT_SERVICE, fallbackMethod = "accountFallback" )
     public List<Account> allUsers() {
         return repo.findAll();
+    }
+    public List<Account> accountFallback(Exception e) {
+    	return new ArrayList<Account>();
     }
 
     @GetMapping("pointHistory/{id}")
