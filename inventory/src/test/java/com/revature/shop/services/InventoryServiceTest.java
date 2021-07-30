@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,10 @@ class InventoryServiceTest {
 
     @Mock
     InventoryRepository iRep = Mockito.mock(InventoryRepository.class);
+    @Mock
+    CircuitBreakerFactory cbf = Mockito.mock(CircuitBreakerFactory.class);
 
-    InventoryService iServ = new InventoryService(iRep);
+    InventoryService iServ = new InventoryService(cbf, iRep);
 
 
     StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat", null, 0,false);
