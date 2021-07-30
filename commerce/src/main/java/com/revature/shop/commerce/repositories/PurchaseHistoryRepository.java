@@ -17,6 +17,6 @@ public interface PurchaseHistoryRepository extends JpaRepository<PurchaseHistory
     List<PurchaseHistory> findAllByMyShopper(String myshopper);
     
     @Modifying
-    @Query(value = "Select item_name, Sum(item_quantity) from purchase_history Group By item_name order by Sum(item_quantity) desc limit 5", nativeQuery=true)
+    @Query(value = "Select item_id, item_name, Sum(item_quantity) from purchase_history Group By item_name order by Sum(item_quantity) desc limit 5", nativeQuery=true)
     public List<String> findAndCountAllDistinct();
 }
