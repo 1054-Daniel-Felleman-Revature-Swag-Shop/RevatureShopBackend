@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/account")
-@FeignClient
 public class AccountController {
     private final AccountService service;
     private final AccountRepository repo;
