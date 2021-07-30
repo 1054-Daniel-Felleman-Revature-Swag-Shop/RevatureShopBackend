@@ -1,10 +1,14 @@
 package com.revature.shop.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
 
 @Entity
 @Table(name="inventory")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StockItem
 {
     @Id
