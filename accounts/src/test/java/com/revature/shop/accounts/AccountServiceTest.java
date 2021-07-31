@@ -12,11 +12,11 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import com.revature.shop.accounts.models.Account;
-import com.revature.shop.accounts.models.PointHistory;
 import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.accounts.services.AccountService;
+import com.revature.shop.models.Account;
+import com.revature.shop.models.PointHistory;
 
 public class AccountServiceTest {
     @Mock
@@ -29,7 +29,7 @@ public class AccountServiceTest {
         repo = mock(AccountRepository.class);
         pointsRepo = mock(PointRepository.class);
 
-        Account account = new Account(1, "test", 100);
+        Account account = new Account(1, "test", 100, false);
 
         when(repo.findByEmail("test")).thenReturn(account);
         when(repo.save(account)).thenReturn(account);

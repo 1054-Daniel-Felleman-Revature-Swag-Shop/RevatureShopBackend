@@ -1,18 +1,27 @@
 package com.revature.shop.controllers;
 
 
-import com.revature.shop.models.StockItem;
-import com.revature.shop.services.InventoryService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.Web.Client;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import com.revature.shop.models.StockItem;
+import com.revature.shop.services.InventoryService;
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -66,17 +75,14 @@ public class InventoryController {
     }
     
     @GetMapping("/view/mostpopular")
-    public ResponseEntity<?> getMostPop(){
-    	
+    public ResponseEntity<?> getMostPop() {
     	List<StockItem> itemsList = inventoryService.getMostPopular();
-        if(itemsList == null)
-        {
+        if(itemsList == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
-    
 
     @PostMapping("/view/itemsbycategory")
     public ResponseEntity<?> getStockItemsByCategory(@RequestBody String category) {
@@ -84,14 +90,14 @@ public class InventoryController {
         if(category == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        
         return new ResponseEntity<>(itemsList, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value = "/stockitem/new", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> addNewItem(@RequestBody StockItem item) {
+    public ResponseEntity<?> addNewItem(@RequestBody StockItem item, @RequestHeader HttpHeaders headers) {
+        Integer idOfNewItem = inventoryService.addToStock(item, headers.get("email").get(0));
         
-        Integer idOfNewItem = inventoryService.addToStock(item);
-
         return new ResponseEntity<>(idOfNewItem, HttpStatus.CREATED);
     }
 
@@ -121,8 +127,9 @@ public class InventoryController {
     
     //update the item's discount amount
     @PutMapping("/stockitem/update/discount")
-    public ResponseEntity<?> updateDiscount(@RequestBody StockItem item) {
-    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getId(), item.getDiscount());
+    public ResponseEntity<?> updateDiscount(@RequestBody StockItem item, @RequestHeader HttpHeaders headers) {
+    	boolean isChangedDiscount = inventoryService.updateItemDiscount(item.getId(), item.getDiscount(), headers.get("email").get(0));
+    	
         return new ResponseEntity<>(isChangedDiscount, HttpStatus.ACCEPTED);
     }
 

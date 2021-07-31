@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.shop.accounts.models.Account;
-import com.revature.shop.accounts.models.PointHistory;
 import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.accounts.services.AccountService;
+import com.revature.shop.models.Account;
+import com.revature.shop.models.PointHistory;
 
 @RestController
 @RequestMapping("/api/account")
@@ -38,10 +38,20 @@ public class AccountController {
     public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
         return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
+    
+    @PostMapping("/subscribe/{email}/{value}")
+    public ResponseEntity<?> updateEmailSubscription(@PathVariable String email, @PathVariable Boolean value) {
+    	return new ResponseEntity<>(service.updateEmailSubscription(email, value), HttpStatus.ACCEPTED);
+    }
 
     @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<Account> dummyLogin(@RequestBody MultiValueMap<String, String> form) {
         return new ResponseEntity<>(repo.findByEmail(form.getFirst("email")), HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/{email}")
+    public Account getAccount(@PathVariable String email) {
+    	return this.repo.findByEmail(email);
     }
 
     @GetMapping("/all")

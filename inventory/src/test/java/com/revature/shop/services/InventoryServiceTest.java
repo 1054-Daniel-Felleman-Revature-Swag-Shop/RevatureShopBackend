@@ -1,5 +1,6 @@
 package com.revature.shop.services;
 
+import com.revature.shop.MailService;
 import com.revature.shop.models.StockItem;
 import com.revature.shop.repositories.InventoryRepository;
 
@@ -9,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.core.task.TaskExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +23,12 @@ class InventoryServiceTest {
     InventoryRepository iRep = Mockito.mock(InventoryRepository.class);
     @Mock
     CircuitBreakerFactory cbf = Mockito.mock(CircuitBreakerFactory.class);
+    @Mock
+    MailService mailService = Mockito.mock(MailService.class);
+    @Mock
+    TaskExecutor taskExecutor = Mockito.mock(TaskExecutor.class);
 
-    InventoryService iServ = new InventoryService(cbf, iRep);
+    InventoryService iServ = new InventoryService(cbf, iRep, mailService, taskExecutor);
 
 
     StockItem s1 = new StockItem("Hat", 100, 1000, "Accessory", "A sweet hat", null, 0,false);

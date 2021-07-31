@@ -6,7 +6,8 @@ CREATE TABLE accounts(
     email varchar(255),
     name varchar(255),
     role int,
-    points numeric(10,2)
+    points numeric(10,2),
+    email_subscription boolean
 );
 
 CREATE TABLE point_history(
