@@ -37,7 +37,6 @@ public class Account {
 
     private double points;
     
-    @Column(name = "email_subscription")
     private boolean subscribed;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)

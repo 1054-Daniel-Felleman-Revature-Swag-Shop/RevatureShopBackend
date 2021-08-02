@@ -3,6 +3,7 @@ package com.revature.shop.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -168,9 +169,9 @@ public class InventoryService {
     	StockItem item = this.iRep.findById(id).orElse(null);
     	if (item != null) {
     		CircuitBreaker breaker = this.cbf.create("updateItemDiscount");
-    		Account account = breaker.run(() -> this.restTemplate.getForObject(this.accountURI + email, Account.class), throwable -> null);
+    		List<Account> accounts = Arrays.asList(breaker.run(() -> this.restTemplate.getForObject(this.accountURI + "/subscribed", Account[].class), throwable -> null));
     		
-    		if (account != null && account.isSubscribed()) this.mailService.sendSaleEmail(email, account.getName(), item.getItemName(), String.valueOf(discount));
+    		if (accounts != null) this.mailService.sendSaleEmails(accounts, item.getItemName(), String.valueOf(discount));
     		
             iRep.updateDiscount(id, discount);
             return true;

@@ -10,8 +10,9 @@ import com.revature.shop.models.Account;
 import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-
     Account findByEmail(String email);
 
     Account findAccountById(int id);
+    
+    List<Account> findAllBySubscribedTrue();
 }

@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PointRepository extends JpaRepository<PointHistory, Integer> {
-
-
     List<PointHistory> findPointChangeByAccount(Account account);
 }
 

@@ -1,20 +1,18 @@
 package com.revature.shop.accounts.services;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
 import com.revature.shop.MailService;
 import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.models.Account;
 import com.revature.shop.models.PointHistory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 
 @Service
 public class AccountService {
@@ -23,27 +21,12 @@ public class AccountService {
     private final MailService mailService;
     private final TaskExecutor taskExecutor;
 
-//    private String pointsEmailTemplate, saleEmailTemplate, newItemEmailTemplate;
-
     @Autowired
     public AccountService(AccountRepository repo, PointRepository pointsRepo, MailService mailService, TaskExecutor taskExecutor) throws IOException {
         this.repo = repo;
         this.pointsRepo = pointsRepo;
         this.mailService = mailService;
         this.taskExecutor = taskExecutor;
-
-//        if (mailService != null) {
-//            InputStream stream = getClass().getClassLoader().getResourceAsStream("points_email.html");
-//            this.pointsEmailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
-//            
-//            stream = getClass().getClassLoader().getResourceAsStream("sale_email.html");
-//            this.saleEmailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
-//            
-//            stream = getClass().getClassLoader().getResourceAsStream("new_item_email.html");
-//            this.newItemEmailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
-//            
-//            stream.close();
-//        }
     }
 
     @Transactional
@@ -58,14 +41,7 @@ public class AccountService {
         this.repo.save(account);
         this.pointsRepo.save(change);
 
-        if (change.getChange() > 0 && mailService != null) { //Only email if points added
-//            taskExecutor.execute(() -> {
-//                String email = pointsEmailTemplate.replaceAll("\\{\\{NAME}}", account.getName())
-//                        .replaceAll("\\{\\{POINTS}}", String.valueOf(change.getChange()))
-//                        .replaceAll("\\{\\{REASON}}", change.getCause());
-//
-//                mailService.sendRegistration(account.getEmail(), "RevatureShop Points", email);
-//            });
+        if (change.getChange() > 0 && this.mailService != null) { //Only email if points added
         	this.taskExecutor.execute(() -> {
         		this.mailService.sendPointsEmail(account.getEmail(), account.getName(), String.valueOf(change.getChange()), change.getCause());
         	});
@@ -81,6 +57,26 @@ public class AccountService {
     	account.setSubscribed(value);
     	this.repo.save(account);
     	
-    	return true;
+    	return value;
+    }
+    
+    public List<Account> getSubscribedAccounts() {
+    	return this.repo.findAllBySubscribedTrue();
+    }
+    
+    public Account getByEmail(String email) {
+    	return this.repo.findByEmail(email);
+    }
+    
+    public List<Account> getAll() {
+    	return this.repo.findAll();
+    }
+    
+    public Account getById(int id) {
+    	return this.repo.findAccountById(id);
+    }
+    
+    public List<PointHistory> getPointHistory(int accountId) {
+    	return this.pointsRepo.findPointChangeByAccount(this.getById(accountId));
     }
 }

@@ -3,6 +3,7 @@ package com.revature.shop;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+
+import com.revature.shop.models.Account;
 
 @Service
 @PropertySource("classpath:email.properties")
@@ -31,12 +34,10 @@ public class MailService {
 
         this.mailSender.setUsername(username);
         this.mailSender.setPassword(password);
-        
-//        System.out.printf("Initializing MailService with information: host=%s, port=%d, username=%s, password=%s.%n", host, port, username, password);
-        
+                
         Properties props = this.mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.auth", "false");
         props.put("mail.smtp.starttls.enable", "true");
         
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("points_email.html");
@@ -49,9 +50,7 @@ public class MailService {
         this.newItemTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
     }
 
-    public void sendRegistration(String to, String subject, String body) {
-    	System.out.printf("Sending email to %s with subject %s.%n", to, subject);
-    	
+    public void sendEmail(String to, String subject, String body) {
         this.mailSender.send(mail -> {
             mail.setFrom("RevatureShop <" + this.mailSender.getUsername() + ">");
             mail.setRecipients(Message.RecipientType.TO, to);
@@ -65,7 +64,11 @@ public class MailService {
     	String email = this.pointsTemplate.replaceAll("\\{\\{NAME}}", name)
     			.replaceAll("\\{\\{POINTS}}", points)
     			.replaceAll("\\{\\{REASON}}", reason);
-    	this.sendRegistration(receiver, "RevatureShop Points", email);
+    	this.sendEmail(receiver, "RevatureShop Points", email);
+    }
+    
+    public void sendSaleEmails(List<Account> receivers, String itemName, String itemDiscount) {
+    	receivers.forEach(account -> this.sendSaleEmail(account.getEmail(), account.getName(), itemName, itemDiscount));
     }
     
     public void sendSaleEmail(String receiver, String name, String itemName, String itemDiscount) {
@@ -73,7 +76,11 @@ public class MailService {
     			.replaceAll("\\{\\{ITEM_NAME}}", itemName)
     			.replaceAll("\\{\\{ITEM_DISCOUNT}}", itemDiscount)
     			.replaceAll("\\{\\{ITEM_IMAGE}}", this.imageURL + itemName + ".png");
-    	this.sendRegistration(receiver, "RevatureShop Sale", email);
+    	this.sendEmail(receiver, "RevatureShop Sale", email);
+    }
+    
+    public void sendNewItemEmails(List<Account> receivers, String itemName, String points) {
+    	receivers.forEach(account -> this.sendNewItemEmail(account.getEmail(), account.getName(), itemName, points));
     }
     
     public void sendNewItemEmail(String receiver, String name, String itemName, String points) {
@@ -81,6 +88,6 @@ public class MailService {
     			.replaceAll("\\{\\{ITEM_NAME}}", itemName)
     			.replaceAll("\\{\\{POINTS}}", points)
     			.replaceAll("\\{\\{ITEM_IMAGE}}", this.imageURL + itemName + ".png");
-    	this.sendRegistration(receiver, "RevatureShop New Item", email);
+    	this.sendEmail(receiver, "RevatureShop New Item", email);
     }
 }
