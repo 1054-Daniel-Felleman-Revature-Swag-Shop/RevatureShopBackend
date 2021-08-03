@@ -51,13 +51,17 @@ public class MailService {
     }
 
     public void sendEmail(String to, String subject, String body) {
-        this.mailSender.send(mail -> {
-            mail.setFrom("RevatureShop <" + this.mailSender.getUsername() + ">");
-            mail.setRecipients(Message.RecipientType.TO, to);
-
-            mail.setSubject(subject);
-            mail.setContent(body, "text/html");
-        });
+    	try {
+	        this.mailSender.send(mail -> {
+	            mail.setFrom("RevatureShop <" + this.mailSender.getUsername() + ">");
+	            mail.setRecipients(Message.RecipientType.TO, to);
+	
+	            mail.setSubject(subject);
+	            mail.setContent(body, "text/html");
+	        });
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
     public void sendPointsEmail(String receiver, String name, String points, String reason) {
@@ -75,7 +79,7 @@ public class MailService {
     	String email = this.saleTemplate.replaceAll("\\{\\{NAME}}", name)
     			.replaceAll("\\{\\{ITEM_NAME}}", itemName)
     			.replaceAll("\\{\\{ITEM_DISCOUNT}}", itemDiscount)
-    			.replaceAll("\\{\\{ITEM_IMAGE}}", this.imageURL + itemName + ".png");
+    			.replaceAll("\\{\\{ITEM_IMAGE}}", this.imageURL + itemName + ".png");   		
     	this.sendEmail(receiver, "RevatureShop Sale", email);
     }
     
