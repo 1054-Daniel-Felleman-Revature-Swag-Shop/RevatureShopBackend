@@ -142,7 +142,7 @@ public class CartService {
         final double purchaseTotal = currentPurchaseTotal;
         String pcMessage = String.format("Purchased %d item%s from the shop: %s", totalItems, totalItems > 1 ? "s" : "", Arrays.toString(items));
         
-        return breaker.run(() -> {
+        double result = breaker.run(() -> {
         	System.out.println("Attempting to call URL " + this.accountURI + cart.getMyShopper() + " with pcd(" + pcMessage + ", " + -purchaseTotal + ")");
         	Boolean success = this.restTemplate.postForObject(this.accountURI + cart.getMyShopper(), new PointChangeDto(pcMessage, -purchaseTotal), Boolean.class);
         	if (success) {
@@ -154,7 +154,11 @@ public class CartService {
                 // return total points
                 return purchaseTotal;
         	} else return -1d;
-        }, (throwable) -> -1d);
+        }, (throwable) -> {
+        	return -1d;
+        });
+        
+        return result;
     }
 
     public Cart getShopperCart(String shopper) {
