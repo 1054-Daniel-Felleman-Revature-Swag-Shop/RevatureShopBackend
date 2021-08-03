@@ -1,4 +1,4 @@
-INSERT INTO accounts(email, name, role, points) VALUES ('parkerkt77@gmail.com', 'Parker', 1, 390), ('kent.berry@revature.net', 'Kent', 0, 500),('dante.d.pizzini@gmail.com', 'Dan', 0, 200);
+INSERT INTO accounts(email, name, role, points, subscribed) VALUES ('gerald.stillman@revature.net', 'Gerald', 1, 390, true), ('emmett.riddle@revature.net', 'Emmett', 0, 500, false), ('bennett.kerbow@revature.net', 'Bennett', 0, 200, false);
 INSERT INTO point_history(fk_account, cause, change, date) VALUES ( 2, 'Brownie Bit Points', 256, '2021-05-28' );
 INSERT INTO point_history(fk_account, cause, change, date) VALUES ( 2, 'More Brownie Points', 244, '2021-05-28' );
 INSERT INTO point_history(fk_account, cause, change, date) VALUES ( 1, 'Excellent Work Week', 100, '2021-06-01' );

@@ -14,45 +14,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.shop.accounts.models.Account;
-import com.revature.shop.accounts.models.PointHistory;
-import com.revature.shop.accounts.repositories.AccountRepository;
-import com.revature.shop.accounts.repositories.PointRepository;
 import com.revature.shop.accounts.services.AccountService;
+import com.revature.shop.models.Account;
+import com.revature.shop.models.PointHistory;
 
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
     private final AccountService service;
-    private final AccountRepository repo;
-    private final PointRepository pr;
 
     @Autowired
-    public AccountController(AccountService service, AccountRepository repo, PointRepository pr) {
+    public AccountController(AccountService service) {
         this.service = service;
-        this.repo = repo;
-        this.pr = pr;
     }
 
     @PostMapping("/points/{email}")
     public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
-        return new ResponseEntity<>(service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(this.service.modPoints(email, change) ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+    }
+    
+    @PostMapping("/subscribe/{email}/{value}")
+    public ResponseEntity<?> updateEmailSubscription(@PathVariable String email, @PathVariable Boolean value) {
+    	return new ResponseEntity<>(this.service.updateEmailSubscription(email, value), HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/subscribed")
+    public ResponseEntity<List<Account>> getSubscribedAccounts() {
+    	return new ResponseEntity<>(this.service.getSubscribedAccounts(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value = "/dummylogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<Account> dummyLogin(@RequestBody MultiValueMap<String, String> form) {
-        return new ResponseEntity<>(repo.findByEmail(form.getFirst("email")), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(this.service.getByEmail(form.getFirst("email")), HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/{email}")
+    public ResponseEntity<Account> getAccount(@PathVariable String email) {
+    	return new ResponseEntity<>(this.service.getByEmail(email), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/all")
-    public List<Account> allUsers() {
-        return repo.findAll();
+    public ResponseEntity<List<Account>> allUsers() {
+    	return new ResponseEntity<>(this.service.getAll(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("pointHistory/{id}")
-    public List<PointHistory> pointHistory(@PathVariable int id) {
-        Account account = repo.findAccountById(id);
-        System.out.println(account);
-        return pr.findPointChangeByAccount(account);
+    public ResponseEntity<List<PointHistory>> pointHistory(@PathVariable int id) {
+        return new ResponseEntity<>(this.service.getPointHistory(id), HttpStatus.ACCEPTED);
     }
 }

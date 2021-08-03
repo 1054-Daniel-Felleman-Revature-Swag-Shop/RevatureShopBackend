@@ -1,21 +1,18 @@
 package com.revature.shop.accounts.services;
 
-//import com.revature.accounts.MailService;
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
 import com.revature.shop.MailService;
-import com.revature.shop.accounts.models.Account;
-import com.revature.shop.accounts.models.PointHistory;
 import com.revature.shop.accounts.repositories.AccountRepository;
 import com.revature.shop.accounts.repositories.PointRepository;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import com.revature.shop.models.Account;
+import com.revature.shop.models.PointHistory;
 
 @Service
 public class AccountService {
@@ -24,52 +21,62 @@ public class AccountService {
     private final MailService mailService;
     private final TaskExecutor taskExecutor;
 
-    private String emailTemplate;
-
     @Autowired
     public AccountService(AccountRepository repo, PointRepository pointsRepo, MailService mailService, TaskExecutor taskExecutor) throws IOException {
         this.repo = repo;
         this.pointsRepo = pointsRepo;
         this.mailService = mailService;
         this.taskExecutor = taskExecutor;
-
-        if (mailService != null) {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("points_email.html");
-            emailTemplate = StreamUtils.copyToString(stream, Charset.defaultCharset());
-        }
     }
 
     @Transactional
-    //@HystrixCommand(fallbackMethod = "downService")
     public boolean modPoints(String user, PointHistory change) {
-        Account account = repo.findByEmail(user);
+        Account account = this.repo.findByEmail(user);
+        if (account == null) return false;
+        
         change.setAccount(account);
-        if (account == null) {
-            return false;
-        }
-
-        if (account.getPoints() + change.getChange() < 0) {
-            return false;
-        }
+        if (account.getPoints() + change.getChange() < 0) return false;
 
         account.setPoints(account.getPoints() + change.getChange());
-        repo.save(account);
-        pointsRepo.save(change);
+        this.repo.save(account);
+        this.pointsRepo.save(change);
 
-        if (change.getChange() > 0 && mailService != null) { //Only email if points added
-            taskExecutor.execute(() -> {
-                String email = emailTemplate.replaceAll("\\{\\{NAME}}", account.getName())
-                        .replaceAll("\\{\\{POINTS}}", String.valueOf(change.getChange()))
-                        .replaceAll("\\{\\{REASON}}", change.getCause());
-
-                mailService.sendRegistration(account.getEmail(), "RevatureShop Points", email);
-            });
+        if (change.getChange() > 0 && this.mailService != null) { //Only email if points added
+        	this.taskExecutor.execute(() -> {
+        		this.mailService.sendPointsEmail(account.getEmail(), account.getName(), String.valueOf(change.getChange()), change.getCause());
+        	});
         }
 
         return true;
     }
-
-    public String downService() {
-        return "The Accounts service is currently under maintenance, please check in later";
+    
+    public boolean updateEmailSubscription(String user, boolean value) {
+    	Account account = this.repo.findByEmail(user);
+    	if (account == null) return false;
+    	
+    	account.setSubscribed(value);
+    	this.repo.save(account);
+    	
+    	return value;
+    }
+    
+    public List<Account> getSubscribedAccounts() {
+    	return this.repo.findAllBySubscribedTrue();
+    }
+    
+    public Account getByEmail(String email) {
+    	return this.repo.findByEmail(email);
+    }
+    
+    public List<Account> getAll() {
+    	return this.repo.findAll();
+    }
+    
+    public Account getById(int id) {
+    	return this.repo.findAccountById(id);
+    }
+    
+    public List<PointHistory> getPointHistory(int accountId) {
+    	return this.pointsRepo.findPointChangeByAccount(this.getById(accountId));
     }
 }

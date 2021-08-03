@@ -1,4 +1,4 @@
-package com.revature.shop.accounts.models;
+package com.revature.shop.models;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
