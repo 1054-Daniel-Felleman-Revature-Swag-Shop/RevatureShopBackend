@@ -8,6 +8,8 @@ import java.util.Properties;
 
 import javax.mail.Message;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,6 +25,7 @@ public class MailService {
     private final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
     private final String imageURL = "https://rss-images.s3.us-east-2.amazonaws.com/images/";
     private String pointsTemplate, saleTemplate, newItemTemplate;
+    private Logger logger = LogManager.getLogger(MailService.class);
 
     @Autowired
     public MailService(@Value("${email.host}") String host,
@@ -60,7 +63,7 @@ public class MailService {
 	            mail.setContent(body, "text/html");
 	        });
     	} catch (Exception e) {
-    		e.printStackTrace();
+    		this.logger.error(e.getStackTrace());
     	}
     }
     
