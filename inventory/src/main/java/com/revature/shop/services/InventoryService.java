@@ -171,7 +171,7 @@ public class InventoryService {
     		CircuitBreaker breaker = this.cbf.create("updateItemDiscount");
     		List<Account> accounts = Arrays.asList(breaker.run(() -> this.restTemplate.getForObject(this.accountURI + "/subscribed", Account[].class), throwable -> null));
     		
-    		if (accounts != null) this.mailService.sendSaleEmails(accounts, item.getItemName(), String.valueOf(discount));
+    		if (accounts != null) this.mailService.sendSaleEmails(accounts, item.getItemName(), String.valueOf(discount * 100));
     		
             iRep.updateDiscount(id, discount);
             return true;
