@@ -31,7 +31,7 @@ public class AccountController {
     @PostMapping("/points/{email}")
     public ResponseEntity<?> updatePoints(@PathVariable String email, @RequestBody PointHistory change) {
     	boolean updatedPoints = this.service.modPoints(email, change);
-        return new ResponseEntity<>(updatedPoints, updatedPoints ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(updatedPoints, updatedPoints  ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE);
     }
     
     @PostMapping("/subscribe/{email}/{value}")

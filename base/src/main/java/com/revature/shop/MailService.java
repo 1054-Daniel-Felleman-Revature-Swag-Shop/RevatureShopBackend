@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import javax.mail.Message;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class MailService {
 	            mail.setContent(body, "text/html");
 	        });
     	} catch (Exception e) {
-    		this.logger.error(e.getStackTrace());
+    		this.logger.log(Level.ERROR, e.getLocalizedMessage());
     	}
     }
     
