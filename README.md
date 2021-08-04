@@ -2,7 +2,7 @@
 
 The Revature Swag shop is an employee accesible merchandise store that was built from scratch and uses a micro service architecture. As a revature employee, you can login to the shop and view your RevCoins (the shop currency) history. An employee can exchange these RevCoins for the various goods the shop offers.
 
-[Visit The Revature Swag Shop!](http://revshop.mooo.com/login)
+
 
 ## Application Overview
 
@@ -69,6 +69,23 @@ As an admin, you have all the same functionality as a User with the additinoal f
 
 ---
 
+- [Emmett Riddle](https://github.com/emmettriddle)
+- [Bennett Kerbow](https://github.com/BKerbow)
+- [Cory Haas](https://github.com/blueflotsam)
+- [Gerald Stillman](https://github.com/shadekiller666)
+- [Joey Soer](https://github.com/JoseJalopeno)
+- [Mark Mersman](https://github.com/MarkMersman)
+- [Tyler Throop](https://github.com/INTONIGHT)
+- [Tom Vang](https://github.com/tvang8394)
+- [Christopher Mendoza](https://github.com/christopher-mendoza)
+- [Gregory Diaz](https://github.com/gregdiaz8624)
+- [Hector Alvarez](https://github.com/HMAlvarez)
+- [Matt Anderson](https://github.com/Matt-B-Anderson)
+- [Matt Ecelbarger](https://github.com/mattecel)
+- [Monwen](https://github.com/monwen)
+- [Paul Athmer](https://github.com/pathmer)
+- [Seth Knox](https://github.com/sethrknox)
+- [Sydney Porter](https://github.com/sydneyyyyy)
 - [Parker Thornton](https://github.com/pkt77)
 - [Bryan Wise](https://github.com/Coach-BWise)
 - [Seoung-David Nhem](https://github.com/dnhem27)
